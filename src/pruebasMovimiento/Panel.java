@@ -20,7 +20,7 @@ public class Panel extends JPanel implements ActionListener {
 
 
 
-        mainTimer = new Timer(5, this);        //Cada 20 milisecons actualiza actionPerformed
+        mainTimer = new Timer(5, this);        //Cada 5 milisecons actualiza actionPerformed
         mainTimer.start();
 
     }
