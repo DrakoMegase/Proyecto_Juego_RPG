@@ -19,6 +19,7 @@ public class Panel extends JPanel implements ActionListener {
         addKeyListener(new KeyAdapt(player));
 
 
+
         mainTimer = new Timer(5, this);        //Cada 20 milisecons actualiza actionPerformed
         mainTimer.start();
 

@@ -44,7 +44,7 @@ public class Player extends Entity {
 
     public Image getPlayerImg() {
 
-        ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quim\\Downloads\\ProyectoFinal\\ogro.png");     //Creamos una ImageIcon y le pasamos el recurso
+        ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/ogro.png");     //Creamos una ImageIcon y le pasamos el recurso
         return imageIcon.getImage();                                                                      //La convertimos a imagen
 
     }
