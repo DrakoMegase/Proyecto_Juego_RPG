@@ -9,7 +9,11 @@ public class Entity implements Comparable<Entity>{
     boolean canBeMoved;
     int x;
     int y;
-    int[] hitbox;
+    int velX = 0;
+    int velY = 0;
+    Rectangle hitbox;
+    String name;
+    static int count=0;
 
     public Entity(int x, int y) {
         this.x = x;
@@ -20,6 +24,8 @@ public class Entity implements Comparable<Entity>{
         this.x = x;
         this.y = y;
 
+        name="Entity: "+count++;
+
         this.img=getImg(img);
         this.canBeMoved=canBeMoved;
 
@@ -29,31 +35,39 @@ public class Entity implements Comparable<Entity>{
 
 
     public void update(){
+        move(velX,velY);
 
+        if (hitbox.x<0||hitbox.x+hitbox.width > 800) {
+            move(-velX, 0);
+        }
+        if (hitbox.y<0||hitbox.y+hitbox.height > 600-hitbox.height) {
+            move(0, -velY);
+        }
     }
 
-    public int[] createHitbox(){
+    public Rectangle createHitbox(){
         int xMargin=img.getWidth(null)/4;
         int yMargin=img.getHeight(null)/2;
         int[] hitbox={xMargin,img.getWidth(null)-xMargin,yMargin,img.getHeight(null)};
-        return hitbox;
+        return new Rectangle(x+xMargin, y+yMargin,xMargin*2,yMargin);
     }
 
 
     public boolean push(int x, int y){
-        int newX=this.x+x;
-        int newY=this.y+y;
+        int newX=hitbox.x+x;
+        int newY=hitbox.y+y;
+
+        System.out.println("Han empujado a "+name+" "+x+"-"+y);
 
         if(canBeMoved&&!outOfBounds(newX,newY)){
-            this.x = newX;
-            this.y = newY;
+            move(x,y);
         }
 
         return canBeMoved&&!outOfBounds(newX,newY);
     }
 
     public boolean outOfBounds(int x, int y){
-        return x<0 || x>800-img.getWidth(null)||y<0||y>600-img.getHeight(null);
+        return x<0 || x>800-hitbox.width||y<0||y>600-hitbox.height;
     }
 
     public Image getImg(String img) {
@@ -70,9 +84,16 @@ public class Entity implements Comparable<Entity>{
         }
     }
 
+    public void move(int x, int y){
+        this.x+=x;
+        this.y+=y;
+        hitbox.translate(x,y);
+
+    }
+
 
     @Override
     public int compareTo(Entity o) {
-        return this.y-o.y;
+        return this.hitbox.y-o.hitbox.y;
     }
 }

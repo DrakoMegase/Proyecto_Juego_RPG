@@ -7,14 +7,15 @@ import java.awt.image.ImageObserver;
 
 public class Player extends Entity {
 
-    int velX = 0;
-    int velY = 0;
+
     int pWidth,pHeight;
 
 
     public Player(int x, int y) {
         super(x, y);
         img=getPlayerImg();
+
+        name="Player";
 
         canBeMoved=true;
         hitbox=createHitbox();
@@ -23,23 +24,16 @@ public class Player extends Entity {
 
     public void update() {
 
-        y += velY;
-        x += velX;
-
+        move(velX,velY);
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
 
-        if (x > 800-pWidth)
-            x = 800-pWidth;
-        if (x < 0)
-            x = 0;
-        if (y > 600-pHeight)
-            y = 600-pHeight;
-        if (y < 0)
-            y = 0;
-
-//        System.out.println(x + " " + y);
-
+        if (hitbox.x<0||hitbox.x+hitbox.width > 800) {
+            move(-velX, 0);
+        }
+        if (hitbox.y<0||hitbox.y+hitbox.height > 600-hitbox.height) {
+            move(0, -velY);
+        }
 
     }
 
@@ -60,11 +54,11 @@ public class Player extends Entity {
     }
 
     @Override
-    public int[] createHitbox(){
+    public Rectangle createHitbox(){
         int xMargin=img.getWidth(null)/6;
         int yMargin=img.getHeight(null)/2;
         int[] hitbox={xMargin,img.getWidth(null)-xMargin,yMargin,img.getHeight(null)};
-        return hitbox;
+        return new Rectangle(x+xMargin,y+yMargin,img.getWidth(null)-xMargin*2,yMargin);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -93,19 +87,6 @@ public class Player extends Entity {
 
     }
 
-    public boolean push(int x, int y){
-        int newX=this.x+x;
-        int newY=this.y+y;
-
-        System.out.println(x+"-"+y);
-
-        if(canBeMoved&&!outOfBounds(newX,newY)){
-            this.x = newX;
-            this.y = newY;
-        }
-
-        return canBeMoved&&!outOfBounds(newX,newY);
-    }
 
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
