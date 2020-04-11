@@ -6,11 +6,15 @@ import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
 
+    private boolean switchImgEnano;
+    Image image;
     int velX = 0;
     int velY = 0;
 
     public Player(int x, int y) {
         super(x, y);
+        switchImgEnano = true;
+
 
     }
 
@@ -18,6 +22,11 @@ public class Player extends Entity {
 
         y += velY;
         x += velX;
+
+        if (velX != 0 || velY != 0){
+            switchImgEnano =! switchImgEnano;
+        }
+
 
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
@@ -44,7 +53,13 @@ public class Player extends Entity {
 
     public Image getPlayerImg() {
 
-        ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/ogro.png");     //Creamos una ImageIcon y le pasamos el recurso
+        if (switchImgEnano){
+            ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/Enano 1.png");     //Creamos una ImageIcon y le pasamos el recurso
+            return imageIcon.getImage();
+        }
+
+
+        ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/Enano 2.png");     //Creamos una ImageIcon y le pasamos el recurso
         return imageIcon.getImage();                                                                      //La convertimos a imagen
 
     }
@@ -72,6 +87,7 @@ public class Player extends Entity {
 
 
         }
+
 
     }
 
