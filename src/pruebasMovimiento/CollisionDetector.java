@@ -2,9 +2,7 @@ package pruebasMovimiento;
 
 
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class CollisionDetector {
@@ -23,6 +21,9 @@ public class CollisionDetector {
         entityLinkedList.remove(player);
 
         checkCollisions(player,entityLinkedList);
+
+        CompareNearPlayer comparator=new CompareNearPlayer(player);
+        entityLinkedList.sort(comparator);
 
 
         for (Entity entity1:entityLinkedList){
@@ -78,5 +79,22 @@ public class CollisionDetector {
         return p.hitbox.intersects(e.hitbox);
     }
 
+    class CompareNearPlayer implements Comparator<Entity> {
 
+        private Player player;
+
+        public CompareNearPlayer(Player player) {
+            this.player = player;
+        }
+
+        @Override
+        public int compare(Entity o1, Entity o2) {
+
+            return distance(o1.hitbox.x,o1.hitbox.y,player.hitbox.x,player.hitbox.y)-distance(o2.hitbox.x,o2.hitbox.y,player.hitbox.x,player.hitbox.y);
+        }
+
+        private int distance(int x1, int y1, int x2, int y2){
+            return (int)Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
+        }
+    }
 }

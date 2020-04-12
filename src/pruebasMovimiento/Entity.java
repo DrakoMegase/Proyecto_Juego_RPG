@@ -96,4 +96,5 @@ public class Entity implements Comparable<Entity>{
     public int compareTo(Entity o) {
         return this.hitbox.y-o.hitbox.y;
     }
+
 }
