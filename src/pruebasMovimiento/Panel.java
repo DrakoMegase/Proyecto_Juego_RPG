@@ -10,22 +10,24 @@ public class Panel extends JPanel implements ActionListener {
     //No olvidarse de implementar ActionListener
 
 
-    Timer mainTimer;                //Declaracion de un timer
-    Player player;                  //Declaracion de un player
-    LinkedList<Entity> entities;
-    CollisionDetector collisionDetector;
+    private Timer mainTimer;                //Declaracion de un timer
+    private Player player;                  //Declaracion de un player
+    private LinkedList<Entity> entities;
+    private CollisionDetector collisionDetector;
 
-    public Panel() {
+     Panel() {
         setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         player = new Player(100, 100);
 
         collisionDetector=new CollisionDetector(player);
 
-        entities=new LinkedList<Entity>();
+        entities=new LinkedList<>();
         entities.add(player);
         entities.add(new Entity(300,300,"src/pruebasMovimiento/img/Fate1.png",true));
+        entities.add(new Entity(100,300,"src/pruebasMovimiento/img/Fate1.png",true));
+        entities.add(new Entity(200,300,"src/pruebasMovimiento/img/Fate1.png",true));
         entities.add(new Entity(300,50,"src/pruebasMovimiento/img/enano.png",false));
-        Entity ivanPrueba=new Entity(50,299,"src/pruebasMovimiento/img/IvanFelis.png",true);
+        Entity ivanPrueba=new Entity(50,300,"src/pruebasMovimiento/img/IvanFelis.png",true);
 //        ivanPrueba.velX=1;
         entities.add(ivanPrueba);
 

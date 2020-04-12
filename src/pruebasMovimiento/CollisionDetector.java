@@ -5,20 +5,19 @@ import java.awt.*;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class CollisionDetector {
+class CollisionDetector {
 
     private int[] force=new int[2];
     private Player player;
-    public Rectangle intersect;
+    Rectangle intersect;
 
-    public CollisionDetector(Player player) {
+    CollisionDetector(Player player) {
         this.player = player;
     }
 
-    public void adjustPositions(LinkedList<Entity> entities){
+    void adjustPositions(LinkedList<Entity> entities){
 
         LinkedList<Entity> entityLinkedList=new LinkedList<>(entities);
-        entityLinkedList.remove(player);
 
         checkCollisions(player,entityLinkedList);
 
@@ -27,15 +26,13 @@ public class CollisionDetector {
 
 
         for (Entity entity1:entityLinkedList){
-            checkCollisions(entity1,entities);
+            checkCollisions(entity1,entityLinkedList);
         }
     }
 
-    private boolean checkCollisions(Entity entity1, LinkedList<Entity> entities){
-        boolean intersects=false;
+    private void checkCollisions(Entity entity1, LinkedList<Entity> entities){
         for (Entity entity2:entities) {
             if (!entity1.equals(entity2)&&intersect(entity1, entity2)) {
-                intersects=true;
                 if (!entity2.push(force[0], force[1])) {
                     System.out.println("i'm weak");
                     entity1.push(-force[0], -force[1]);
@@ -45,15 +42,15 @@ public class CollisionDetector {
                         entity1.velY = 0;
                     }
 
-                }else {
-                    checkCollisions(entity1,entities);
+                    for (int i=entities.indexOf(entity1);i>=0;i--) {
+                        checkCollisions(entities.get(i), entities);
+                    }
                 }
             }
         }
-        return intersects;
     }
 
-    public boolean intersect(Entity p, Entity e) {
+    private boolean intersect(Entity p, Entity e) {
 
         if (p.hitbox.intersects(e.hitbox)){
             intersect = p.hitbox.intersection(e.hitbox);
@@ -83,7 +80,7 @@ public class CollisionDetector {
 
         private Player player;
 
-        public CompareNearPlayer(Player player) {
+        private CompareNearPlayer(Player player) {
             this.player = player;
         }
 
