@@ -8,21 +8,16 @@ import java.util.LinkedList;
 class CollisionDetector {
 
     private int[] force=new int[2];
-    private Player player;
     Rectangle intersect;
-
-    CollisionDetector(Player player) {
-        this.player = player;
-    }
 
     void adjustPositions(LinkedList<Entity> entities){
 
+
         LinkedList<Entity> entityLinkedList=new LinkedList<>(entities);
 
-        checkCollisions(player,entityLinkedList);
-
-        CompareNearPlayer comparator=new CompareNearPlayer(player);
+        CompareNearPlayer comparator=new CompareNearPlayer(entityLinkedList);
         entityLinkedList.sort(comparator);
+
 
 
         for (Entity entity1:entityLinkedList){
@@ -34,7 +29,6 @@ class CollisionDetector {
         for (Entity entity2:entities) {
             if (!entity1.equals(entity2)&&intersect(entity1, entity2)) {
                 if (!entity2.push(force[0], force[1])) {
-                    System.out.println("i'm weak");
                     entity1.push(-force[0], -force[1]);
                     if(force[0]==0) {
                         entity1.velX = 0;
@@ -78,16 +72,39 @@ class CollisionDetector {
 
     class CompareNearPlayer implements Comparator<Entity> {
 
-        private Player player;
+        private LinkedList<Entity> entities;
 
-        private CompareNearPlayer(Player player) {
-            this.player = player;
+        private CompareNearPlayer(LinkedList<Entity> entities) {
+
+            LinkedList<Entity> subentities=new LinkedList<>();
+            for (Entity entity:entities){
+                if(entity instanceof Player || entity instanceof Enemy){
+                    subentities.add(entity);
+                }
+            }
+
+            this.entities = subentities;
         }
 
         @Override
         public int compare(Entity o1, Entity o2) {
+            if(o2 instanceof Player){
+                return 1;
+            }else if(o1 instanceof Player){
+                return -1;
+            }
+            return sumOfDistanceToEntities(o1)-sumOfDistanceToEntities(o2);
+        }
 
-            return distance(o1.hitbox.x,o1.hitbox.y,player.hitbox.x,player.hitbox.y)-distance(o2.hitbox.x,o2.hitbox.y,player.hitbox.x,player.hitbox.y);
+        private int sumOfDistanceToEntities(Entity o1){
+            int dist=-1;
+            for (Entity entity:entities){
+                int dist1=distance(o1.hitbox.x,o1.hitbox.y,entity.hitbox.x,entity.hitbox.y);
+                if(dist==-1||dist>dist1){
+                    dist=dist1;
+                }
+            }
+            return dist;
         }
 
         private int distance(int x1, int y1, int x2, int y2){

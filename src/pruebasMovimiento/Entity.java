@@ -13,14 +13,14 @@ public class Entity implements Comparable<Entity>{
     int velY = 0;
     Rectangle hitbox;
     String name;
-    static int count=0;
+    private static int count=0;
 
-    public Entity(int x, int y) {
+    Entity(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Entity(int x, int y, String img, boolean canBeMoved) {
+    Entity(int x, int y, String img, boolean canBeMoved) {
         this.x = x;
         this.y = y;
 
@@ -35,14 +35,7 @@ public class Entity implements Comparable<Entity>{
 
 
     public void update(){
-        move(velX,velY);
 
-        if (hitbox.x<0||hitbox.x+hitbox.width > 800) {
-            move(-velX, 0);
-        }
-        if (hitbox.y<0||hitbox.y+hitbox.height > 600-hitbox.height) {
-            move(0, -velY);
-        }
     }
 
     public Rectangle createHitbox(){
@@ -53,7 +46,7 @@ public class Entity implements Comparable<Entity>{
     }
 
 
-    public boolean push(int x, int y){
+    boolean push(int x, int y){
         int newX=hitbox.x+x;
         int newY=hitbox.y+y;
 
@@ -66,11 +59,11 @@ public class Entity implements Comparable<Entity>{
         return canBeMoved&&!outOfBounds(newX,newY);
     }
 
-    public boolean outOfBounds(int x, int y){
+    private boolean outOfBounds(int x, int y){
         return x<0 || x>800-hitbox.width||y<0||y>600-hitbox.height;
     }
 
-    public Image getImg(String img) {
+    private Image getImg(String img) {
 
         ImageIcon imageIcon = new ImageIcon(img);     //Creamos una ImageIcon y le pasamos el recurso
         Image image=imageIcon.getImage();
@@ -84,7 +77,7 @@ public class Entity implements Comparable<Entity>{
         }
     }
 
-    public void move(int x, int y){
+    void move(int x, int y){
         this.x+=x;
         this.y+=y;
         hitbox.translate(x,y);

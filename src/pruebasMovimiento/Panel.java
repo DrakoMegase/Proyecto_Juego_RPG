@@ -19,17 +19,15 @@ public class Panel extends JPanel implements ActionListener {
         setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         player = new Player(100, 100);
 
-        collisionDetector=new CollisionDetector(player);
+        collisionDetector=new CollisionDetector();
 
         entities=new LinkedList<>();
         entities.add(player);
         entities.add(new Entity(300,300,"src/pruebasMovimiento/img/Fate1.png",true));
-        entities.add(new Entity(100,300,"src/pruebasMovimiento/img/Fate1.png",true));
+        entities.add(new Entity(350,300,"src/pruebasMovimiento/img/Fate1.png",true));
         entities.add(new Entity(200,300,"src/pruebasMovimiento/img/Fate1.png",true));
         entities.add(new Entity(300,50,"src/pruebasMovimiento/img/enano.png",false));
-        Entity ivanPrueba=new Entity(50,300,"src/pruebasMovimiento/img/IvanFelis.png",true);
-//        ivanPrueba.velX=1;
-        entities.add(ivanPrueba);
+        entities.add(new Enemy(300,350));
 
         addKeyListener(new KeyAdapt(player));
 
@@ -62,10 +60,10 @@ public class Panel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         //Cada 20ms (depende el timer) se acutaliza el metodo update en player y se repainteara la pantalla
-        collisionDetector.adjustPositions(entities);
         for(Entity entity:entities){
             entity.update();
         }
+        collisionDetector.adjustPositions(entities);
 
         repaint();
 

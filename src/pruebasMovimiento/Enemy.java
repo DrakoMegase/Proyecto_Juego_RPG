@@ -2,26 +2,24 @@ package pruebasMovimiento;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
 
-public class Player extends Entity {
+public class Enemy extends Entity{
 
+    private int time=0;
 
-
-    Player(int x, int y) {
+    Enemy(int x, int y) {
         super(x, y);
-        img=getPlayerImg();
+
+        img=getEnemyImg();
 
         name="Player";
 
         canBeMoved=true;
         hitbox=createHitbox();
-
     }
 
     public void update() {
-
+        time+=1;
         move(velX,velY);
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
@@ -33,6 +31,23 @@ public class Player extends Entity {
             move(0, -velY);
         }
 
+        if(time%400==300){
+            velX=1;
+            velY=0;
+
+        }else if(time%400==200){
+            velX=0;
+            velY=1;
+
+        }else if(time%400==100){
+            velX=-1;
+            velY=0;
+
+        }else if(time%400==0){
+            velX=0;
+            velY=-1;
+
+        }
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -41,10 +56,10 @@ public class Player extends Entity {
 
     }
 
-    private Image getPlayerImg() {
+    private Image getEnemyImg() {
 
         ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/notHitler.png");     //Creamos una ImageIcon y le pasamos el recurso
-        Image image=imageIcon.getImage();
+
         return imageIcon.getImage();                                                                      //La convertimos a imagen
 
     }
@@ -56,53 +71,4 @@ public class Player extends Entity {
         int[] hitbox={xMargin,img.getWidth(null)-xMargin,yMargin,img.getHeight(null)};
         return new Rectangle(x+xMargin,y+yMargin,img.getWidth(null)-xMargin*2,yMargin);
     }
-
-    void keyPressed(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        switch (key) {
-
-            case KeyEvent.VK_W:
-                velY = -2;
-                break;
-            case KeyEvent.VK_S:
-                velY = 2;
-                break;
-            case KeyEvent.VK_A:
-                velX = -2;
-                break;
-            case KeyEvent.VK_D:
-                velX = 2;
-                break;
-
-            default:
-
-
-        }
-
-    }
-
-
-    void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-
-
-        switch (key) {
-
-            case KeyEvent.VK_W:
-            case KeyEvent.VK_S:
-                velY = 0;
-                break;
-            case KeyEvent.VK_A:
-            case KeyEvent.VK_D:
-                velX = 0;
-                break;
-
-            default:
-
-        }
-
-    }
-
 }
