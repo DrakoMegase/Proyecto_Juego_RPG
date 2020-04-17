@@ -30,7 +30,6 @@ public class Player extends Entity {
 
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
-
         if (x > 800)
             x = 800;
         if (x < 0)
