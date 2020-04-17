@@ -31,6 +31,7 @@ public class Entity implements Comparable<Entity>{
 
         hitbox=createHitbox();
 
+
     }
 
 
@@ -67,6 +68,7 @@ public class Entity implements Comparable<Entity>{
 
         ImageIcon imageIcon = new ImageIcon(img);     //Creamos una ImageIcon y le pasamos el recurso
         Image image=imageIcon.getImage();
+
         return imageIcon.getImage();                                                                      //La convertimos a imagen
 
     }

@@ -2,17 +2,31 @@ package pruebasMovimiento;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class Enemy extends Entity{
 
     private int time=0;
+    private Player player;
+    private int velMov=0;
+    private LinkedList<Entity> roomEntities=new LinkedList<>();
 
-    Enemy(int x, int y) {
+
+    Enemy(int x, int y, int velMov, Player player, LinkedList<Entity> entities) {
         super(x, y);
 
         img=getEnemyImg();
 
-        name="Player";
+        for (Entity entity:entities){
+            if(!entity.canBeMoved){
+                roomEntities.add(entity);
+            }
+        }
+
+        this.player=player;
+        name="Enemy";
+
+        this.velMov=velMov;
 
         canBeMoved=true;
         hitbox=createHitbox();
@@ -31,23 +45,43 @@ public class Enemy extends Entity{
             move(0, -velY);
         }
 
-        if(time%400==300){
-            velX=1;
-            velY=0;
-
-        }else if(time%400==200){
+        if(player.hitbox.x>hitbox.x){
+            velX=velMov;
+        }else if(player.hitbox.x<hitbox.x){
+            velX=-velMov;
+        }else {
             velX=0;
-            velY=1;
-
-        }else if(time%400==100){
-            velX=-1;
-            velY=0;
-
-        }else if(time%400==0){
-            velX=0;
-            velY=-1;
-
         }
+
+        if(player.hitbox.y>hitbox.y){
+            velY=velMov;
+        }else if(player.hitbox.y<hitbox.y){
+            velY=-velMov;
+        }else {
+            velY=0;
+        }
+        for (Entity entity:roomEntities) {
+            if (hitbox.intersects(entity.hitbox)){
+                Rectangle intersection=hitbox.intersection(entity.hitbox);
+                if(intersection.height>intersection.width){
+                    move(-velX,0);
+                }else if(intersection.height==intersection.width){
+
+                    if(Math.abs(player.hitbox.x-hitbox.x)>Math.abs(player.hitbox.y-hitbox.y)){
+                        move(-velX,0);
+                    }else {
+                        move(0,-velY);
+                    }
+
+
+                }else {
+                    move(0,-velY);
+                }
+
+            }
+        }
+
+
     }
 
     public void draw(Graphics2D graphics2D) {
