@@ -9,20 +9,14 @@ public class Enemy extends Entity{
     private int time=0;
     private Player player;
     private int velMov=0;
-    private LinkedList<Entity> roomEntities=new LinkedList<>();
 
 
-    Enemy(int x, int y, int velMov, Player player, LinkedList<Entity> entities) {
-        super(x, y);
+    Enemy(int x, int y, int velMov,int hp, Player player, LinkedList<Entity> entities) {
+        super(x, y, entities);
 
         img=getEnemyImg();
 
-        for (Entity entity:entities){
-            if(!entity.canBeMoved){
-                roomEntities.add(entity);
-            }
-        }
-
+        this.hp=hp;
         this.player=player;
         name="Enemy";
 
@@ -61,21 +55,23 @@ public class Enemy extends Entity{
             velY=0;
         }
         for (Entity entity:roomEntities) {
-            if (hitbox.intersects(entity.hitbox)){
+            if (!entity.equals(this)&&hitbox.intersects(entity.hitbox)){
                 Rectangle intersection=hitbox.intersection(entity.hitbox);
-                if(intersection.height>intersection.width){
-                    move(-velX,0);
-                }else if(intersection.height==intersection.width){
+                entity.damage(5);
+                if(!entity.canBeMoved) {
+                    if (intersection.height > intersection.width) {
+                        move(-velX, 0);
+                    } else if (intersection.height == intersection.width) {
 
-                    if(Math.abs(player.hitbox.x-hitbox.x)>Math.abs(player.hitbox.y-hitbox.y)){
-                        move(-velX,0);
-                    }else {
-                        move(0,-velY);
+                        if (Math.abs(player.hitbox.x - hitbox.x) > Math.abs(player.hitbox.y - hitbox.y)) {
+                            move(-velX, 0);
+                        } else {
+                            move(0, -velY);
+                        }
+
+                    } else {
+                        move(0, -velY);
                     }
-
-
-                }else {
-                    move(0,-velY);
                 }
 
             }

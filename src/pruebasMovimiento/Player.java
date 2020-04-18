@@ -4,14 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
+import java.util.LinkedList;
 
 public class Player extends Entity {
 
 
 
-    Player(int x, int y) {
-        super(x, y);
+    Player(int x, int y, int hp, LinkedList<Entity> roomEntities) {
+        super(x, y, roomEntities);
         img=getPlayerImg();
+
+        this.hp=hp;
 
         name="Player";
 
@@ -33,6 +36,7 @@ public class Player extends Entity {
             move(0, -velY);
         }
 
+
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -44,7 +48,6 @@ public class Player extends Entity {
     private Image getPlayerImg() {
 
         ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/notHitler.png");     //Creamos una ImageIcon y le pasamos el recurso
-        Image image=imageIcon.getImage();
         return imageIcon.getImage();                                                                      //La convertimos a imagen
 
     }
@@ -76,11 +79,19 @@ public class Player extends Entity {
                 velX = 2;
                 break;
 
+            case KeyEvent.VK_SPACE:
+                shoot();
+                break;
+
             default:
 
 
         }
 
+    }
+
+    private void shoot(){
+        new Projectile(hitbox.x-hitbox.width/4,hitbox.y-hitbox.width/2,20,(int)(Math.random()*5)-2,(int)(Math.random()*5)-2,"src/pruebasMovimiento/img/proyectil.png",true,false,roomEntities,this);
     }
 
 

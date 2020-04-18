@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Panel extends JPanel implements ActionListener {
@@ -15,19 +16,17 @@ public class Panel extends JPanel implements ActionListener {
     private LinkedList<Entity> entities;
     private CollisionDetector collisionDetector;
 
-     Panel() {
-        setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
-        player = new Player(100, 100);
+    Panel() {
 
+        setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+        entities=new LinkedList<>();
         collisionDetector=new CollisionDetector();
 
-        entities=new LinkedList<>();
-        entities.add(player);
-        entities.add(new Entity(300,300,"src/pruebasMovimiento/img/Fate1.png",true));
-        entities.add(new Entity(350,300,"src/pruebasMovimiento/img/Fate1.png",true));
-        entities.add(new Entity(200,300,"src/pruebasMovimiento/img/Fate1.png",true));
-        entities.add(new Entity(300,50,"src/pruebasMovimiento/img/enano.png",false));
-        entities.add(new Enemy(300,350,1,player,entities));
+        player = new Player(100, 100, 20,entities);
+
+        new Entity(200,300,10,"src/pruebasMovimiento/img/Fate1.png",true,true,entities);
+        new Entity(300,50,1,"src/pruebasMovimiento/img/enano.png",false,false,entities);
+//        new Enemy(300,350,1,15,player,entities);
 
         addKeyListener(new KeyAdapt(player));
 
@@ -60,10 +59,16 @@ public class Panel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         //Cada 20ms (depende el timer) se acutaliza el metodo update en player y se repainteara la pantalla
-        for(Entity entity:entities){
+        Iterator<Entity> iterator=entities.iterator();
+        while (iterator.hasNext()){
+            Entity entity=iterator.next();
             entity.update();
+            if(entity.remove){
+                iterator.remove();
+            }
         }
         collisionDetector.adjustPositions(entities);
+
 
         repaint();
 

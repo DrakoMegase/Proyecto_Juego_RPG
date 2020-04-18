@@ -2,41 +2,64 @@ package pruebasMovimiento;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class Entity implements Comparable<Entity>{
 
     Image img;
-    boolean canBeMoved;
+    boolean canBeMoved,remove=false;
     int x;
     int y;
     int velX = 0;
     int velY = 0;
+    int hp;
+    boolean canBeDamaged;
     Rectangle hitbox;
     String name;
     private static int count=0;
+    LinkedList<Entity> roomEntities;
 
-    Entity(int x, int y) {
+
+    Entity(int x, int y,LinkedList<Entity> roomEntities) {
         this.x = x;
         this.y = y;
+        roomEntities.add(this);
+        this.roomEntities=roomEntities;
     }
 
-    Entity(int x, int y, String img, boolean canBeMoved) {
+    Entity(int x, int y, int hp, String img, boolean canBeMoved, boolean canBeDamaged, LinkedList<Entity> roomEntities) {
         this.x = x;
         this.y = y;
+
+        this.hp=hp;
+
+        this.canBeDamaged=canBeDamaged;
 
         name="Entity: "+count++;
 
         this.img=getImg(img);
         this.canBeMoved=canBeMoved;
 
+        roomEntities.add(this);
+        this.roomEntities=roomEntities;
+
+
         hitbox=createHitbox();
 
 
     }
 
+    void damage(int dmg){
+        if(canBeDamaged){
+            hp-=dmg;
+        }
+    }
+
 
     public void update(){
-
+        if(hp<0){
+            remove=true;
+        }
     }
 
     public Rectangle createHitbox(){

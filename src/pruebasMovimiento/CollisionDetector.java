@@ -3,6 +3,7 @@ package pruebasMovimiento;
 
 import java.awt.*;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 class CollisionDetector {
@@ -14,6 +15,14 @@ class CollisionDetector {
 
 
         LinkedList<Entity> entityLinkedList=new LinkedList<>(entities);
+        Iterator<Entity> iterator=entityLinkedList.iterator();
+        Entity entity=null;
+        while (iterator.hasNext()){
+            entity=iterator.next();
+            if(entity instanceof Projectile){
+                iterator.remove();
+            }
+        }
 
         CompareNearPlayer comparator=new CompareNearPlayer(entityLinkedList);
         entityLinkedList.sort(comparator);
