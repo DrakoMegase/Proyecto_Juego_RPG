@@ -1,4 +1,4 @@
-package pruebasMovimiento;
+package mapasPruebas2;
 
 import java.awt.*;
 
@@ -13,7 +13,9 @@ public class Entity {
     }
 
 
-    public void update(Graphics2D graphics2D){
+    public void update(){
+
+
 
     }
 

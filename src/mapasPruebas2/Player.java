@@ -1,97 +1,50 @@
-package pruebasMovimiento;
+package mapasPruebas2;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Player extends Entity {
+
+
+    private static Rectangle lago = new Rectangle(0,0,100,100);
+    private static ArrayList<Rectangle>obstaculos = new ArrayList<>();
 
     private boolean switchImgEnano;
     Image image;
     int velX = 0;
     int velY = 0;
-    Rectangle player;
-    boolean retrocediendo;
-
-
-    private static Rectangle lago = new Rectangle(196, 35, 90, 90);
-    private static ArrayList<Rectangle> obstaculos = new ArrayList<>();
-
 
     public Player(int x, int y) {
         super(x, y);
         switchImgEnano = true;
-        image = getPlayerImg();
-        player = new Rectangle(0, 0, getPlayerImg().getWidth(null), getPlayerImg().getWidth(null));
-        obstaculos.add(lago);
+
 
     }
 
     public void update() {
 
+        y += velY;
+        x += velX;
 
-
-        for (Rectangle r : obstaculos
-        ) {
-
-            if (r.intersects(player)){
-                retrocediendo =true;
-               leaveRectangle(player, r);
-               System.out.println("???");
-
-            }
-
-                y += velY;
-                x += velX;
-
-
-                player.x = x;
-                player.y = y;
-
-
-
-                if (velX != 0 || velY != 0) {
-                    switchImgEnano = !switchImgEnano;
-                }
-
-
-                //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
-
-
-                if (x > 320)
-                    x = 320;
-                if (x < 0)
-                    x = 0;
-                if (y > 320)
-                    y = 320;
-                if (y < 0)
-                    y = 0;
-
-
-            }
-
-
-
-
-
-        System.out.println(player.x + " " + player.y + " W " + player.width  + " h " + player.height + "VEL X = " +velX + " VEL Y = " + velY);
-
-
-    }
-
-    private void leaveRectangle(Rectangle player, Rectangle obstaculo) {
-
-        if (retrocediendo){
-            velY = velY * -1;
-            velX = velX * -1;
-            x += velX;
-            y += velY;
-            retrocediendo = false;
-
+        if (velX != 0 || velY != 0){
+            switchImgEnano =! switchImgEnano;
         }
 
+        //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
+        if (x > 800)
+            x = 800;
+        if (x < 0)
+            x = 0;
+        if (y > 600)
+            y = 600;
+        if (y < 0)
+            y = 0;
+
+        System.out.println(x + " " + y);
 
 
     }
@@ -104,7 +57,7 @@ public class Player extends Entity {
 
     public Image getPlayerImg() {
 
-        if (switchImgEnano) {
+        if (switchImgEnano){
             ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/Enano 1.png");     //Creamos una ImageIcon y le pasamos el recurso
             return imageIcon.getImage();
         }
@@ -141,7 +94,6 @@ public class Player extends Entity {
 
 
     }
-
 
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
