@@ -1,17 +1,19 @@
 package pruebasMovimiento;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
-import java.util.LinkedList;
+import java.io.File;
+import java.io.IOException;
 
 public class Player extends Entity {
 
+    private int lastSpdX=0;
+    private int lastSpdY=2;
 
 
-    Player(int x, int y, int hp, LinkedList<Entity> roomEntities) {
-        super(x, y, roomEntities);
+    Player(int x, int y, int hp) {
+        super(x, y);
         img=getPlayerImg();
 
         this.hp=hp;
@@ -19,8 +21,7 @@ public class Player extends Entity {
         name="Player";
 
         canBeMoved=true;
-        hitbox=createHitbox();
-
+        hitbox=new Rectangle(x+10,y+17,12,14);
     }
 
     public void update() {
@@ -29,10 +30,10 @@ public class Player extends Entity {
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
 
-        if (hitbox.x<0||hitbox.x+hitbox.width > 800) {
+        if (hitbox.x<=0||hitbox.x+hitbox.width >= 800) {
             move(-velX, 0);
         }
-        if (hitbox.y<0||hitbox.y+hitbox.height > 600-hitbox.height) {
+        if (hitbox.y<=0||hitbox.y+hitbox.height >= 600-hitbox.height) {
             move(0, -velY);
         }
 
@@ -40,19 +41,40 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D graphics2D) {
+        int multiOr=0;
+        if(lastSpdY<0){
+            multiOr=1;
+        }else if(lastSpdX>0){
+            multiOr=2;
+        }else if(lastSpdX<0){
+            multiOr=3;
+        }
 
-        graphics2D.drawImage(img, x, y, null);
+        int multyMov=0;
+        if(velX!=0||velY!=0){
+            multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
+        }
+
+        // Width and height of sprite
+        int sw = 32;
+        int sh = 32;
+        // Position of sprite on screen
+        int px = x;
+        int py = y;
+        // Coordinates of desired sprite image
+        int i = 0+32*multyMov;
+        int j = 64+32*multiOr;
+        graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
 
     }
 
     private Image getPlayerImg() {
 
-        ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/notHitler.png");     //Creamos una ImageIcon y le pasamos el recurso
-        return imageIcon.getImage();                                                                      //La convertimos a imagen
+        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/spritesheetTest.png"));
+        return pic;                                                                      //La convertimos a imagen
 
     }
 
-    @Override
     public Rectangle createHitbox(){
         int xMargin=img.getWidth(null)/6;
         int yMargin=img.getHeight(null)/2;
@@ -68,15 +90,23 @@ public class Player extends Entity {
 
             case KeyEvent.VK_W:
                 velY = -2;
+                lastSpdX=0;
+                lastSpdY=-2;
                 break;
             case KeyEvent.VK_S:
                 velY = 2;
+                lastSpdX=0;
+                lastSpdY=2;
                 break;
             case KeyEvent.VK_A:
                 velX = -2;
+                lastSpdX=-2;
+                lastSpdY=0;
                 break;
             case KeyEvent.VK_D:
                 velX = 2;
+                lastSpdX=2;
+                lastSpdY=0;
                 break;
 
             case KeyEvent.VK_SPACE:
@@ -91,7 +121,7 @@ public class Player extends Entity {
     }
 
     private void shoot(){
-        new Projectile(hitbox.x-hitbox.width/4,hitbox.y-hitbox.width/2,20,(int)(Math.random()*5)-2,(int)(Math.random()*5)-2,"src/pruebasMovimiento/img/proyectil.png",true,false,roomEntities,this);
+       Panel.addEntities.add(new Projectile(hitbox.x-hitbox.width/2,hitbox.y-hitbox.width,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX,lastSpdY,this));
     }
 
 
@@ -102,12 +132,24 @@ public class Player extends Entity {
         switch (key) {
 
             case KeyEvent.VK_W:
+                if(velY<0) {
+                    velY = 0;
+                }
+                break;
             case KeyEvent.VK_S:
-                velY = 0;
+                if(velY>0) {
+                    velY = 0;
+                }
                 break;
             case KeyEvent.VK_A:
+                if(velX<0) {
+                    velX = 0;
+                }
+                break;
             case KeyEvent.VK_D:
-                velX = 0;
+                if(velX>0) {
+                    velX = 0;
+                }
                 break;
 
             default:

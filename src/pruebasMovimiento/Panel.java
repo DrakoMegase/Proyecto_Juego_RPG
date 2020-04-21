@@ -13,20 +13,18 @@ public class Panel extends JPanel implements ActionListener {
 
     private Timer mainTimer;                //Declaracion de un timer
     private Player player;                  //Declaracion de un player
-    private LinkedList<Entity> entities;
-    private CollisionDetector collisionDetector;
+    protected static LinkedList<Entity> entities;
+    protected static LinkedList<Entity> addEntities;
 
     Panel() {
 
         setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         entities=new LinkedList<>();
-        collisionDetector=new CollisionDetector();
+        addEntities=new LinkedList<>();
 
-        player = new Player(100, 100, 20,entities);
+        player = new Player(100, 100, 20);
+        entities.add(player);
 
-        new Entity(200,300,10,"src/pruebasMovimiento/img/Fate1.png",true,true,entities);
-        new Entity(300,50,1,"src/pruebasMovimiento/img/enano.png",false,false,entities);
-//        new Enemy(300,350,1,15,player,entities);
 
         addKeyListener(new KeyAdapt(player));
 
@@ -49,9 +47,6 @@ public class Panel extends JPanel implements ActionListener {
             entity.draw(graphics2D);
         }
 
-        if(collisionDetector.intersect!=null){
-            graphics2D.draw(collisionDetector.intersect);
-        }
 
     }
 
@@ -67,7 +62,21 @@ public class Panel extends JPanel implements ActionListener {
                 iterator.remove();
             }
         }
-        collisionDetector.adjustPositions(entities);
+        if(addEntities.size()>0) {
+            entities.addAll(addEntities);
+            addEntities.clear();
+        }
+
+        iterator=entities.iterator();
+
+
+
+
+        entities.sort(new CompareNearEntities(entities));
+        while (iterator.hasNext()){
+            Entity entity=iterator.next();
+            entity.checkCollisions(entities);
+        }
 
 
         repaint();

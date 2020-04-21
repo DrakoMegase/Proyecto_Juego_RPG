@@ -10,20 +10,8 @@ public class Enemy extends Entity{
     private Player player;
     private int velMov=0;
 
-
-    Enemy(int x, int y, int velMov,int hp, Player player, LinkedList<Entity> entities) {
-        super(x, y, entities);
-
-        img=getEnemyImg();
-
-        this.hp=hp;
-        this.player=player;
-        name="Enemy";
-
-        this.velMov=velMov;
-
-        canBeMoved=true;
-        hitbox=createHitbox();
+    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged) {
+        super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
     }
 
     public void update() {
@@ -54,29 +42,6 @@ public class Enemy extends Entity{
         }else {
             velY=0;
         }
-        for (Entity entity:roomEntities) {
-            if (!entity.equals(this)&&hitbox.intersects(entity.hitbox)){
-                Rectangle intersection=hitbox.intersection(entity.hitbox);
-                entity.damage(5);
-                if(!entity.canBeMoved) {
-                    if (intersection.height > intersection.width) {
-                        move(-velX, 0);
-                    } else if (intersection.height == intersection.width) {
-
-                        if (Math.abs(player.hitbox.x - hitbox.x) > Math.abs(player.hitbox.y - hitbox.y)) {
-                            move(-velX, 0);
-                        } else {
-                            move(0, -velY);
-                        }
-
-                    } else {
-                        move(0, -velY);
-                    }
-                }
-
-            }
-        }
-
 
     }
 
@@ -86,19 +51,24 @@ public class Enemy extends Entity{
 
     }
 
-    private Image getEnemyImg() {
-
-        ImageIcon imageIcon = new ImageIcon("src/pruebasMovimiento/img/notHitler.png");     //Creamos una ImageIcon y le pasamos el recurso
-
-        return imageIcon.getImage();                                                                      //La convertimos a imagen
-
-    }
-
     @Override
-    public Rectangle createHitbox(){
-        int xMargin=img.getWidth(null)/6;
-        int yMargin=img.getHeight(null)/2;
-        int[] hitbox={xMargin,img.getWidth(null)-xMargin,yMargin,img.getHeight(null)};
-        return new Rectangle(x+xMargin,y+yMargin,img.getWidth(null)-xMargin*2,yMargin);
+    protected void checkCollisions(LinkedList<Entity> entities){
+        int[] force=null;
+        for (Entity entity2:entities) {
+            force=intersect(this,entity2);
+            if (!this.equals(entity2)&&force!=null) {
+                if(entity2.canBeDamaged){
+                    entity2.damage(5);
+                }
+
+                if (!entity2.push(force[0], force[1])) {
+                    this.push(-force[0], -force[1]);
+                    for (int i=entities.indexOf(this);i>=0;i--) {
+                        entities.get(i).checkCollisions(entities);
+                    }
+                }
+            }
+        }
     }
+
 }

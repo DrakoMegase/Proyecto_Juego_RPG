@@ -7,8 +7,8 @@ public class Projectile extends Entity{
 
     Entity creator;
 
-    Projectile(int x, int y, int hp, int velX, int velY, String img, boolean canBeMoved, boolean canBeDamaged, LinkedList<Entity> roomEntities, Entity creator) {
-        super(x, y, hp, img, canBeMoved, canBeDamaged, roomEntities);
+    public Projectile(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, int velX, int velY, Entity creator) {
+        super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
         this.velX=velX;
         this.velY=velY;
         this.creator=creator;
@@ -17,9 +17,9 @@ public class Projectile extends Entity{
     public void update() {
 
         move(velX,velY);
-        //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
+
         boolean hit=false;
-        for (Entity entity:roomEntities) {
+        for (Entity entity:Panel.entities) {
             if (!entity.equals(this)&&!entity.equals(creator)&&hitbox.intersects(entity.hitbox)){
                 Rectangle intersection=hitbox.intersection(entity.hitbox);
                 entity.damage(5);
@@ -30,6 +30,11 @@ public class Projectile extends Entity{
         if (hit||hitbox.x+hitbox.width <0||hitbox.x> 800||hitbox.y+hitbox.height<0||hitbox.y > 600-hitbox.height) {
             remove=true;
         }
+
+    }
+
+    @Override
+    protected void checkCollisions(LinkedList<Entity> entities) {
 
     }
 }

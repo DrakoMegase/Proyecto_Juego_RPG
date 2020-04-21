@@ -17,17 +17,19 @@ public class Entity implements Comparable<Entity>{
     Rectangle hitbox;
     String name;
     private static int count=0;
-    LinkedList<Entity> roomEntities;
 
 
-    Entity(int x, int y,LinkedList<Entity> roomEntities) {
+    Entity(int x, int y, int hitX, int hitY, int hitWidth, int hitHeight) {
         this.x = x;
         this.y = y;
-        roomEntities.add(this);
-        this.roomEntities=roomEntities;
     }
 
-    Entity(int x, int y, int hp, String img, boolean canBeMoved, boolean canBeDamaged, LinkedList<Entity> roomEntities) {
+    Entity(int x, int y ) {
+        this.x = x;
+        this.y = y;
+    }
+
+    Entity(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged) {
         this.x = x;
         this.y = y;
 
@@ -40,11 +42,8 @@ public class Entity implements Comparable<Entity>{
         this.img=getImg(img);
         this.canBeMoved=canBeMoved;
 
-        roomEntities.add(this);
-        this.roomEntities=roomEntities;
 
-
-        hitbox=createHitbox();
+        hitbox=new Rectangle(x+hitX,y+hitY,hitWidth,hitHeight);
 
 
     }
@@ -57,24 +56,13 @@ public class Entity implements Comparable<Entity>{
 
 
     public void update(){
-        if(hp<0){
-            remove=true;
-        }
-    }
 
-    public Rectangle createHitbox(){
-        int xMargin=img.getWidth(null)/4;
-        int yMargin=img.getHeight(null)/2;
-        int[] hitbox={xMargin,img.getWidth(null)-xMargin,yMargin,img.getHeight(null)};
-        return new Rectangle(x+xMargin, y+yMargin,xMargin*2,yMargin);
     }
 
 
     boolean push(int x, int y){
         int newX=hitbox.x+x;
         int newY=hitbox.y+y;
-
-        System.out.println("Han empujado a "+name+" "+x+"-"+y);
 
         if(canBeMoved&&!outOfBounds(newX,newY)){
             move(x,y);
@@ -89,10 +77,9 @@ public class Entity implements Comparable<Entity>{
 
     private Image getImg(String img) {
 
-        ImageIcon imageIcon = new ImageIcon(img);     //Creamos una ImageIcon y le pasamos el recurso
-        Image image=imageIcon.getImage();
+        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
 
-        return imageIcon.getImage();                                                                      //La convertimos a imagen
+        return pic;
 
     }
 
@@ -113,6 +100,60 @@ public class Entity implements Comparable<Entity>{
     @Override
     public int compareTo(Entity o) {
         return this.hitbox.y-o.hitbox.y;
+    }
+
+
+    protected void checkCollisions( LinkedList<Entity> entities){
+        int[] force=null;
+        for (Entity entity2:entities) {
+            if(!this.equals(entity2) && !(entity2 instanceof Projectile)) {
+                force = intersect(this, entity2);
+                if ( force != null) {
+                    if (!entity2.push(force[0], force[1])) {
+                        this.push(-force[0], -force[1]);
+                        if (force[0] == 0) {
+                            this.velX = 0;
+                        } else {
+                            this.velY = 0;
+                        }
+
+                        for (int i = entities.indexOf(this); i >= 0; i--) {
+                            entities.get(i).checkCollisions(entities);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected static int[] intersect(Entity p, Entity e) {
+
+        int[] force=null;
+
+        if (p.hitbox.intersects(e.hitbox)){
+            Rectangle intersect = p.hitbox.intersection(e.hitbox);
+
+            force=new int[2];
+
+            if(intersect.x==e.hitbox.x){
+                force[0]=intersect.width;
+            }else {
+                force[0]=-intersect.width;
+            }
+
+            if(intersect.y==e.hitbox.y){
+                force[1]=intersect.height;
+            }else {
+                force[1]=-intersect.height;
+            }
+
+            if(intersect.width>intersect.height){
+                force[0]=0;
+            }else {
+                force[1]=0;
+            }
+        }
+        return force;
     }
 
 }
