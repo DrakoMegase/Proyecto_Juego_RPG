@@ -1,3 +1,5 @@
+package pruebasMovimiento;
+
 import org.json.simple.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -9,19 +11,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import static herramientas.ExtraerDatosJson.*;
-import static herramientas.ExtraerDatosJson.devolverNumSpritesTotal;
 
-public class Pantalla extends JFrame implements ActionListener {
+public class Pantalla extends JPanel implements ActionListener {
 
     static private int WIDTH;       //COLUMNAS
     static private int COLUMNS;       //COLUMNAS
     static private int HEIGHT;      //FILAS
     static private int ROWS;      //FILAS
     static private int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
-    static private int TIMERDELAY = 2000;        //Esto es personalizable
+    static private int TIMERDELAY = 20;        //Esto es personalizable
 
     static BufferedImage spriteSheet;
 
@@ -29,14 +31,13 @@ public class Pantalla extends JFrame implements ActionListener {
 
     static private ArrayList spritesPantalla;           //Clase sprites
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
-    static public ArrayList<Sprite> spritesObjectArrayList;
-    static private ArrayList objetos;                   //todo clase obstaculos
-
-
-    static private JSONObject archivoJson;
 
     BufferedImage imageBuffer;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
 
+
+    private Player player;                  //Declaracion de un player
+    protected static LinkedList<Entity> entities;
+    protected static LinkedList<Entity> addEntities;
 
     public Pantalla(String rutaJson, String rutaSpriteSheet) throws HeadlessException {
 
@@ -64,36 +65,80 @@ public class Pantalla extends JFrame implements ActionListener {
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         //Al cerrar la ventana, parara la ejecucion del programa
-        setResizable(false);                                    //No permitimos que se pueda modificar el tamaño de ventana
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
         //setLocationRelativeTo(null);                            //Colocara la ventana en el centro al lanzarla
-        pack();                                                 //Se ajusta el tamaño para evitar errores (ventana con canvas)
         setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
+
+        setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+        entities=new LinkedList<>();
+        addEntities=new LinkedList<>();
+
+        player = new Player(10, 10, 20);
+        entities.add(player);
+
+//        entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
+
+        entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
+
+
+        addKeyListener(new KeyAdapt(player));
 
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
 
-        this.getGraphics().drawImage(printBackground(), 0, 0, null);   //esto pinta el background
     }
 
 
     @Override
-    public void paint(Graphics g) {
-        //super.paint(g);
+    public void paint(Graphics graphics) {
+        super.paint(graphics);                                          //Referenciamos sobre que Panel tiene que trabajar
+        Graphics2D graphics2D=(Graphics2D) graphics;
+//        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
 
-        //this.getGraphics().drawImage(printBackground(), 0, 0, null);      //pinta background
+
+        graphics2D.drawImage(printBackground(), 0, 0, null);      //pinta background
+//        graphics2D.drawImage(imageBuffer,0,0,null);
+
+        entities.sort(Entity::compareTo);
+        for(Entity entity:entities){
+            entity.draw(graphics2D);
+        }
+
 
 
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        repaint();
+        //Cada 20ms (depende el timer) se acutaliza el metodo update en player y se repainteara la pantalla
+        Iterator<Entity> iterator=entities.iterator();
+        while (iterator.hasNext()){
+            Entity entity=iterator.next();
+            entity.update();
+            if(entity.remove){
+                iterator.remove();
+            }
+        }
+        if(addEntities.size()>0) {
+            entities.addAll(addEntities);
+            addEntities.clear();
+        }
 
-        System.out.println("aaa");
+        iterator=entities.iterator();
+
+
+
+
+        entities.sort(new CompareNearEntities(entities));
+        while (iterator.hasNext()){
+            Entity entity=iterator.next();
+            entity.checkCollisions(entities);
+        }
+
+
+        repaint();
 
     }
 
