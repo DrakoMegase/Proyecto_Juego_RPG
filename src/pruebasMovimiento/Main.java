@@ -5,8 +5,8 @@ import javax.swing.*;
 public class Main {
 
 
-    final static int WINDOWX = 320;
-    final static int WINDOWY = 320;
+    final static int WINDOWX = 600;
+    final static int WINDOWY = 600;
 
 
     public static void main(String[] args) {
