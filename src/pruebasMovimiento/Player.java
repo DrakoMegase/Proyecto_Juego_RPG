@@ -87,7 +87,7 @@ public class Player extends Entity {
         int key = e.getKeyCode();
 
         switch (key) {
-
+//
             case KeyEvent.VK_W:
                 velY = -2;
                 lastSpdX=0;
