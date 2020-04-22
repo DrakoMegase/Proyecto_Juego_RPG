@@ -19,7 +19,7 @@ public class Projectile extends Entity{
         move(velX,velY);
 
         boolean hit=false;
-        for (Entity entity:Panel.entities) {
+        for (Entity entity:Pantalla.entities) {
             if (!entity.equals(this)&&!entity.equals(creator)&&!((entity instanceof Projectile)&&((Projectile)entity).creator.equals(creator))&&hitbox.intersects(entity.hitbox)){
                 entity.damage(5);
                 hit=true;

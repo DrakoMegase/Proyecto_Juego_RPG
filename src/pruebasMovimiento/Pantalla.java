@@ -77,7 +77,7 @@ public class Pantalla extends JPanel implements ActionListener {
         player = new Player(10, 10, 20);
         entities.add(player);
 
-//        entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
+        entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
 
         entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
 
