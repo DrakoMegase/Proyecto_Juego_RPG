@@ -25,6 +25,8 @@ public class Panel extends JPanel implements ActionListener {
         player = new Player(100, 100, 20);
         entities.add(player);
 
+        entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
+
 
         addKeyListener(new KeyAdapt(player));
 

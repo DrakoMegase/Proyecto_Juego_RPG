@@ -8,10 +8,12 @@ public class Enemy extends Entity{
 
     private int time=0;
     private Player player;
-    private int velMov=0;
+    private int velMov;
 
-    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged) {
+    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
+        this.player=player;
+        this.velMov=velMov;
     }
 
     public void update() {
@@ -42,6 +44,10 @@ public class Enemy extends Entity{
         }else {
             velY=0;
         }
+
+//        if(hp<=0){
+//            remove=true;
+//        }
 
     }
 

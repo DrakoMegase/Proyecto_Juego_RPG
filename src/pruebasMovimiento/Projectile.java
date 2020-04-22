@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Projectile extends Entity{
 
-    Entity creator;
+    private Entity creator;
 
     public Projectile(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, int velX, int velY, Entity creator) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
@@ -20,10 +20,11 @@ public class Projectile extends Entity{
 
         boolean hit=false;
         for (Entity entity:Panel.entities) {
-            if (!entity.equals(this)&&!entity.equals(creator)&&hitbox.intersects(entity.hitbox)){
-                Rectangle intersection=hitbox.intersection(entity.hitbox);
+            if (!entity.equals(this)&&!entity.equals(creator)&&!((entity instanceof Projectile)&&((Projectile)entity).creator.equals(creator))&&hitbox.intersects(entity.hitbox)){
                 entity.damage(5);
                 hit=true;
+                int knockback=20;
+                entity.push(velX*knockback,velY*knockback);
             }
         }
 
