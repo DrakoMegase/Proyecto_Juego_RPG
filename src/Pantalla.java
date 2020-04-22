@@ -46,7 +46,7 @@ public class Pantalla extends JFrame implements ActionListener {
         ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
         COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
         WIDTH = COLUMNS  * TILESIZE;
-        HEIGHT = ROWS * TILESIZE;
+        HEIGHT = ROWS * TILESIZE + 32;
 
         //todo no se centra bien
 
