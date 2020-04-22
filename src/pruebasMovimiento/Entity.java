@@ -14,6 +14,7 @@ public class Entity implements Comparable<Entity>{
     int velY = 0;
     int hp;
     boolean canBeDamaged;
+    int[] spritesPos;
     Rectangle hitbox;
     String name;
     private static int count=0;
@@ -85,7 +86,35 @@ public class Entity implements Comparable<Entity>{
 
     public void draw(Graphics2D graphics2D){
         if(img!=null) {
-            graphics2D.drawImage(img, x, y, null);
+
+//            if(spritesPos==null) {
+                graphics2D.drawImage(img, x, y, null);
+           /* }else {
+                int multiOr=0;
+                if(velY<0){
+                    multiOr=1;
+                }else if(velX>0){
+                    multiOr=2;
+                }else if(velX<0){
+                    multiOr=3;
+                }
+
+                int multyMov=0;
+                if(velX!=0||velY!=0){
+                    multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
+                }
+
+                // Width and height of sprite
+                int sw = 32;
+                int sh = 32;
+                // Position of sprite on screen
+                int px = x;
+                int py = y;
+                // Coordinates of desired sprite image
+                int i = 0+32*multyMov;
+                int j = 64+32*multiOr;
+                graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
+            }*/
         }
     }
 

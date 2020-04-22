@@ -45,9 +45,9 @@ public class Enemy extends Entity{
             velY=0;
         }
 
-//        if(hp<=0){
-//            remove=true;
-//        }
+        if(hp<=0){
+            remove=true;
+        }
 
     }
 

@@ -27,12 +27,14 @@ public class Panel extends JPanel implements ActionListener {
 
         entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
 
+        entities.add(new Prop(500,500,1000,"img/ogro.png",7,32,14,15,false,true));
+
 
         addKeyListener(new KeyAdapt(player));
 
 
 
-        mainTimer = new Timer(5, this);        //Cada 20 milisecons actualiza actionPerformed
+        mainTimer = new Timer(10, this);        //Cada 20 milisecons actualiza actionPerformed
         mainTimer.start();
 
     }
