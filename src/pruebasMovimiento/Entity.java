@@ -40,7 +40,22 @@ public class Entity implements Comparable<Entity>{
 
         name="Entity: "+count++;
 
-        this.img=getImg(img);
+        if(img.contains(":")){
+            /**
+             * img:tipo:xSprite:ySprite:width:height
+             * tipo 0=imagen unica, 1=animacion unica, 2=animaciones para cada direccion
+             *
+             */
+            String[] split=img.split(":");
+            this.img=getImg(split[0]);
+            spritesPos=new int[5];
+            for (int i = 0; i < spritesPos.length; i++) {
+                spritesPos[i]=Integer.parseInt(split[i+1]);
+            }
+
+        }else {
+            this.img = getImg(img);
+        }
         this.canBeMoved=canBeMoved;
 
 
@@ -87,35 +102,56 @@ public class Entity implements Comparable<Entity>{
     public void draw(Graphics2D graphics2D){
         if(img!=null) {
 
-//            if(spritesPos==null) {
+            if(spritesPos!=null) {
+                switch (spritesPos[0]){
+                    case 0:
+                        // Width and height of sprite
+                        int sw = spritesPos[3];
+                        int sh = spritesPos[4];
+                        // Position of sprite on screen
+                        int px = x;
+                        int py = y;
+                        // Coordinates of desired sprite image
+                        int i = spritesPos[1];
+                        int j = spritesPos[2];
+                        graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
+                        break;
+                    case 1:
+                    case 2:
+                        drawAnimation(graphics2D);
+                        break;
+                }
+            }else {
                 graphics2D.drawImage(img, x, y, null);
-           /* }else {
-                int multiOr=0;
-                if(velY<0){
-                    multiOr=1;
-                }else if(velX>0){
-                    multiOr=2;
-                }else if(velX<0){
-                    multiOr=3;
-                }
-
-                int multyMov=0;
-                if(velX!=0||velY!=0){
-                    multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
-                }
-
-                // Width and height of sprite
-                int sw = 32;
-                int sh = 32;
-                // Position of sprite on screen
-                int px = x;
-                int py = y;
-                // Coordinates of desired sprite image
-                int i = 0+32*multyMov;
-                int j = 64+32*multiOr;
-                graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
-            }*/
+            }
         }
+    }
+
+    void drawAnimation(Graphics2D graphics2D){
+        int multiOr=0;
+        if(velY<0){
+            multiOr=1;
+        }else if(velX>0){
+            multiOr=2;
+        }else if(velX<0){
+            multiOr=3;
+        }
+
+        int multyMov=0;
+        if(velX!=0||velY!=0){
+            multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
+        }
+
+        // Width and height of sprite
+        int sw = 32;
+        int sh = 32;
+        // Position of sprite on screen
+        int px = x;
+        int py = y;
+        // Coordinates of desired sprite image
+        int i = 0+32*multyMov;
+        int j = 64+32*multiOr;
+        graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
     }
 
     void move(int x, int y){

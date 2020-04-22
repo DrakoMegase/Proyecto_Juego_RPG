@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Main {
 
 
-    final static int WINDOWX = 600;
+    final static int WINDOWX = 800;
     final static int WINDOWY = 600;
 
 
