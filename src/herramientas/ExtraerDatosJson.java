@@ -189,8 +189,8 @@ final public class ExtraerDatosJson {
 
     public static void main(String[] args) {
 
-//        System.out.println(arraysSprites("src/json/mapaPruebasIvan.json"));
-//        System.out.println(arraysObjects("src/json/mapaPruebasIvan.json"));
+//        System.out.println(arraysSprites("src/json/mapa1.json"));
+//        System.out.println(arraysObjects("src/json/mapa1.json"));
 
         System.out.println(devolverNumSpritesTotal(arraysSprites("src/json/mapa2.json")).length);
         //System.out.println(arraysSprites("src/json/mapa2.json"));

@@ -16,18 +16,19 @@ import static herramientas.ExtraerDatosJson.devolverNumSpritesTotal;
 
 public class Pantalla extends JFrame implements ActionListener {
 
-    static private int WIDTH;       //COLUMNAS
-    static private int COLUMNS;       //COLUMNAS
-    static private int HEIGHT;      //FILAS
-    static private int ROWS;      //FILAS
-    static private int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
-    static private int TIMERDELAY = 2000;        //Esto es personalizable
+    static private int WIDTH;               //COLUMNAS
+    static private int COLUMNS;             //COLUMNAS
+    static private int HEIGHT;              //FILAS
+    static private int ROWS;                //FILAS
+    static private int TILESIZE;            //TAMAÑO (EN PIXELES) DEL SPRITE
+
+
+    static private int TIMERDELAY = 2000;   //Esto es personalizable
+    static private Timer mainTimer;                //Declaracion de un timer
 
     static BufferedImage spriteSheet;
 
-    static private Timer mainTimer;                //Declaracion de un timer
-
-    static private ArrayList spritesPantalla;           //Clase sprites
+    //static private ArrayList spritesPantalla;           //Clase sprites
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     static public ArrayList<Sprite> spritesObjectArrayList;
     static private ArrayList objetos;                   //todo clase obstaculos
@@ -45,7 +46,8 @@ public class Pantalla extends JFrame implements ActionListener {
         ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
         COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
         WIDTH = COLUMNS  * TILESIZE;
-        HEIGHT = ROWS * TILESIZE;
+
+        HEIGHT = ROWS * TILESIZE + TILESIZE;
 
         //todo no se centra bien
 
@@ -56,7 +58,7 @@ public class Pantalla extends JFrame implements ActionListener {
             e.printStackTrace();
         }
 
-        spritesPantalla = arraysSprites(rutaJson);
+        //spritesPantalla = arraysSprites(rutaJson);
 
 
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJson));  //Poner un iterador que separe las capas HECHO
@@ -76,7 +78,7 @@ public class Pantalla extends JFrame implements ActionListener {
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
 
-        this.getGraphics().drawImage(printBackground(), 0, 0, null);   //esto pinta el background
+        //this.getGraphics().drawImage(printBackground(), 0, 0, null);   //esto pinta el background
     }
 
 
@@ -84,8 +86,22 @@ public class Pantalla extends JFrame implements ActionListener {
     public void paint(Graphics g) {
         //super.paint(g);
 
-        //this.getGraphics().drawImage(printBackground(), 0, 0, null);      //pinta background
 
+
+
+        g.drawImage(printBackground(), 0, 0, null);      //pinta background
+
+        try {
+            Graphics2D graphics = (Graphics2D) imageBuffer.getGraphics();
+            Image aa = ImageIO.read(new File("res/img/z.png"));
+            graphics.drawImage(aa,0,0,null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        g.drawImage(printBackgroundDetails(), 0, 0, null);      //pinta background DETAILS
 
     }
 
@@ -103,10 +119,10 @@ public class Pantalla extends JFrame implements ActionListener {
 
         int capas = spriteInts.length;
         int spritesPorCapa = COLUMNS * ROWS;
-
         Graphics2D graphics = (Graphics2D) imageBuffer.getGraphics();
 
-        for (int j = 0; j < capas; j++) {
+
+        for (int j = 0; j < capas - 1; j++) {
             int x = 0;
             int y = 0;
 
@@ -117,16 +133,37 @@ public class Pantalla extends JFrame implements ActionListener {
                 }
                 graphics.drawImage(new Sprite(spriteInts[j][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
                 x++;
-
             }
-
-
         }
-
-
         return imageBuffer;
 
     }
+    public BufferedImage printBackgroundDetails() {
+
+        int capas = spriteInts.length;
+        int spritesPorCapa = COLUMNS * ROWS;
+        Graphics2D graphics = (Graphics2D) imageBuffer.getGraphics();
+
+
+
+
+
+        int x = 0;
+        int y = 0;
+
+        for (int i = 0; i < spritesPorCapa; i++) {
+            if (x % COLUMNS == 0) {
+                y++;
+                x = 0;
+            }
+            graphics.drawImage(new Sprite(spriteInts[capas-1][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
+            x++;
+        }
+
+        return imageBuffer;
+    }
+
+
 
 
     public static void main(String[] args) {
