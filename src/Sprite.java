@@ -21,13 +21,13 @@ public class Sprite {
 
         //dimension stylesheet 1024 x 1024 32SPRITES x 32SPRITES
 
-        if (idSprite == 0){
+        if (idSprite <= 0){
             //spriteImg = spriteSheet.getSubimage(0, 0, lado, lado);
             listaSprites.add(this);
             return;
-
-
         }
+
+
         int x, y;
 
         y = (idSprite / lado) * lado;
