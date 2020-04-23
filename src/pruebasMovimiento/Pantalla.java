@@ -83,6 +83,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
 
         addKeyListener(new KeyAdapt(player));
+        printBackground();
 
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
@@ -98,8 +99,8 @@ public class Pantalla extends JPanel implements ActionListener {
 //        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
 
 
-        graphics2D.drawImage(printBackground(), 0, 0, null);      //pinta background
-//        graphics2D.drawImage(imageBuffer,0,0,null);
+//        graphics2D.drawImage(printBackground(), 0, 0, null);      //pinta background
+        graphics2D.drawImage(imageBuffer,0,0,null);
 
         entities.sort(Entity::compareTo);
         for(Entity entity:entities){
