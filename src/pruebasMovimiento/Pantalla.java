@@ -78,9 +78,11 @@ public class Pantalla extends JPanel implements ActionListener {
         player = new Player(10, 10, 20);
         entities.add(player);
 
-//        entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
+        entities.add(new Enemy(500,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,false,player,1));
 
-        //entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
+        entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1));
+
+        entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
 
 
         addKeyListener(new KeyAdapt(player));
@@ -98,8 +100,7 @@ public class Pantalla extends JPanel implements ActionListener {
     public void paint(Graphics graphics) {
         super.paint(graphics);                                          //Referenciamos sobre que Panel tiene que trabajar
         Graphics2D graphics2D=(Graphics2D) graphics;
-        //Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
-        //graphics2D.drawImage(, 0, 0, null);      //pinta background
+//        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
 
         graphics2D.drawImage(imageBuffer,0,0,null);
 

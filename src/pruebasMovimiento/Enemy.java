@@ -51,12 +51,6 @@ public class Enemy extends Entity{
 
     }
 
-    public void draw(Graphics2D graphics2D) {
-
-        graphics2D.drawImage(img, x, y, null);
-
-    }
-
     @Override
     protected void checkCollisions(LinkedList<Entity> entities){
         int[] force=null;
