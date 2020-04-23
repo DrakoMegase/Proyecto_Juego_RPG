@@ -5,9 +5,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 final public class ExtraerDatosJson {
@@ -113,12 +115,13 @@ final public class ExtraerDatosJson {
     }
 
 
-    static public ArrayList arraysObjects(String rutaJson){
+    static public JSONArray arraysObjects(String rutaJson){
 
 
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
+        JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
             JSONObject obj = (JSONObject) parser.parse(new FileReader(rutaJson));
             arrayADevolver = obj;
@@ -130,17 +133,17 @@ final public class ExtraerDatosJson {
 
 
         JSONArray jsonArray = (JSONArray) arrayADevolver.get("layers");
-
         for (Object o:jsonArray
         ) {
 
             JSONObject jsonObject = (JSONObject) o;
             if (jsonObject.get("type").equals("objectgroup")){
 
-                spritesCapas.add(jsonObject);
+                arrayADevolverArrayJson.add(jsonObject);
+                System.out.println(jsonObject);
             }
         }
-        return spritesCapas;
+        return arrayADevolverArrayJson;
     }
 
 
@@ -178,22 +181,72 @@ final public class ExtraerDatosJson {
     }
 
 
-    static public int contarCapasSprites(){
+
+
+
+    public static ArrayList<Rectangle>objetosMapa(ArrayList<Rectangle> rectangleArrayList, String ruta){
+        rectangleArrayList.clear(); //Limpiamos el array
+
+
+
+        JSONParser parser = new JSONParser();
+        JSONObject arrayADevolver = null;
+        JSONArray arrayADevolverArrayJson = new JSONArray();
+        try {
+            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));
+            arrayADevolver = obj;
+        } catch (ParseException | FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        JSONArray jsonArray = (JSONArray) arrayADevolver.get("layers");
+        for (Object o:jsonArray
+        ) {
+
+            JSONObject jsonObject = (JSONObject) o;
+            if (jsonObject.get("type").equals("objectgroup")){
+
+               JSONArray objects = (JSONArray) jsonObject.get("objects");
+
+                for (Object a:objects
+                     ) {
+
+                    JSONObject jsonObjectArrayObjects = (JSONObject) a;
+
+                    int width = (int) Double.parseDouble(jsonObjectArrayObjects.get("width").toString());
+                    int height = (int) Double.parseDouble(jsonObjectArrayObjects.get("height").toString());
+                    int x = (int) Double.parseDouble(jsonObjectArrayObjects.get("x").toString());
+                    int y = (int) Double.parseDouble(jsonObjectArrayObjects.get("y").toString());
+
+                    //System.out.println("x  " + x + " y  " + y  + "  width "  + width + " height " + height);
+
+                    rectangleArrayList.add(new Rectangle(x,y,width,height));
+
+
+                }
+
+
+            }
+        }
 
 
 
 
-        return 0;
-
+        return rectangleArrayList;
     }
+
 
     public static void main(String[] args) {
 
-//        System.out.println(arraysSprites("src/json/mapa1.json"));
-//        System.out.println(arraysObjects("src/json/mapa1.json"));
 
-        System.out.println(devolverNumSpritesTotal(arraysSprites("src/json/mapa2.json")).length);
-        //System.out.println(arraysSprites("src/json/mapa2.json"));
+        ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
+
+        objetosMapa(rectangleArrayList,"res/json/mapa3.json");
+
+        System.out.println(rectangleArrayList);
 
     }
 
