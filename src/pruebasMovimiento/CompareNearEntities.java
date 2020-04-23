@@ -21,9 +21,9 @@ class CompareNearEntities implements Comparator<Entity> {
 
     @Override
     public int compare(Entity o1, Entity o2) {
-        if(o2 instanceof Player){
+        if(o2 instanceof Player || o2 instanceof Enemy){
             return 1;
-        }else if(o1 instanceof Player){
+        }else if(o1 instanceof Player || o1 instanceof Enemy){
             return -1;
         }
         return maxDistanceToEntities(o1)- maxDistanceToEntities(o2);
@@ -40,7 +40,7 @@ class CompareNearEntities implements Comparator<Entity> {
         return dist;
     }
 
-    private int distance(int x1, int y1, int x2, int y2){
+    static int distance(int x1, int y1, int x2, int y2){
         return (int)Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
     }
 }
