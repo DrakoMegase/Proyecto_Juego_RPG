@@ -10,7 +10,7 @@ public class Main2 {
 
     public static void main(String[] args) {
 
-        Pantalla pantalla1 = new Pantalla("res/json/mapa2.json","resources/terrain_atlas.png");
+        Pantalla pantalla1 = new Pantalla("res/json/mapa5.json","resources/terrain_atlas.png");
 
         JFrame frame = new JFrame("Titulo de la ventana");                           //Frame = Marco         Creacion de ventana
         frame.setSize(WINDOWX, WINDOWY);                                                   //Tamaño de la ventana

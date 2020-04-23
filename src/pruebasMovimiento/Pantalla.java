@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -33,6 +34,7 @@ public class Pantalla extends JPanel implements ActionListener {
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
 
     BufferedImage imageBuffer;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
+    BufferedImage imageBufferDetails;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
 
 
     private Player player;                  //Declaracion de un player
@@ -63,12 +65,13 @@ public class Pantalla extends JPanel implements ActionListener {
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJson));  //Poner un iterador que separe las capas HECHO
 
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-
+        imageBufferDetails = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
         //setLocationRelativeTo(null);                            //Colocara la ventana en el centro al lanzarla
         setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
+        setBackground(Color.black);
 
         setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         entities=new LinkedList<>();
@@ -79,7 +82,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
 //        entities.add(new Enemy(500,500,20,"img/ogro.png",7,32,14,15,true,true,player,1));
 
-        entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
+        //entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
 
 
         addKeyListener(new KeyAdapt(player));
@@ -87,6 +90,8 @@ public class Pantalla extends JPanel implements ActionListener {
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
+        printBackground();
+        imageBufferDetails = printBackgroundDetails();
 
     }
 
@@ -95,18 +100,18 @@ public class Pantalla extends JPanel implements ActionListener {
     public void paint(Graphics graphics) {
         super.paint(graphics);                                          //Referenciamos sobre que Panel tiene que trabajar
         Graphics2D graphics2D=(Graphics2D) graphics;
-//        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
+        //Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
+        //graphics2D.drawImage(, 0, 0, null);      //pinta background
 
+        graphics2D.drawImage(imageBuffer,0,0,null);
 
-        graphics2D.drawImage(printBackground(), 0, 0, null);      //pinta background
-//        graphics2D.drawImage(imageBuffer,0,0,null);
 
         entities.sort(Entity::compareTo);
         for(Entity entity:entities){
             entity.draw(graphics2D);
         }
 
-
+        graphics2D.drawImage(imageBufferDetails, 0, 0, null);      //pinta background
 
     }
 
@@ -151,7 +156,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
         Graphics2D graphics = (Graphics2D) imageBuffer.getGraphics();
 
-        for (int j = 0; j < capas; j++) {
+        for (int j = 0; j < capas - 1; j++) {
             int x = 0;
             int y = 0;
 
@@ -172,6 +177,34 @@ public class Pantalla extends JPanel implements ActionListener {
         return imageBuffer;
 
     }
+
+    public BufferedImage printBackgroundDetails() {
+
+
+        int capas = spriteInts.length;
+        int spritesPorCapa = COLUMNS * ROWS;
+
+        Graphics2D graphics = (Graphics2D) imageBufferDetails.getGraphics();
+
+        int x = 0;
+        int y = 0;
+
+        for (int i = 0; i < spritesPorCapa; i++) {
+            if (x % COLUMNS == 0) {
+                y++;
+                x = 0;
+            }
+            graphics.drawImage(new Sprite(spriteInts[capas-1][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
+            x++;
+
+
+        }
+
+        return imageBufferDetails;
+
+    }
+
+
 
 
     public static void main(String[] args) {

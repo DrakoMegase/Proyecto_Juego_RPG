@@ -46,7 +46,6 @@ public class Pantalla extends JFrame implements ActionListener {
         ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
         COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
         WIDTH = COLUMNS  * TILESIZE;
-
         HEIGHT = ROWS * TILESIZE + TILESIZE;
 
         //todo no se centra bien
@@ -62,10 +61,7 @@ public class Pantalla extends JFrame implements ActionListener {
 
 
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJson));  //Poner un iterador que separe las capas HECHO
-
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         //Al cerrar la ventana, parara la ejecucion del programa
         setResizable(false);                                    //No permitimos que se pueda modificar el tamaño de ventana
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
@@ -73,7 +69,6 @@ public class Pantalla extends JFrame implements ActionListener {
         pack();                                                 //Se ajusta el tamaño para evitar errores (ventana con canvas)
         setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
-
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
