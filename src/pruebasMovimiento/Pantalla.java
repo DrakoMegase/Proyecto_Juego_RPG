@@ -50,6 +50,7 @@ public class Pantalla extends JPanel implements ActionListener {
         WIDTH = COLUMNS  * TILESIZE;
         HEIGHT = ROWS * TILESIZE;
 
+
         //todo no se centra bien
 
 
@@ -160,15 +161,18 @@ public class Pantalla extends JPanel implements ActionListener {
 
         for (int j = 0; j < capas - 1; j++) {
             int x = 0;
-            int y = 0;
+            int y = -1; //TODO METODOS INTERNOS BUSCAR PARA IGUALAR ESTO A 0
 
             for (int i = 0; i < spritesPorCapa; i++) {
+
                 if (x % COLUMNS == 0) {
                     y++;
                     x = 0;
                 }
+
                 graphics.drawImage(new Sprite(spriteInts[j][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
                 x++;
+                System.out.println(y + "   x  " +  x);
 
             }
 
@@ -189,7 +193,7 @@ public class Pantalla extends JPanel implements ActionListener {
         Graphics2D graphics = (Graphics2D) imageBufferDetails.getGraphics();
 
         int x = 0;
-        int y = 0;
+        int y = -1; //TODO METODOS INTERNOS BUSCAR PARA IGUALAR ESTO A 0
 
         for (int i = 0; i < spritesPorCapa; i++) {
             if (x % COLUMNS == 0) {

@@ -9,12 +9,12 @@ import java.io.File;
 public class Main {
 
 
-    private static final int WINDOWX = 800;
-    private static final int WINDOWY = 600;
+    private static final int WINDOWX = 1000;
+    private static final int WINDOWY = 1000;
 
     public static void main(String[] args) {
 
-        Pantalla pantalla1 = new Pantalla("res/json/mapa2.json","resources/terrain_atlas.png");
+        Pantalla pantalla1 = new Pantalla("res/json/mapa6.json","resources/terrain_atlas.png");
 
         JFrame frame = new JFrame("Minimoit RPG");                           //Frame = Marco         Creacion de ventana
         frame.setSize(WINDOWX, WINDOWY);                                                   //Tamaño de la ventana
