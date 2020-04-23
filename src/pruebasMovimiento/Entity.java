@@ -103,24 +103,7 @@ public class Entity implements Comparable<Entity>{
         if(img!=null) {
 
             if(spritesPos!=null) {
-                switch (spritesPos[0]){
-                    case 0:
-                        // Width and height of sprite
-                        int sw = spritesPos[3];
-                        int sh = spritesPos[4];
-                        // Position of sprite on screen
-                        int px = x;
-                        int py = y;
-                        // Coordinates of desired sprite image
-                        int i = spritesPos[1];
-                        int j = spritesPos[2];
-                        graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
-                        break;
-                    case 1:
-                    case 2:
-                        drawAnimation(graphics2D);
-                        break;
-                }
+                drawAnimation(graphics2D);
             }else {
                 graphics2D.drawImage(img, x, y, null);
             }
@@ -129,28 +112,30 @@ public class Entity implements Comparable<Entity>{
 
     void drawAnimation(Graphics2D graphics2D){
         int multiOr=0;
-        if(velY<0){
-            multiOr=1;
-        }else if(velX>0){
-            multiOr=2;
-        }else if(velX<0){
-            multiOr=3;
+        if(spritesPos[0]>1) {
+            if (velY < 0) {
+                multiOr = 1;
+            } else if (velX > 0) {
+                multiOr = 2;
+            } else if (velX < 0) {
+                multiOr = 3;
+            }
         }
 
         int multyMov=0;
-        if(velX!=0||velY!=0){
+        if(spritesPos[0]!=0&&(velX!=0||velY!=0)){
             multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
         }
 
         // Width and height of sprite
-        int sw = 32;
-        int sh = 32;
+        int sw = spritesPos[3];
+        int sh = spritesPos[4];
         // Position of sprite on screen
         int px = x;
         int py = y;
         // Coordinates of desired sprite image
-        int i = 0+32*multyMov;
-        int j = 64+32*multiOr;
+        int i = spritesPos[1]+sw*multyMov;
+        int j = spritesPos[2]+sh*multiOr;
         graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
     }
 
