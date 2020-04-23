@@ -60,8 +60,6 @@ public class Pantalla extends JPanel implements ActionListener {
         }
 
         spritesPantalla = arraysSprites(rutaJson);
-
-
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJson));  //Poner un iterador que separe las capas HECHO
 
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
