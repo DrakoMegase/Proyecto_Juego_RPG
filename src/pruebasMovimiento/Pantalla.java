@@ -87,7 +87,8 @@ public class Pantalla extends JPanel implements ActionListener {
         entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1,1));
 
         entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
-
+        ArrayList<Rectangle> entityRectangle = new ArrayList<>();
+        objetosMapa(entityRectangle,"res/json/mapa6.json");
 
         addKeyListener(new KeyAdapt(player));
 

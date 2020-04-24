@@ -9,7 +9,6 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 final public class ExtraerDatosJson {
@@ -47,9 +46,7 @@ final public class ExtraerDatosJson {
         try {
             JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));   //Metemos en un JSONObject el archivo json pasado por parametro gracias al parser
             valorADevolver = obj.get(clave).toString();                         //buscamos en el objeto la clave deseada y lo convertimos a string para evitar problemas de compatibilidad entre ints, doubles, long o strings
-        } catch (ParseException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 
@@ -125,9 +122,7 @@ final public class ExtraerDatosJson {
         try {
             JSONObject obj = (JSONObject) parser.parse(new FileReader(rutaJson));
             arrayADevolver = obj;
-        } catch (ParseException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 
@@ -186,7 +181,6 @@ final public class ExtraerDatosJson {
 
     public static ArrayList<Rectangle>objetosMapa(ArrayList<Rectangle> rectangleArrayList, String ruta){
         rectangleArrayList.clear(); //Limpiamos el array
-
 
 
         JSONParser parser = new JSONParser();
@@ -248,9 +242,11 @@ final public class ExtraerDatosJson {
 
         ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
 
-        objetosMapa(rectangleArrayList,"res/json/mapa6.json");
+
 
         System.out.println(rectangleArrayList);
+        System.out.println(ManipulacionDatos.rectanglesToEntityObjects(rectangleArrayList, "res/json/mapa6.json"));
+
 
     }
 

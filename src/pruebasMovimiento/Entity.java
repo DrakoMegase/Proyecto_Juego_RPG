@@ -2,6 +2,7 @@ package pruebasMovimiento;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Entity implements Comparable<Entity>{
@@ -20,7 +21,7 @@ public class Entity implements Comparable<Entity>{
     private static int count=0;
 
 
-    Entity(int x, int y, int hitX, int hitY, int hitWidth, int hitHeight) {
+    public Entity(int x, int y, int hitX, int hitY, int hitWidth, int hitHeight) {
         this.x = x;
         this.y = y;
     }
@@ -206,4 +207,21 @@ public class Entity implements Comparable<Entity>{
         return force;
     }
 
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "img=" + img +
+                ", canBeMoved=" + canBeMoved +
+                ", remove=" + remove +
+                ", x=" + x +
+                ", y=" + y +
+                ", velX=" + velX +
+                ", velY=" + velY +
+                ", hp=" + hp +
+                ", canBeDamaged=" + canBeDamaged +
+                ", spritesPos=" + Arrays.toString(spritesPos) +
+                ", hitbox=" + hitbox +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
