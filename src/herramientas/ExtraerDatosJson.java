@@ -179,9 +179,8 @@ final public class ExtraerDatosJson {
 
 
 
-    public static ArrayList<Rectangle>objetosMapa(ArrayList<Rectangle> rectangleArrayList, String ruta){
-        rectangleArrayList.clear(); //Limpiamos el array
-
+    public static ArrayList<Rectangle>objetosMapa(String ruta){
+        ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
@@ -244,8 +243,8 @@ final public class ExtraerDatosJson {
 
 
 
-        System.out.println(rectangleArrayList);
-        System.out.println(ManipulacionDatos.rectanglesToEntityObjects(rectangleArrayList, "res/json/mapa6.json"));
+        System.out.println(objetosMapa("res/json/mapa6.json"));
+        //System.out.println(ManipulacionDatos.rectanglesToEntityObjects(rectangleArrayList, "res/json/mapa6.json"));
 
 
     }

@@ -20,16 +20,20 @@ public class Entity implements Comparable<Entity>{
     String name;
     private static int count=0;
 
-
-    public Entity(int x, int y, int hitX, int hitY, int hitWidth, int hitHeight) {
+    Entity(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    Entity(int x, int y ) {
+    public Entity(int x, int y, int hitWidth, int hitHeight) {
         this.x = x;
         this.y = y;
+
+
+        hitbox=new Rectangle(x,y,hitWidth,hitHeight);
+
     }
+
 
     Entity(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged) {
         this.x = x;

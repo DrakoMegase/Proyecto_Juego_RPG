@@ -1,5 +1,6 @@
 package pruebasMovimiento;
 
+import herramientas.ManipulacionDatos;
 import org.json.simple.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -66,6 +67,9 @@ public class Pantalla extends JPanel implements ActionListener {
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         imageBufferDetails = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
+
+
+
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
         //setLocationRelativeTo(null);                            //Colocara la ventana en el centro al lanzarla
         setSize(WIDTH, HEIGHT);
@@ -74,6 +78,8 @@ public class Pantalla extends JPanel implements ActionListener {
 
         setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         entities=new LinkedList<>();
+        ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entities);
+        System.out.println(entities.size());
         addEntities=new LinkedList<>();
 
         player = new Player(10, 10, 20);
@@ -87,8 +93,9 @@ public class Pantalla extends JPanel implements ActionListener {
         entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1,1));
 
         entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
-        ArrayList<Rectangle> entityRectangle = new ArrayList<>();
-        objetosMapa(entityRectangle,"res/json/mapa6.json");
+
+
+
 
         addKeyListener(new KeyAdapt(player));
 
@@ -113,6 +120,7 @@ public class Pantalla extends JPanel implements ActionListener {
         entities.sort(Entity::compareTo);
         for(Entity entity:entities){
             entity.draw(graphics2D);
+            graphics2D.draw(entity.hitbox);
         }
 
         graphics2D.drawImage(imageBufferDetails, 0, 0, null);      //pinta background

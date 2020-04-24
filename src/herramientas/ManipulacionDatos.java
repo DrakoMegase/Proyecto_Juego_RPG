@@ -5,27 +5,34 @@ import pruebasMovimiento.Entity;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 final public class ManipulacionDatos {
 
 
-    static public ArrayList<Entity> rectanglesToEntityObjects(ArrayList<Rectangle> rectangleArrayList, String ruta){
+    static public void rectanglesToEntityObjects(String ruta, LinkedList<Entity> entities){
+        ArrayList<Rectangle> rectangleArrayList = ExtraerDatosJson.objetosMapa(ruta);
 
-        ExtraerDatosJson.objetosMapa(rectangleArrayList,ruta);
-        ArrayList<Entity>objetosBackground = new ArrayList<>();
 
 
         for (Rectangle r:rectangleArrayList
             ) {
 
-
-            Entity e = new Entity((int)r.getX(),(int)r.getY(),(int)r.getX(),(int)r.getY(),(int)r.getWidth(),(int)r.getHeight());
-            objetosBackground.add(e);
+            entities.add(new Entity((int)r.getX(),(int)r.getY(),(int)r.getWidth(),(int)r.getHeight()));
 
         }
 
 
-        return objetosBackground;
+    }
+
+
+    public static void main(String[] args) {
+
+
+        LinkedList<Entity>entities = new LinkedList<>();
+        rectanglesToEntityObjects("res/json/mapa6.json",entities);
+        System.out.println(entities.size());
+
     }
 
 
