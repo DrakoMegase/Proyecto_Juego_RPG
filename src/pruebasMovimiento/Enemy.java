@@ -123,11 +123,11 @@ public class Enemy extends Entity{
                     }
                 }else {
                     System.out.println("medio "+velX+"-"+velY);
-                    if(player.hitbox.x>hitbox.x&&player.hitbox.y>hitbox.y){
+                    if(player.hitbox.x>=hitbox.x&&player.hitbox.y>=hitbox.y){
                         velY=-velMov*spinMult;
-                    }else if(player.hitbox.x>hitbox.x&&player.hitbox.y<hitbox.y){
+                    }else if(player.hitbox.x>=hitbox.x&&player.hitbox.y<hitbox.y){
                         velX=-velMov*spinMult;
-                    }else if(player.hitbox.x<hitbox.x&&player.hitbox.y>hitbox.y){
+                    }else if(player.hitbox.x<hitbox.x&&player.hitbox.y>=hitbox.y){
                         velX=velMov*spinMult;
                     }else if(player.hitbox.x<hitbox.x&&player.hitbox.y<hitbox.y){
                         velY=velMov*spinMult;

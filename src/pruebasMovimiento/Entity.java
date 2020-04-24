@@ -161,7 +161,7 @@ public class Entity implements Comparable<Entity>{
     protected void checkCollisions( LinkedList<Entity> entities){
         int[] force=null;
         for (Entity entity2:entities) {
-            if(!this.equals(entity2) && !(entity2 instanceof Projectile)) {
+            if(!this.equals(entity2)&& entity2.canBeMoved && !(entity2 instanceof Projectile)) {
                 force = intersect(this, entity2);
                 if ( force != null) {
                     if (!entity2.push(force[0], force[1])) {
