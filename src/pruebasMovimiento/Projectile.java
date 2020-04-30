@@ -28,7 +28,7 @@ public class Projectile extends Entity{
             }
         }
 
-        if (hit||hitbox.x+hitbox.width <0||hitbox.x> 800||hitbox.y+hitbox.height<0||hitbox.y > 600-hitbox.height) {
+        if (hit||hitbox.x+hitbox.width <0||hitbox.x> Pantalla.WIDTH||hitbox.y+hitbox.height<0||hitbox.y > Pantalla.HEIGHT-hitbox.height) {
             remove=true;
         }
 

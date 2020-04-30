@@ -20,12 +20,17 @@ import static herramientas.ExtraerDatosJson.*;
 
 public class Pantalla extends JPanel implements ActionListener {
 
-    static private int WIDTH;       //COLUMNAS
+    static public int WIDTH;       //COLUMNAS
     static private int COLUMNS;       //COLUMNAS
-    static private int HEIGHT;      //FILAS
+    static public int HEIGHT;      //FILAS
     static private int ROWS;      //FILAS
     static private int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
     static private int TIMERDELAY = 20;        //Esto es personalizable
+    static public int offSetX = 0;
+    static public int offSetY = 0;
+    static private int cuerpoPlayerX;
+    static private int cuerpoPlayerY;
+
 
     static BufferedImage spriteSheet;
 
@@ -71,19 +76,22 @@ public class Pantalla extends JPanel implements ActionListener {
 
 
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
-        //setLocationRelativeTo(null);                            //Colocara la ventana en el centro al lanzarla
+        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
         setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
         setBackground(Color.black);
 
-        setFocusable(true);                 //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+        setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         entities=new LinkedList<>();
         ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entities);
-        System.out.println(entities.size());
+        //System.out.println(entities.size());
+
+
         addEntities=new LinkedList<>();
 
-        player = new Player(10, 10, 20);
+        player = new Player(0, 0, 20);
         entities.add(player);
+
 
 //        entities.add(new Enemy(500,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,false,player,1,0));
 
@@ -105,25 +113,48 @@ public class Pantalla extends JPanel implements ActionListener {
         printBackground();
         imageBufferDetails = printBackgroundDetails();
 
+        cuerpoPlayerX = (int) (player.hitbox.getWidth()/2);
+        cuerpoPlayerY = (int) (player.hitbox.getHeight()/2);
+
+
+        System.out.println(cuerpoPlayerX + " AAAAAAAAAAA " + cuerpoPlayerY);
+        camaraUpdate();
     }
 
 
     @Override
     public void paint(Graphics graphics) {
+        camaraUpdate();
         super.paint(graphics);                                          //Referenciamos sobre que Panel tiene que trabajar
         Graphics2D graphics2D=(Graphics2D) graphics;
 //        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
 
-        graphics2D.drawImage(imageBuffer,0,0,null);
+        graphics2D.drawImage(imageBuffer, -offSetX , -offSetY,null);
 
 
         entities.sort(Entity::compareTo);
         for(Entity entity:entities){
-            entity.draw(graphics2D);
-            graphics2D.draw(entity.hitbox);
+            entity.draw(graphics2D, offSetX, offSetY);
+            Rectangle rectangle= (Rectangle) entity.hitbox.clone();
+            rectangle.x-= offSetX;
+            rectangle.y-= offSetY;
+            graphics2D.draw(rectangle);
+            //graphics2D.draw(entity.hitbox);
         }
 
-        graphics2D.drawImage(imageBufferDetails, 0, 0, null);      //pinta background
+        graphics2D.drawImage(imageBufferDetails,  -offSetX,  -offSetY, null);      //pinta background
+
+    }
+
+    private void camaraUpdate() {
+
+        int plx = player.getX();
+        int ply = player.getY();
+
+        offSetX = player.getX() - this.getWidth()/2 + player.hitbox.width ;
+        offSetY = player.getY() - this.getHeight()/2 + player.hitbox.height;
+
+        System.out.println(  plx + "     " + ply +"   " + offSetX + "    " +offSetY);
 
     }
 
@@ -181,7 +212,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
                 graphics.drawImage(new Sprite(spriteInts[j][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
                 x++;
-                System.out.println(y + "   x  " +  x);
+                //System.out.println(y + "   x  " +  x);
 
             }
 
