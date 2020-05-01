@@ -24,23 +24,25 @@ public class Player extends Entity {
         hitbox=new Rectangle(x+10,y+17,12,14);
     }
 
+
+
     public void update() {
 
         move(velX,velY);
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
 
-        if (hitbox.x<=0||hitbox.x+hitbox.width >= 800) {
+        if (hitbox.x<=0||hitbox.x+hitbox.width >= Pantalla.WIDTH) {
             move(-velX, 0);
         }
-        if (hitbox.y<=0||hitbox.y+hitbox.height >= 600-hitbox.height) {
+        if (hitbox.y<=0||hitbox.y+hitbox.height >= Pantalla.HEIGHT-hitbox.height) {
             move(0, -velY);
         }
 
 
     }
 
-    public void draw(Graphics2D graphics2D) {
+    public void draw(Graphics2D graphics2D, int offSetX, int offSetY) {
         int multiOr=0;
         if(lastSpdY<0){
             multiOr=1;
@@ -59,8 +61,8 @@ public class Player extends Entity {
         int sw = 32;
         int sh = 32;
         // Position of sprite on screen
-        int px = x;
-        int py = y;
+        int px = x - offSetX;
+        int py = y - offSetY;
         // Coordinates of desired sprite image
         int i = 0+32*multyMov;
         int j = 64+32*multiOr;

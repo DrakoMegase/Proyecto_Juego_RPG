@@ -25,10 +25,10 @@ public class Enemy extends Entity{
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
 
-        if (hitbox.x<0||hitbox.x+hitbox.width > 800) {
+        if (hitbox.x<0||hitbox.x+hitbox.width > Pantalla.WIDTH) {
             move(-velX, 0);
         }
-        if (hitbox.y<0||hitbox.y+hitbox.height > 600-hitbox.height) {
+        if (hitbox.y<0||hitbox.y+hitbox.height > Pantalla.HEIGHT-hitbox.height) {
             move(0, -velY);
         }
 
@@ -96,7 +96,7 @@ public class Enemy extends Entity{
                 int enemyDist=50;
                 int tolerancia=3;
                 if(distance>enemyDist+tolerancia){
-                    System.out.println("lejos");
+                    //System.out.println("lejos");
                     if(player.hitbox.x>hitbox.x){
                         velX=velMov;
                     }else{
@@ -109,7 +109,7 @@ public class Enemy extends Entity{
                         velY=-velMov;
                     }
                 }else if(distance<enemyDist-tolerancia){
-                    System.out.println("cerca");
+                    //System.out.println("cerca");
                     if(player.hitbox.x>hitbox.x){
                         velX=-velMov;
                     }else{
@@ -122,12 +122,12 @@ public class Enemy extends Entity{
                         velY=velMov;
                     }
                 }else {
-                    System.out.println("medio "+velX+"-"+velY);
-                    if(player.hitbox.x>hitbox.x&&player.hitbox.y>hitbox.y){
+                    //System.out.println("medio "+velX+"-"+velY);
+                    if(player.hitbox.x>=hitbox.x&&player.hitbox.y>=hitbox.y){
                         velY=-velMov*spinMult;
-                    }else if(player.hitbox.x>hitbox.x&&player.hitbox.y<hitbox.y){
+                    }else if(player.hitbox.x>=hitbox.x&&player.hitbox.y<hitbox.y){
                         velX=-velMov*spinMult;
-                    }else if(player.hitbox.x<hitbox.x&&player.hitbox.y>hitbox.y){
+                    }else if(player.hitbox.x<hitbox.x&&player.hitbox.y>=hitbox.y){
                         velX=velMov*spinMult;
                     }else if(player.hitbox.x<hitbox.x&&player.hitbox.y<hitbox.y){
                         velY=velMov*spinMult;

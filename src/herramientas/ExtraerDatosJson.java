@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 final public class ExtraerDatosJson {
 
-    public static ArrayList<JSONObject> spritesCapas = new ArrayList<JSONObject>();
 
 
 
