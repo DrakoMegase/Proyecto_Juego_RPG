@@ -36,13 +36,14 @@ public class Pantalla extends JPanel implements ActionListener {
 
     static private Timer mainTimer;                //Declaracion de un timer
 
-    static private ArrayList spritesPantalla;           //Clase sprites
+    //static private ArrayList spritesPantalla;           //Clase sprites
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
 
     BufferedImage imageBuffer;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     BufferedImage imageBufferDetails;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
 
 
+    public static ArrayList<Room> salas;
     private Player player;                  //Declaracion de un player
     protected static LinkedList<Entity> entities;
     protected static LinkedList<Entity> addEntities;
@@ -66,7 +67,7 @@ public class Pantalla extends JPanel implements ActionListener {
             e.printStackTrace();
         }
 
-        spritesPantalla = arraysSprites(rutaJson);
+        //spritesPantalla = arraysSprites(rutaJson);
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJson));  //Poner un iterador que separe las capas HECHO
 
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -116,9 +117,38 @@ public class Pantalla extends JPanel implements ActionListener {
         cuerpoPlayerX = (int) (player.hitbox.getWidth()/2);
         cuerpoPlayerY = (int) (player.hitbox.getHeight()/2);
 
+        salas = new ArrayList<>();      //inicializacion del arraylist
 
         System.out.println(cuerpoPlayerX + " AAAAAAAAAAA " + cuerpoPlayerY);
         camaraUpdate();
+        guardarSala();
+        cargarSala(rutaJson);
+    }
+
+
+    public void guardarSala(){
+
+        Room sala1 = new Room(this.imageBuffer, this.imageBufferDetails, this.player,entities);
+        System.out.println(sala1);
+        sala1.setUsed(false);
+        salas.add(sala1);
+    }
+
+
+    public void cargarSala(String rutaJson){
+
+        Room sala = salas.get(0);
+
+        imageBuffer = sala.getBackground();
+        imageBufferDetails = sala.getDetails();
+        entities.clear();
+        entities.addAll(sala.getEntities());
+        entities.add(sala.getPlayer());
+        player = sala.getPlayer();
+        ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entities);
+
+
+
     }
 
 
