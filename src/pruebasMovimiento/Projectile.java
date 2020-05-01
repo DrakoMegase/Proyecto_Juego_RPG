@@ -23,7 +23,7 @@ public class Projectile extends Entity{
             if (!entity.equals(this)&&!entity.equals(creator)&&!((entity instanceof Projectile)&&((Projectile)entity).creator.equals(creator))&&hitbox.intersects(entity.hitbox)){
                 entity.damage(5);
                 hit=true;
-                int knockback=20;
+                int knockback=5;
                 entity.push(velX*knockback,velY*knockback);
             }
         }

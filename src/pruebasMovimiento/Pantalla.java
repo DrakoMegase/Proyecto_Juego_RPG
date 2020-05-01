@@ -37,6 +37,9 @@ public class Pantalla extends JPanel implements ActionListener {
     BufferedImage imageBuffer;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     BufferedImage imageBufferDetails;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
 
+    int x=0;
+    int y=0;
+
 
     private Player player;                  //Declaracion de un player
     protected static LinkedList<Entity> entities;
@@ -114,7 +117,7 @@ public class Pantalla extends JPanel implements ActionListener {
         Graphics2D graphics2D=(Graphics2D) graphics;
 //        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
 
-        graphics2D.drawImage(imageBuffer,0,0,null);
+        graphics2D.drawImage(imageBuffer,x,y,null);
 
 
         entities.sort(Entity::compareTo);
@@ -153,6 +156,7 @@ public class Pantalla extends JPanel implements ActionListener {
             Entity entity=iterator.next();
             entity.checkCollisions(entities);
         }
+        x++;
 
 
         repaint();
