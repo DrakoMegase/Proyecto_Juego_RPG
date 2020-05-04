@@ -95,10 +95,10 @@ public class Pantalla extends JPanel implements ActionListener {
 
 //        entities.add(new Enemy(500,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,false,player,1,0));
 
-        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
-        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
-        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
-        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
 
         entities.add(new Prop(50, 50, 1000, "img/terrain_atlas.png:0:928:896:96:128", 30, 98, 34, 17, false, false));
 
@@ -238,14 +238,16 @@ public class Pantalla extends JPanel implements ActionListener {
             return;
         }
 
-        for (Rectangle salidas:salidas
-             ) {
-            if (player.hitbox.intersects(salidas)){
-                System.out.println("POLLA");
-                cargarSala("res/jsonsMapasPruebas/1110.json");
+        if(salidas!=null) {
+            for (Rectangle salidas : salidas
+            ) {
+                if (player.hitbox.intersects(salidas)) {
+                    System.out.println("POLLA");
+                    cargarSala("res/jsonsMapasPruebas/1110.json");
+
+                }
 
             }
-
         }
 
 
