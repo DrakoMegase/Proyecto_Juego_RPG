@@ -19,6 +19,7 @@ public class MapGenerator {
         map[start][start][0]=15;
         map[start][start][1]=0;
 
+        boolean shop=false,boss=false;
 
         int[] skip={1,2,3,4}; // U,D,R,L
         for (int i = 0; i<rooms.size(); i++) {
@@ -28,7 +29,15 @@ public class MapGenerator {
             boolean[] booleans=numToBool(map[roomX][roomY][0]);
             if(map[roomX][roomY][1]!=0){
                 booleans[map[roomX][roomY][1]-1]=false;
+                if(!shop&&rooms.size()>start&&(int)(Math.random()*2)==1) {
+                    map[roomX][roomY][1]=2;
+                    shop=true;
+                    System.out.println("Tiendecita");
+                }else {
+                    map[roomX][roomY][1]=1;
+                }
             }
+
 
             for (int j = 0; j < booleans.length; j++) {
                 if(booleans[j]){
@@ -70,13 +79,22 @@ public class MapGenerator {
                     }else {
                         if (map[room[0]][room[1]][0] == 0) {
                             boolean limit = rooms.size() + exits > maxRoom;
-                            if (!limit) {
-                                rooms.add(room);
-                            }
+
                             int roomVal = generateNum(val, limit);
                             map[room[0]][room[1]][0] = roomVal;
                             map[room[0]][room[1]][1] = val;
                             exits += -2 + numToExits(roomVal);
+
+                            if (!limit) {
+                                rooms.add(room);
+                            }else if(!boss){
+                                map[room[0]][room[1]][1] = 3;
+                                boss=true;
+                                System.out.println("Boss");
+                            }else {
+                                map[room[0]][room[1]][1] = 1;
+                            }
+
                         } else {
                             boolean[] nextRoom = numToBool(map[room[0]][room[1]][0]);
                             if (!nextRoom[val - 1]) {
@@ -87,16 +105,25 @@ public class MapGenerator {
                             }
                         }
                     }
-                    System.out.println(j);
-                    for (int y = 0; y < 12; y++) {
+                    /*for (int y = 0; y < 12; y++) {
                         for (int x = 0; x < 12; x++) {
                             System.out.print(map[x][y][0]+"\t");
                         }
                         System.out.print("\n");
                     }
-//                    System.out.println();
-//                    Scanner scanner=new Scanner(System.in);
-//                    scanner.nextLine();
+
+                    System.out.println();
+
+                    for (int y = 0; y < 12; y++) {
+                        for (int x = 0; x < 12; x++) {
+                            System.out.print(map[x][y][1]+"\t");
+                        }
+                        System.out.print("\n");
+                    }
+
+                    System.out.println();
+                    Scanner scanner=new Scanner(System.in);
+                    scanner.nextLine();*/
                 }
             }
 
@@ -161,6 +188,23 @@ public class MapGenerator {
 
         int [][][] map=generateMap(12);
 
+        //Puertas sala
+        for (int y = 0; y < 12; y++) {
+            for (int x = 0; x < 12; x++) {
+                System.out.print(map[x][y][0]+"\t");
+            }
+            System.out.print("\n");
+        }
+
+        System.out.println();
+
+        //Tipos sala
+        for (int y = 0; y < 12; y++) {
+            for (int x = 0; x < 12; x++) {
+                System.out.print(map[x][y][1]+"\t");
+            }
+            System.out.print("\n");
+        }
 //        System.out.println(numToExits(13));
 
 //        System.out.println(Arrays.toString(numToBool(7)));
