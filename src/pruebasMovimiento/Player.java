@@ -18,10 +18,11 @@ public class Player extends Entity {
 
         this.hp=hp;
 
-        name="Player";
+        this.name="Player";
 
         canBeMoved=true;
         hitbox=new Rectangle(x+10,y+17,12,14);
+
     }
 
 
@@ -163,6 +164,9 @@ public class Player extends Entity {
 
         }
 
+
+
     }
+
 
 }

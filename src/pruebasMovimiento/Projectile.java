@@ -35,7 +35,7 @@ public class Projectile extends Entity{
     }
 
     @Override
-    protected void checkCollisions(LinkedList<Entity> entities) {
+    protected void checkCollisions(LinkedList<Entity> entities, int count) {
 
     }
 }

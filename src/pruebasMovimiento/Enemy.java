@@ -41,7 +41,7 @@ public class Enemy extends Entity{
     }
 
     @Override
-    protected void checkCollisions(LinkedList<Entity> entities){
+    protected void checkCollisions(LinkedList<Entity> entities, int count){
         int[] force=null;
         for (Entity entity2:entities) {
             force=intersect(this,entity2);
@@ -64,8 +64,14 @@ public class Enemy extends Entity{
                             push(velMov*2,0);
                         }
                     }
-                    for (int i=entities.indexOf(this);i>=0;i--) {
-                        entities.get(i).checkCollisions(entities);
+                    if (count < 7){
+                        count++;
+                        for (int i=entities.indexOf(this);i>=0;i--) {
+                            entities.get(i).checkCollisions(entities, count);
+                        }
+                    }else {
+                        entity2.damage(5);
+                        System.out.println("Doing dmg ++ ");
                     }
                 }
             }

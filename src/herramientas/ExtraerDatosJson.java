@@ -178,6 +178,8 @@ final public class ExtraerDatosJson {
 
 
 
+
+
     public static ArrayList<Rectangle>objetosMapa(String ruta){
         ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
 
@@ -202,10 +204,15 @@ final public class ExtraerDatosJson {
 
             JSONObject jsonObject = (JSONObject) o;
             if (jsonObject.get("type").equals("objectgroup")){
+                if (jsonObject.get("name").equals("Salidas") || jsonObject.get("name").equals("salidas")) {
+                    break;
+                }
+
                JSONArray objects = (JSONArray) jsonObject.get("objects");
 
                 for (Object a:objects
                      ) {
+
 
                     JSONObject jsonObjectArrayObjects = (JSONObject) a;
 
@@ -235,6 +242,68 @@ final public class ExtraerDatosJson {
     }
 
 
+    public static ArrayList<Rectangle>salidasMapa(String ruta){
+        ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
+
+        JSONParser parser = new JSONParser();
+        JSONObject arrayADevolver = null;
+        //JSONArray arrayADevolverArrayJson = new JSONArray();
+        try {
+            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));
+            arrayADevolver = obj;
+        } catch (ParseException | FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        int aa = 0;
+        JSONArray jsonArray = (JSONArray) arrayADevolver.get("layers");
+        for (Object o:jsonArray
+        ) {
+
+
+            JSONObject jsonObject = (JSONObject) o;
+            if (jsonObject.get("type").equals("objectgroup")){
+                if (jsonObject.get("name").equals("Salidas") || jsonObject.get("name").equals("salidas")) {
+
+                    //System.out.println(jsonObject);
+
+
+                    JSONArray objects = (JSONArray) jsonObject.get("objects");
+
+                for (Object a:objects
+                ) {
+
+                    JSONObject jsonObjectArrayObjects = (JSONObject) a;
+
+                    int width = (int) Double.parseDouble(jsonObjectArrayObjects.get("width").toString());
+                    int height = (int) Double.parseDouble(jsonObjectArrayObjects.get("height").toString());
+                    int x = (int) Double.parseDouble(jsonObjectArrayObjects.get("x").toString());
+                    int y = (int) Double.parseDouble(jsonObjectArrayObjects.get("y").toString());
+
+                    //System.out.println("x  " + x + " y  " + y  + "  width "  + width + " height " + height);
+
+                    if (width <= 0) width = 1;
+                    if (height <= 0) height = 1;
+
+                    rectangleArrayList.add(new Rectangle(x,y,width,height));
+
+
+                }
+
+                }
+            }
+        }
+
+
+
+
+        return rectangleArrayList;
+    }
+
+
     public static void main(String[] args) {
 
 
@@ -242,7 +311,8 @@ final public class ExtraerDatosJson {
 
 
 
-        System.out.println(objetosMapa("res/json/mapa6.json"));
+        //System.out.println(salidasMapa("res/jsonsMapasPruebas/1110.json"));
+        System.out.println(objetosMapa("res/jsonsMapasPruebas/0001.json"));
         //System.out.println(ManipulacionDatos.rectanglesToEntityObjects(rectangleArrayList, "res/json/mapa6.json"));
 
 

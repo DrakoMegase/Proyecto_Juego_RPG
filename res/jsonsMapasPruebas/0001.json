@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"0101.tmx"
+         "target":"..\/jsons\/0101.tmx"
         }
     },
  "height":25,
@@ -133,7 +133,7 @@
                 {
                  "height":75,
                  "id":4,
-                 "name":"",
+                 "name":"izquierda",
                  "rotation":0,
                  "type":"",
                  "visible":true,

@@ -44,6 +44,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
 
     public static ArrayList<Room> salas;
+    private static LinkedList<Rectangle> salidas;
     private Player player;                  //Declaracion de un player
     protected static LinkedList<Entity> entities;
     protected static LinkedList<Entity> addEntities;
@@ -54,7 +55,7 @@ public class Pantalla extends JPanel implements ActionListener {
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJson, "tileheight"));
         ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
         COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
-        WIDTH = COLUMNS  * TILESIZE;
+        WIDTH = COLUMNS * TILESIZE;
         HEIGHT = ROWS * TILESIZE;
 
 
@@ -74,8 +75,6 @@ public class Pantalla extends JPanel implements ActionListener {
         imageBufferDetails = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
 
-
-
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
         //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
         setSize(WIDTH, HEIGHT);
@@ -83,12 +82,12 @@ public class Pantalla extends JPanel implements ActionListener {
         setBackground(Color.black);
 
         setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
-        entities=new LinkedList<>();
+        entities = new LinkedList<>();
         ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entities);
         //System.out.println(entities.size());
 
 
-        addEntities=new LinkedList<>();
+        addEntities = new LinkedList<>();
 
         player = new Player(0, 0, 20);
         entities.add(player);
@@ -96,14 +95,12 @@ public class Pantalla extends JPanel implements ActionListener {
 
 //        entities.add(new Enemy(500,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,false,player,1,0));
 
-        entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1,1));
-        entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1,1));
-        entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1,1));
-        entities.add(new Enemy(200,500,20,"img/spritesheetTest.png:2:192:0:16:32",3,10,9,11,true,false,player,1,1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
+        entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, false, player, 1, 1));
 
-        entities.add(new Prop(50,50,1000,"img/terrain_atlas.png:0:928:896:96:128",30,98,34,17,false,false));
-
-
+        entities.add(new Prop(50, 50, 1000, "img/terrain_atlas.png:0:928:896:96:128", 30, 98, 34, 17, false, false));
 
 
         addKeyListener(new KeyAdapt(player));
@@ -114,39 +111,52 @@ public class Pantalla extends JPanel implements ActionListener {
         printBackground();
         imageBufferDetails = printBackgroundDetails();
 
-        cuerpoPlayerX = (int) (player.hitbox.getWidth()/2);
-        cuerpoPlayerY = (int) (player.hitbox.getHeight()/2);
+        cuerpoPlayerX = (int) (player.hitbox.getWidth() / 2);
+        cuerpoPlayerY = (int) (player.hitbox.getHeight() / 2);
 
+        salidas = new LinkedList<>();
+        colocarsalidas(rutaJson);
         salas = new ArrayList<>();      //inicializacion del arraylist
 
         System.out.println(cuerpoPlayerX + " AAAAAAAAAAA " + cuerpoPlayerY);
         camaraUpdate();
-        guardarSala();
-        cargarSala(rutaJson);
+        //guardarSala();
+        //cargarSala(rutaJson);
+        player.setPos(50,400);
+    }
+
+    private void colocarsalidas(String rutaJson) {
+
+        salidas.addAll(salidasMapa(rutaJson));
+
     }
 
 
-    public void guardarSala(){
+    public void guardarSala() {
 
-        Room sala1 = new Room(this.imageBuffer, this.imageBufferDetails, this.player,entities);
-        System.out.println(sala1);
-        sala1.setUsed(false);
-        salas.add(sala1);
+        Room sala = new Room(this.imageBuffer, this.imageBufferDetails, this.player, entities);
+        System.out.println(sala);
+        sala.setUsed(false);
+        salas.add(sala);
     }
 
 
-    public void cargarSala(String rutaJson){
+    public void cargarSala(String rutaJson) {
 
-        Room sala = salas.get(0);
 
-        imageBuffer = sala.getBackground();
-        imageBufferDetails = sala.getDetails();
-        entities.clear();
-        entities.addAll(sala.getEntities());
-        entities.add(sala.getPlayer());
-        player = sala.getPlayer();
-        ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entities);
+        //TODO peta por todos los lados
 
+        /*
+        Al cargar una sala utilizaremos el siguiente criterio:
+        Las salas estan formadas por 3 elementos (a grosso modo):
+        1.El background (una BufferedImage)
+        2.Los detalles (donde el personaje se pinta antes que estos) Otra bufferedImage
+        3.Todos los entities, aqui tenemos tanto los obstaculos como los enemigos y el jugador.
+        */
+
+
+
+        player.setPos(400, 400);
 
 
     }
@@ -156,23 +166,30 @@ public class Pantalla extends JPanel implements ActionListener {
     public void paint(Graphics graphics) {
         camaraUpdate();
         super.paint(graphics);                                          //Referenciamos sobre que Panel tiene que trabajar
-        Graphics2D graphics2D=(Graphics2D) graphics;
+        Graphics2D graphics2D = (Graphics2D) graphics;
 //        Graphics2D graphics2D = (Graphics2D) imageBuffer.getGraphics();                  //Casteo de Graphics a Graphics2D.      Graphics2D proporciona acceso a las características avanzadas de renderizado del API 2D de Java.
 
-        graphics2D.drawImage(imageBuffer, -offSetX , -offSetY,null);
+        graphics2D.drawImage(imageBuffer, -offSetX, -offSetY, null);
 
 
         entities.sort(Entity::compareTo);
-        for(Entity entity:entities){
+        for (Entity entity : entities) {
             entity.draw(graphics2D, offSetX, offSetY);
-            Rectangle rectangle= (Rectangle) entity.hitbox.clone();
-            rectangle.x-= offSetX;
-            rectangle.y-= offSetY;
+            Rectangle rectangle = (Rectangle) entity.hitbox.clone();
+            rectangle.x -= offSetX;
+            rectangle.y -= offSetY;
             graphics2D.draw(rectangle);
             //graphics2D.draw(entity.hitbox);
         }
 
-        graphics2D.drawImage(imageBufferDetails,  -offSetX,  -offSetY, null);      //pinta background
+        for (Rectangle rectangle : salidas){
+            Rectangle rectSalida = (Rectangle) rectangle.clone();
+            rectSalida.x -= offSetX;
+            rectSalida.y -= offSetY;
+            graphics2D.draw(rectSalida);
+        }
+
+        graphics2D.drawImage(imageBufferDetails, -offSetX, -offSetY, null);      //pinta background
 
     }
 
@@ -181,38 +198,54 @@ public class Pantalla extends JPanel implements ActionListener {
         int plx = player.getX();
         int ply = player.getY();
 
-        offSetX = player.getX() - this.getWidth()/2 + player.hitbox.width ;
-        offSetY = player.getY() - this.getHeight()/2 + player.hitbox.height;
+        offSetX = player.getX() - this.getWidth() / 2 + player.hitbox.width;
+        offSetY = player.getY() - this.getHeight() / 2 + player.hitbox.height;
 
-        System.out.println(  plx + "     " + ply +"   " + offSetX + "    " +offSetY);
+        //System.out.println(plx + "     " + ply + "   " + offSetX + "    " + offSetY);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         //Cada 20ms (depende el timer) se acutaliza el metodo update en player y se repainteara la pantalla
-        Iterator<Entity> iterator=entities.iterator();
-        while (iterator.hasNext()){
-            Entity entity=iterator.next();
+        Iterator<Entity> iterator = entities.iterator();
+        while (iterator.hasNext()) {
+            Entity entity = iterator.next();
             entity.update();
-            if(entity.remove){
+            if (entity.remove) {
                 iterator.remove();
             }
         }
-        if(addEntities.size()>0) {
+        if (addEntities.size() > 0) {
             entities.addAll(addEntities);
             addEntities.clear();
         }
 
-        iterator=entities.iterator();
-
-
+        iterator = entities.iterator();
 
 
         entities.sort(new CompareNearEntities(entities));
-        while (iterator.hasNext()){
-            Entity entity=iterator.next();
-            entity.checkCollisions(entities);
+        while (iterator.hasNext()) {
+            Entity entity = iterator.next();
+            entity.checkCollisions(entities, 0);
+        }
+
+        if (player.hp <= 0) {
+            //Canbedamaged del player esta en false todo
+            entities.remove(player);
+            System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
+            System.exit(0);
+            return;
+        }
+
+        for (Rectangle salidas:salidas
+             ) {
+            if (player.hitbox.intersects(salidas)){
+                System.out.println("POLLA");
+                cargarSala("res/jsonsMapasPruebas/1110.json");
+
+            }
+
         }
 
 
@@ -270,7 +303,7 @@ public class Pantalla extends JPanel implements ActionListener {
                 y++;
                 x = 0;
             }
-            graphics.drawImage(new Sprite(spriteInts[capas-1][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
+            graphics.drawImage(new Sprite(spriteInts[capas - 1][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
             x++;
 
 
@@ -279,8 +312,6 @@ public class Pantalla extends JPanel implements ActionListener {
         return imageBufferDetails;
 
     }
-
-
 
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package pruebasMovimiento;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -14,6 +15,7 @@ public class Room {
     private BufferedImage details;
     private Player player;                  //Declaracion de un player
     protected LinkedList<Entity> entities;
+    protected LinkedList<Rectangle>salidas;
 
     private boolean backNull;
     private boolean detailsNull;
