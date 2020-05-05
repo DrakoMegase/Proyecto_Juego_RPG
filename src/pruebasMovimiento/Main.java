@@ -9,8 +9,8 @@ import java.io.File;
 public class Main {
 
 
-    private static final int WINDOWX = 500;
-    private static final int WINDOWY = 500;
+    public static final int WINDOWX = 500;
+    public static final int WINDOWY = 500;
 
     public static void main(String[] args) {
 
