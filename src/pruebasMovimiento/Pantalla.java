@@ -21,10 +21,10 @@ import static herramientas.ExtraerDatosJson.*;
 public class Pantalla extends JPanel implements ActionListener {
 
     static public int WIDTH;       //COLUMNAS
-    static private int COLUMNS;       //COLUMNAS
+    static public int COLUMNS;       //COLUMNAS
     static public int HEIGHT;      //FILAS
-    static private int ROWS;      //FILAS
-    static private int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
+    static public int ROWS;      //FILAS
+    static public int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
     static private int TIMERDELAY = 20;        //Esto es personalizable
     static public int offSetX = 0;
     static public int offSetY = 0;
@@ -33,7 +33,6 @@ public class Pantalla extends JPanel implements ActionListener {
 
 
     static BufferedImage spriteSheet;
-
     static private Timer mainTimer;                //Declaracion de un timer
 
     //static private ArrayList spritesPantalla;           //Clase sprites
@@ -45,7 +44,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
     public static ArrayList<Room> salas;
     private static LinkedList<Rectangle> salidas;
-    private Player player;                  //Declaracion de un player
+    public static Player player;                          //Declaracion de un player
     protected static LinkedList<Entity> entities;
     protected static LinkedList<Entity> addEntities;
 
@@ -70,26 +69,27 @@ public class Pantalla extends JPanel implements ActionListener {
 
         //spritesPantalla = arraysSprites(rutaJson);
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJson));  //Poner un iterador que separe las capas HECHO
-
         imageBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         imageBufferDetails = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
 
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
-        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
         setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
         setBackground(Color.black);
-
         setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
+
         entities = new LinkedList<>();
         ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entities);
         //System.out.println(entities.size());
 
 
+        //Room sala2 = new Room(printBackground(),printBackgroundDetails(),player, rutaJson);
+
         addEntities = new LinkedList<>();
 
-        player = new Player(0, 0, 20);
+        player = new Player(0, 0, 20,entities);  //todo necesario
         entities.add(player);
 
 
@@ -99,7 +99,6 @@ public class Pantalla extends JPanel implements ActionListener {
         entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
         entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
         entities.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
-
         entities.add(new Prop(50, 50, 1000, "img/terrain_atlas.png:0:928:896:96:128", 30, 98, 34, 17, false, false));
 
 
@@ -108,14 +107,14 @@ public class Pantalla extends JPanel implements ActionListener {
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
-        printBackground();
-        imageBufferDetails = printBackgroundDetails();
+        printBackground(imageBuffer, spriteInts);
+        printBackgroundDetails(imageBufferDetails, spriteInts);
 
         cuerpoPlayerX = (int) (player.hitbox.getWidth() / 2);
         cuerpoPlayerY = (int) (player.hitbox.getHeight() / 2);
 
-        salidas = new LinkedList<>();
-        colocarsalidas(rutaJson);
+//        salidas = new LinkedList<>();
+//        colocarsalidas(rutaJson);
         salas = new ArrayList<>();      //inicializacion del arraylist
 
         System.out.println(cuerpoPlayerX + " AAAAAAAAAAA " + cuerpoPlayerY);
@@ -134,10 +133,10 @@ public class Pantalla extends JPanel implements ActionListener {
 
     public void guardarSala() {
 
-        Room sala = new Room(this.imageBuffer, this.imageBufferDetails, this.player, entities);
-        System.out.println(sala);
-        sala.setUsed(false);
-        salas.add(sala);
+//        Room sala = new Room(this.imageBuffer, this.imageBufferDetails, this.player);
+//        System.out.println(sala);
+//        sala.setUsed(false);
+//        salas.add(sala);
     }
 
 
@@ -153,6 +152,10 @@ public class Pantalla extends JPanel implements ActionListener {
         2.Los detalles (donde el personaje se pinta antes que estos) Otra bufferedImage
         3.Todos los entities, aqui tenemos tanto los obstaculos como los enemigos y el jugador.
         */
+
+
+
+
 
 
 
@@ -256,7 +259,7 @@ public class Pantalla extends JPanel implements ActionListener {
     }
 
 
-    public BufferedImage printBackground() {
+    public static BufferedImage printBackground(BufferedImage imageBuffer,int[][] spriteInts) {
 
 
         int capas = spriteInts.length;
@@ -289,13 +292,13 @@ public class Pantalla extends JPanel implements ActionListener {
 
     }
 
-    public BufferedImage printBackgroundDetails() {
+    public static BufferedImage printBackgroundDetails(BufferedImage imageBuffer, int spriteInts[][]) {
 
 
         int capas = spriteInts.length;
         int spritesPorCapa = COLUMNS * ROWS;
 
-        Graphics2D graphics = (Graphics2D) imageBufferDetails.getGraphics();
+        Graphics2D graphics = (Graphics2D) imageBuffer.getGraphics();
 
         int x = 0;
         int y = -1; //TODO METODOS INTERNOS BUSCAR PARA IGUALAR ESTO A 0
@@ -311,7 +314,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
         }
 
-        return imageBufferDetails;
+        return imageBuffer;
 
     }
 
