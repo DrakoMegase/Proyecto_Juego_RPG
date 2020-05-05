@@ -205,6 +205,7 @@ public class MapGenerator {
             }
             System.out.print("\n");
         }
+
 //        System.out.println(numToExits(13));
 
 //        System.out.println(Arrays.toString(numToBool(7)));

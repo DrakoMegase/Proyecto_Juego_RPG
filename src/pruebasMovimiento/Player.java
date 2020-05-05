@@ -10,6 +10,8 @@ public class Player extends Entity {
 
     private int lastSpdX=0;
     private int lastSpdY=2;
+    private int state=0;
+    private int time=0;
 
 
     Player(int x, int y, int hp) {
@@ -21,7 +23,7 @@ public class Player extends Entity {
         this.name="Player";
 
         canBeMoved=true;
-        hitbox=new Rectangle(x+10,y+17,12,14);
+        hitbox=new Rectangle(x+21,y+51,22,10);
 
     }
 
@@ -36,44 +38,46 @@ public class Player extends Entity {
         if (hitbox.x<=0||hitbox.x+hitbox.width >= Pantalla.WIDTH) {
             move(-velX, 0);
         }
+
         if (hitbox.y<=0||hitbox.y+hitbox.height >= Pantalla.HEIGHT-hitbox.height) {
             move(0, -velY);
         }
 
 
+
     }
 
     public void draw(Graphics2D graphics2D, int offSetX, int offSetY) {
-        int multiOr=0;
+        int multiSpriteY=2;
         if(lastSpdY<0){
-            multiOr=1;
+            multiSpriteY=0;
         }else if(lastSpdX>0){
-            multiOr=2;
+            multiSpriteY=3;
         }else if(lastSpdX<0){
-            multiOr=3;
+            multiSpriteY=1;
         }
 
-        int multyMov=0;
+        int multySpriteX=0;
         if(velX!=0||velY!=0){
-            multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
+            multySpriteX=(int)Math.abs(System.currentTimeMillis()/150)%9;
         }
 
         // Width and height of sprite
-        int sw = 32;
-        int sh = 32;
+        int sw = 64;
+        int sh = 64;
         // Position of sprite on screen
         int px = x - offSetX;
         int py = y - offSetY;
         // Coordinates of desired sprite image
-        int i = 0+32*multyMov;
-        int j = 64+32*multiOr;
+        int i = 64*multySpriteX;
+        int j = 64*state+64*multiSpriteY;
         graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
 
     }
 
     private Image getPlayerImg() {
 
-        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/spritesheetTest.png"));
+        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
         return pic;                                                                      //La convertimos a imagen
 
     }
