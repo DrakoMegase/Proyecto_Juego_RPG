@@ -10,7 +10,7 @@ public class Main {
 
 
     public static final int WINDOWX = 500;
-    public static final int WINDOWY = 500;
+    public static final int WINDOWY = 529;
 
     public static void main(String[] args) {
 

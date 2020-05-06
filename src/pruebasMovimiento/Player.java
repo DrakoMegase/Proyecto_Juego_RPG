@@ -193,7 +193,7 @@ public class Player extends Entity {
                 }
                 break;
 
-             case KeyEvent.VK_K:
+             case KeyEvent.VK_SPACE:
                  if(state==0){
                      state=1;
                      startTime =System.currentTimeMillis();
