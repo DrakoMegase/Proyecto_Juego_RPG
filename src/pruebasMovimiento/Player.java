@@ -53,8 +53,37 @@ public class Player extends Entity {
         long actionTime=System.currentTimeMillis()- startTime;
         velX=0;
         velY=0;
-        if(actionTime>=300){
+        int rangeX=20;
+        int rangeY=30;
+        int knocback=10;
+
+        if(actionTime>=280){
             state=0;
+        }else{
+            int modSizeX=Math.abs(lastSpdX);
+            int modSizeY=Math.abs(lastSpdY);
+
+            int modPosX=0;
+            int modPosY=-rangeY;
+            if(lastSpdY<0){
+                modPosY=hitbox.height+rangeY;
+            }else if(lastSpdX>0){
+                modPosY=0;
+                modPosX=hitbox.width+rangeX;
+            }else if(lastSpdX<0) {
+                modPosY=0;
+                modPosX=-rangeX;
+            }
+
+            Rectangle rectangle=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,hitbox.width*modSizeY+rangeX*modSizeX,hitbox.height*modSizeX+rangeY*modSizeY);
+
+            for (Entity entity:addEntities) {
+                if (!entity.equals(this)&&entity.hitbox.intersects(rectangle)){
+                    System.out.println("DAMAGESS");
+                    entity.damage(10);
+                    entity.push(lastSpdX*knocback,lastSpdY*knocback);
+                }
+            }
         }
 
 
@@ -65,7 +94,7 @@ public class Player extends Entity {
         long actionTime=System.currentTimeMillis()- startTime;
         velX=0;
         velY=0;
-        if(actionTime>=500){
+        if(actionTime>=480){
             state=0;
             int shootX=hitbox.x+hitbox.width/3;
             int shootY=hitbox.y-hitbox.width*3;

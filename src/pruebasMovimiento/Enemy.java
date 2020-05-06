@@ -6,7 +6,6 @@ import java.util.LinkedList;
 
 public class Enemy extends Entity{
 
-    private int time=0;
     private Player player;
     private int velMov;
     private int movPath;
@@ -20,10 +19,13 @@ public class Enemy extends Entity{
     }
 
     public void update() {
-        time+=1;
         move(velX,velY);
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
+        if(damageWait&&System.currentTimeMillis()-damageTime>500){
+            damageWait=false;
+            damageTime=0;
+        }
 
         if (hitbox.x<0||hitbox.x+hitbox.width > Pantalla.WIDTH) {
             move(-velX, 0);
