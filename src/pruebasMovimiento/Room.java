@@ -18,15 +18,15 @@ import static pruebasMovimiento.Pantalla.*;
 public class Room {
 
     int idSala;
+    int salaType;
     private static int contador = 0;
     BufferedImage backgroundSala;
     BufferedImage detailsSala;
     LinkedList<Entity>entities;
-    LinkedList<Rectangle>salidas;
+    LinkedList<Salida>salidas;
     boolean clear;
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     static BufferedImage spriteSheet;
-
 
     public Room(String rutaJsonRoom, String rutaSpriteSheet) {
 
@@ -150,6 +150,23 @@ public class Room {
 
 
 
+    }
+
+    public void setSalaType(int salaType) {
+        this.salaType = salaType;
+    }
+
+    public int getSalaType() {
+        return salaType;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "idSala=" + idSala +
+                ", salidas=" + salidas +
+                ", clear=" + clear +
+                "} \n";
     }
 
     public static void main(String[] args) {

@@ -126,7 +126,7 @@ public class Pantalla extends JPanel implements ActionListener {
 
     private void colocarsalidas(String rutaJson) {
 
-        salidas.addAll(salidasMapa(rutaJson));
+        //salidas.addAll(salidasMapa(rutaJson));
 
     }
 

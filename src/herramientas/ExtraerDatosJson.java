@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import pruebasMovimiento.Salida;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -242,8 +243,8 @@ final public class ExtraerDatosJson {
     }
 
 
-    public static ArrayList<Rectangle>salidasMapa(String ruta){
-        ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
+    public static ArrayList<Salida>salidasMapa(String ruta){
+        ArrayList<Salida> salidaArrayList = new ArrayList<>();
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
@@ -288,7 +289,7 @@ final public class ExtraerDatosJson {
                     if (width <= 0) width = 1;
                     if (height <= 0) height = 1;
 
-                    rectangleArrayList.add(new Rectangle(x,y,width,height));
+                    salidaArrayList.add(new Salida(new Rectangle(x,y,width,height)));
 
 
                 }
@@ -300,7 +301,7 @@ final public class ExtraerDatosJson {
 
 
 
-        return rectangleArrayList;
+        return salidaArrayList;
     }
 
 

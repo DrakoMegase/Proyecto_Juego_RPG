@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import static herramientas.ExtraerDatosJson.extraerValorJson;
 import static herramientas.ExtraerDatosJson.salidasMapa;
+import static pruebasMovimiento.MapGenerator.generateMap;
 
 public class Juego extends JPanel implements ActionListener {
 
@@ -48,10 +49,9 @@ public class Juego extends JPanel implements ActionListener {
     static private int TIMERDELAY = 20;        //Delay del timer
     static private Timer mainTimer;            //Declaracion de un timer
     public static ArrayList<Room> salas;
-    private static LinkedList<Rectangle> salidasJuego;
+    private static LinkedList<Salida> salidasJuego;
     protected static LinkedList<Entity> entitiesJuego;
     protected static LinkedList<Entity> addEntitiesJuego;
-
 
 
     //Constructor de la clase Juego
@@ -86,8 +86,12 @@ public class Juego extends JPanel implements ActionListener {
         ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entitiesJuego);
         salidasJuego.addAll(salidasMapa(rutaJson));
         entitiesJuego.add(player);
-
         entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+
+
+        //Cargar datos salas.
+
+        cargarSalasNivel(salas);
 
 
 
@@ -107,6 +111,16 @@ public class Juego extends JPanel implements ActionListener {
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
+    }
+
+    private ArrayList<Room> cargarSalasNivel(ArrayList<Room> salas) {
+
+
+        int [][][] map = generateMap(12);
+
+
+
+        return salas;
     }
 
     private void camaraUpdate() {
@@ -194,7 +208,7 @@ public class Juego extends JPanel implements ActionListener {
         if(salidasJuego!=null) {
 
             for (int i = 0; i < salidasJuego.size() ; i++) {
-                if (player.hitbox.intersects(salidasJuego.get(i))) {
+                if (player.hitbox.intersects(salidasJuego.get(i).getArea())) {
                     System.out.println("POLLA");
                     Room room2 = new Room("res/jsonsMapasPruebas/1111.json","resources/terrain_atlas.png");
                     cargarSala(room2);
@@ -232,8 +246,8 @@ public class Juego extends JPanel implements ActionListener {
             //graphics2D.draw(entity.hitbox);
         }
 
-        for (Rectangle rectangle : salidasJuego){
-            Rectangle rectSalida = (Rectangle) rectangle.clone();
+        for (Salida salida : salidasJuego){
+            Rectangle rectSalida = (Rectangle) salida.getArea().clone();
             rectSalida.x -= offSetX;
             rectSalida.y -= offSetY;
             graphics2D.draw(rectSalida);
