@@ -14,13 +14,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Pantalla pantalla1 = new Pantalla("res/jsonsMapasPruebas/0001.json","resources/terrain_atlas.png");
+        Juego juego = new Juego("res/jsonsMapasPruebas/0001.json","resources/terrain_atlas.png");
 
         JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
         frame.setSize(WINDOWX, WINDOWY);                                                   //Tamaño de la ventana
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                             //Accion cuando cerramos la ventana
         frame.setResizable(false);                                                        //Negamos que la ventana pueda ser modificada en tamaño
-        frame.add(pantalla1);
+        frame.add(juego );
         frame.setVisible(true);
         frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
 //      System.out.println(pantalla1.spritesObjectArrayList.get(0).getSpriteImg());
