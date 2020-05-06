@@ -83,6 +83,9 @@ public class Juego extends JPanel implements ActionListener {
         salidasJuego.addAll(salidasMapa(rutaJson));
         entitiesJuego.add(player);
 
+        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+
+
 
         addKeyListener(new KeyAdapt(player));
 
@@ -152,21 +155,19 @@ public class Juego extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Iterator<Entity> iterator = entitiesJuego.iterator();
-        while (iterator.hasNext()) {
-            Entity entity = iterator.next();
+        for (int i = 0; i < entitiesJuego.size();) {
+            Entity entity = entitiesJuego.get(i);
             entity.update();
             if (entity.remove) {
-                iterator.remove();
+                entitiesJuego.remove(entity);
+            }else {
+                i++;
             }
         }
-        if (addEntitiesJuego.size() > 0) {
-            entitiesJuego.addAll(addEntitiesJuego);
-            addEntitiesJuego.clear();
-        }
 
-        iterator = entitiesJuego.iterator();
 
+
+        Iterator<Entity> iterator = entitiesJuego.iterator();
 
         entitiesJuego.sort(new CompareNearEntities(entitiesJuego));
         while (iterator.hasNext()) {
