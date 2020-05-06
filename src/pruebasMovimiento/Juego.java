@@ -48,6 +48,7 @@ public class Juego extends JPanel implements ActionListener {
     protected static LinkedList<Entity> entitiesJuego;
     protected static LinkedList<Entity> addEntitiesJuego;
 
+    static Rectangle slash;
 
 
     //Constructor de la clase Juego
@@ -231,6 +232,13 @@ public class Juego extends JPanel implements ActionListener {
             graphics2D.draw(rectSalida);
         }
 
+
+        if(slash!=null){
+            Rectangle rectangle = (Rectangle) slash.clone();
+            rectangle.x -= offSetX;
+            rectangle.y -= offSetY;
+            graphics2D.draw(rectangle);
+        }
 
         //TERCER PINTADA: DETALLES
         graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
