@@ -15,6 +15,8 @@ public class Entity implements Comparable<Entity> {
     int velY = 0;
     int hp;
     boolean canBeDamaged;
+    boolean damageWait=false;
+    long damageTime=0;
     int[] spritesPos;
     Rectangle hitbox;
     String name;
@@ -97,8 +99,10 @@ public class Entity implements Comparable<Entity> {
     }
 
     void damage(int dmg) {
-        if (canBeDamaged) {
+        if (canBeDamaged&&!damageWait) {
             hp -= dmg;
+            damageTime=System.currentTimeMillis();
+            damageWait=true;
         }
     }
 

@@ -1,10 +1,7 @@
 package pruebasMovimiento;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 
 public class Player extends Entity {
@@ -12,6 +9,8 @@ public class Player extends Entity {
     private int lastSpdX=0;
     private int lastSpdY=2;
     LinkedList<Entity> addEntities;
+    private int state=0;
+    private long startTime =0;
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);
@@ -22,7 +21,7 @@ public class Player extends Entity {
         this.name="Player";
 
         canBeMoved=true;
-        hitbox=new Rectangle(x+10,y+17,12,14);
+        hitbox=new Rectangle(x+22,y+46,20,16);
 
         this.addEntities = addEntities;
     }
@@ -31,51 +30,116 @@ public class Player extends Entity {
 
     public void update() {
 
-        move(velX,velY);
-        //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
-
-        if (hitbox.x<=0||hitbox.x+hitbox.width >= Pantalla.WIDTH) {
-            move(-velX, 0);
+        switch (state) {
+            case 0:
+                move(velX, velY);
+            //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
+                break;
+            case 1:
+                slash();
+                break;
+            case 2:
+                shoot();
+                break;
         }
-        if (hitbox.y<=0||hitbox.y+hitbox.height >= Pantalla.HEIGHT-hitbox.height) {
-            move(0, -velY);
+
+
+
+
+    }
+
+    private void slash() {
+        long actionTime=System.currentTimeMillis()- startTime;
+        velX=0;
+        velY=0;
+        int rangeX=20;
+        int rangeY=30;
+        int knocback=10;
+
+        if(actionTime>=280){
+            state=0;
+        }else{
+            int modSizeX=Math.abs(lastSpdX);
+            int modSizeY=Math.abs(lastSpdY);
+
+            int modPosX=0;
+            int modPosY=-rangeY;
+            if(lastSpdY<0){
+                modPosY=hitbox.height+rangeY;
+            }else if(lastSpdX>0){
+                modPosY=0;
+                modPosX=hitbox.width+rangeX;
+            }else if(lastSpdX<0) {
+                modPosY=0;
+                modPosX=-rangeX;
+            }
+
+            Rectangle rectangle=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,hitbox.width*modSizeY+rangeX*modSizeX,hitbox.height*modSizeX+rangeY*modSizeY);
+
+            for (Entity entity:addEntities) {
+                if (!entity.equals(this)&&entity.hitbox.intersects(rectangle)){
+                    System.out.println("DAMAGESS");
+                    entity.damage(10);
+                    entity.push(lastSpdX*knocback,lastSpdY*knocback);
+                }
+            }
         }
 
 
     }
 
+    private void shoot(){
+
+        long actionTime=System.currentTimeMillis()- startTime;
+        velX=0;
+        velY=0;
+        if(actionTime>=480){
+            state=0;
+            int shootX=hitbox.x+hitbox.width/3;
+            int shootY=hitbox.y-hitbox.width*3;
+
+            addEntities.add(new Projectile(shootX,shootY,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
+            addEntities.add(new Projectile(shootX+lastSpdY*10,shootY+lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
+            addEntities.add(new Projectile(shootX-lastSpdY*10,shootY-lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
+        }
+    }
+
     public void draw(Graphics2D graphics2D, int offSetX, int offSetY) {
-        int multiOr=0;
+        int multiSpriteY=2;
         if(lastSpdY<0){
-            multiOr=1;
+            multiSpriteY=0;
         }else if(lastSpdX>0){
-            multiOr=2;
+            multiSpriteY=3;
         }else if(lastSpdX<0){
-            multiOr=3;
+            multiSpriteY=1;
         }
 
-        int multyMov=0;
-        if(velX!=0||velY!=0){
-            multyMov=(int)Math.abs(System.currentTimeMillis()/150)%3;
+        int multySpriteX=0;
+        if(state==0&&(velX!=0||velY!=0)){
+            multySpriteX=1+(int)((System.currentTimeMillis()/100)%8);
+        }else if(state==1){
+            multySpriteX=(int)((System.currentTimeMillis()-startTime)/40)%6;
+        }else if(state==2){
+            multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%7;
         }
 
         // Width and height of sprite
-        int sw = 32;
-        int sh = 32;
+        int sw = 64;
+        int sh = 64;
         // Position of sprite on screen
         int px = x - offSetX;
         int py = y - offSetY;
         // Coordinates of desired sprite image
-        int i = 0+32*multyMov;
-        int j = 64+32*multiOr;
+        int i = 64*multySpriteX;
+        int j = 256*state+64*multiSpriteY;
         graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
 
     }
 
     private Image getPlayerImg() {
 
-        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/spritesheetTest.png"));
+        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
         return pic;                                                                      //La convertimos a imagen
 
     }
@@ -94,28 +158,46 @@ public class Player extends Entity {
         switch (key) {
 //
             case KeyEvent.VK_W:
-                velY = -2;
-                lastSpdX=0;
-                lastSpdY=-2;
+                if(state==0) {
+                    velY = -2;
+                    lastSpdX = 0;
+                    lastSpdY = -2;
+                }
                 break;
             case KeyEvent.VK_S:
-                velY = 2;
-                lastSpdX=0;
-                lastSpdY=2;
+                if(state==0) {
+                    velY = 2;
+                    lastSpdX = 0;
+                    lastSpdY = 2;
+                }
                 break;
             case KeyEvent.VK_A:
-                velX = -2;
-                lastSpdX=-2;
-                lastSpdY=0;
+                if(state==0) {
+                    velX = -2;
+                    lastSpdX = -2;
+                    lastSpdY = 0;
+                }
                 break;
             case KeyEvent.VK_D:
-                velX = 2;
-                lastSpdX=2;
-                lastSpdY=0;
+                if(state==0) {
+                    velX = 2;
+                    lastSpdX = 2;
+                    lastSpdY = 0;
+                }
                 break;
 
-            case KeyEvent.VK_SPACE:
-                shoot();
+            case KeyEvent.VK_J:
+                if(state==0){
+                    state=2;
+                    startTime =System.currentTimeMillis();
+                }
+                break;
+
+             case KeyEvent.VK_K:
+                 if(state==0){
+                     state=1;
+                     startTime =System.currentTimeMillis();
+                 }
                 break;
 
             default:
@@ -123,15 +205,6 @@ public class Player extends Entity {
 
         }
 
-    }
-
-    private void shoot(){
-        int shootX=hitbox.x-hitbox.width*3;
-        int shootY=hitbox.y-hitbox.width*3;
-
-        addEntities.add(new Projectile(shootX,shootY,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this, addEntities));
-        addEntities.add(new Projectile(shootX+lastSpdY*10,shootY+lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this, addEntities));
-        addEntities.add(new Projectile(shootX-lastSpdY*10,shootY-lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this, addEntities));
     }
 
 
