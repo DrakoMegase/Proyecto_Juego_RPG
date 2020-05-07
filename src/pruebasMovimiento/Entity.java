@@ -207,6 +207,17 @@ public class Entity implements Comparable<Entity> {
 
     }
 
+    public void setVelX(int velX) {
+        this.velX = velX;
+    }
+
+    public void setVelY(int velY) {
+        this.velY = velY;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 
     @Override
     public int compareTo(Entity o) {

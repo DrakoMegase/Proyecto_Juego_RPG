@@ -151,6 +151,8 @@ public class Player extends Entity {
         return new Rectangle(x+xMargin,y+yMargin,img.getWidth(null)-xMargin*2,yMargin);
     }
 
+
+
     void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
@@ -198,6 +200,18 @@ public class Player extends Entity {
                      state=1;
                      startTime =System.currentTimeMillis();
                  }
+                break;
+
+            case KeyEvent.VK_F:
+
+                long tiempo = System.currentTimeMillis();
+                setVelX(this.velX * 2);
+                setVelY(this.velY * 2);
+
+                //TODO
+                System.out.println("aaa");
+
+
                 break;
 
             default:
