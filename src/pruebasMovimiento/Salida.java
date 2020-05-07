@@ -8,6 +8,7 @@ public class Salida {
     private Rectangle area;
     private Salida conexion;
 
+
     public Salida(Rectangle area) {
         this.area = area;
     }

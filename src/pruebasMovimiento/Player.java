@@ -13,6 +13,10 @@ public class Player extends Entity {
     private Armor[] armor=new Armor[3];
     private int state=0;
     private long startTime=0;
+    private long tiempo=0;
+    private int armorInt;
+    private int energia;
+    private int experiencia;
 
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
@@ -34,11 +38,25 @@ public class Player extends Entity {
         armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
 
         this.addEntities = addEntities;
+        this.armorInt = 100;
+        this.energia = 10;
+        this.experiencia = 0;
     }
 
+    public int getArmorInt() {
+        return armorInt;
+    }
 
+    public int getEnergia() {
+        return energia;
+    }
+
+    public int getExperiencia() {
+        return experiencia;
+    }
 
     public void update() {
+
 
 
         switch (state) {
@@ -222,12 +240,15 @@ public class Player extends Entity {
 
             case KeyEvent.VK_F:
 
-                long tiempo = System.currentTimeMillis();
-                setVelX(this.velX * 2);
-                setVelY(this.velY * 2);
 
+
+                hp -= 1;
+                energia -=2;
+                experiencia += 1;
+                //TODO sistema niveles.
+                move(this.velX * 8, this.velY * 8);
                 //TODO
-                System.out.println("aaa");
+
 
 
                 break;
