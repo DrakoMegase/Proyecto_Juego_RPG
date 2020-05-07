@@ -8,9 +8,12 @@ public class Player extends Entity {
 
     private int lastSpdX=0;
     private int lastSpdY=2;
-    LinkedList<Entity> addEntities;
+    private LinkedList<Entity> addEntities;
+    private Weapon weapon;
+    private Armor[] armor=new Armor[3];
     private int state=0;
-    private long startTime =0;
+    private long startTime=0;
+
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);
@@ -22,6 +25,13 @@ public class Player extends Entity {
 
         canBeMoved=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
+
+        weapon=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,30,10);
+//        weapon=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15);
+//        weapon=new Weapon("Estoque", "img/weapons/WEAPON_longsword.png",192,42,78,15);
+        armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
+        armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
+        armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
 
         this.addEntities = addEntities;
     }
@@ -51,36 +61,35 @@ public class Player extends Entity {
 
     private void slash() {
         long actionTime=System.currentTimeMillis()- startTime;
-        velX=0;
-        velY=0;
-        int rangeX=20;
-        int rangeY=30;
-        int knocback=10;
+        int range=weapon.getAttackRange();
+        int width=weapon.getAttackWidth();
+        int knocback=5;
 
         if(actionTime>=280){
             state=0;
         }else{
-            int modSizeX=Math.abs(lastSpdX);
-            int modSizeY=Math.abs(lastSpdY);
+            int modSizeX=Math.abs(lastSpdX)/2;
+            int modSizeY=Math.abs(lastSpdY)/2;
 
-            int modPosX=0;
-            int modPosY=-rangeY;
+            int modPosX=-(width-hitbox.width)/2;
+            int modPosY=hitbox.height;
             if(lastSpdY<0){
-                modPosY=hitbox.height+rangeY;
+                modPosY=-range;
             }else if(lastSpdX>0){
-                modPosY=0;
-                modPosX=hitbox.width+rangeX;
+                modPosY=-(width-hitbox.height)/2;
+                modPosX=hitbox.width;
             }else if(lastSpdX<0) {
-                modPosY=0;
-                modPosX=-rangeX;
+                modPosY=-(width-hitbox.height)/2;
+                modPosX=-range;
             }
 
-            Rectangle rectangle=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,hitbox.width*modSizeY+rangeX*modSizeX,hitbox.height*modSizeX+rangeY*modSizeY);
+            Rectangle slash=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,width*modSizeY+range*modSizeX,width*modSizeX+range*modSizeY);
+            Juego.slash=slash;
 
             for (Entity entity:addEntities) {
-                if (!entity.equals(this)&&entity.hitbox.intersects(rectangle)){
+                if (!entity.equals(this)&&entity.hitbox.intersects(slash)){
                     System.out.println("DAMAGESS");
-                    entity.damage(10);
+                    entity.damage(weapon.getDamage());
                     entity.push(lastSpdX*knocback,lastSpdY*knocback);
                 }
             }
@@ -92,8 +101,7 @@ public class Player extends Entity {
     private void shoot(){
 
         long actionTime=System.currentTimeMillis()- startTime;
-        velX=0;
-        velY=0;
+
         if(actionTime>=480){
             state=0;
             int shootX=hitbox.x+hitbox.width/3;
@@ -134,6 +142,16 @@ public class Player extends Entity {
         int i = 64*multySpriteX;
         int j = 256*state+64*multiSpriteY;
         graphics2D.drawImage(img, px,py, px+sw,py+sh, i, j, i+sw, j+sh, null);
+
+        for (int k = armor.length-1; k >= 0; k--) {
+            if(armor[k]!=null){
+                armor[k].draw(graphics2D,px,py,state,multySpriteX,multiSpriteY);
+            }
+        }
+
+        if(state==1){
+            weapon.draw(graphics2D,px,py,multySpriteX,multiSpriteY);
+        }
 
     }
 

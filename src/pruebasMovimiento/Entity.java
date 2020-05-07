@@ -124,7 +124,7 @@ public class Entity implements Comparable<Entity> {
     }
 
     private boolean outOfBounds(int x, int y) {
-        return x < 0 || x > Pantalla.HEIGHT - hitbox.width || y < 0 || y > Pantalla.WIDTH - hitbox.height;
+        return x < 0 || x > Juego.HEIGHT - hitbox.width || y < 0 || y > Juego.WIDTH - hitbox.height;
     }
 
     private Image getImg(String img) {

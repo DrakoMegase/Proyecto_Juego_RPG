@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import static herramientas.ExtraerDatosJson.*;
 import static herramientas.ExtraerDatosJson.extraerValorJson;
-import static pruebasMovimiento.Pantalla.*;
+import static pruebasMovimiento.Juego.*;
 
 public class Room {
 
