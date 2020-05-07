@@ -84,7 +84,11 @@ public class Juego extends JPanel implements ActionListener {
         salidasJuego.addAll(salidasMapa(rutaJson));
         entitiesJuego.add(player);
 
-        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+//        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+        entitiesJuego.add(new Enemy(500,300,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+        entitiesJuego.add(new Enemy(500,150,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+        entitiesJuego.add(new Enemy(150,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+        entitiesJuego.add(new Enemy(300,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
 
 
 

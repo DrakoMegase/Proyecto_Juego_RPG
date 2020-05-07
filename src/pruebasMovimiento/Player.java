@@ -26,12 +26,12 @@ public class Player extends Entity {
         canBeMoved=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
 
-//        weapon=new Weapon("Dagita","img/WEAPON_dagger.png",64,20,30,10);
-//        weapon=new Weapon("Estoque","img/WEAPON_rapier.png",192,42,78,15);
-        weapon=new Weapon("Estoque","img/WEAPON_longsword.png",192,42,78,15);
-        armor[0]=new Armor("Casco Cota de Malla","img/HEAD_chain_armor_helmet.png",3,0,64);
-        armor[1]=new Armor("Pechera Cota de Malla","img/TORSO_chain_armor_torso.png",3,1,64);
-        armor[2]=new Armor("Pantalones Cota de Malla","img/LEGS_pants_greenish.png",3,2,64);
+        weapon=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,30,10);
+//        weapon=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15);
+//        weapon=new Weapon("Estoque", "img/weapons/WEAPON_longsword.png",192,42,78,15);
+        armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
+        armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
+        armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
 
         this.addEntities = addEntities;
     }

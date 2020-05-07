@@ -27,10 +27,10 @@ public class Enemy extends Entity{
             damageTime=0;
         }
 
-        if (hitbox.x<0||hitbox.x+hitbox.width > Pantalla.WIDTH) {
+        if (hitbox.x<0||hitbox.x+hitbox.width > Juego.WIDTH) {
             move(-velX, 0);
         }
-        if (hitbox.y<0||hitbox.y+hitbox.height > Pantalla.HEIGHT-hitbox.height) {
+        if (hitbox.y<0||hitbox.y+hitbox.height > Juego.HEIGHT-hitbox.height) {
             move(0, -velY);
         }
 
