@@ -2,7 +2,6 @@ package pruebasMovimiento;
 
 import herramientas.ManipulacionDatos;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -12,6 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Objects;
 
 import static herramientas.ExtraerDatosJson.extraerValorJson;
 import static herramientas.ExtraerDatosJson.salidasMapa;
@@ -36,6 +39,9 @@ public class Juego extends JPanel implements ActionListener {
     static private BufferedImage imageBufferJuego;             //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage UI;                            //spriteSheet UI
+    static private BufferedImage spriteSheetJuego;             //spriteSheet del terreno
+    static private UI UI;                            //spriteSheet UI
+    //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
 
     //Atributos de camara
     static public int offSetX = 0;
@@ -43,7 +49,7 @@ public class Juego extends JPanel implements ActionListener {
 
     //Atributos del juego
     static private int TIMERDELAY = 20;        //Delay del timer
-    static private Timer mainTimer;            //Declaracion de un timer
+    static public Timer mainTimer;            //Declaracion de un timer
     public static ArrayList<Room> salas;
     private static HashMap<String,Salida> salidasJuego;
     protected static LinkedList<Entity> entitiesJuego;
@@ -93,9 +99,13 @@ public class Juego extends JPanel implements ActionListener {
 
 
 
-        //INICIALIZACION DE ENTITIES
-        player = new Player(200, 200, 20, entitiesJuego);
 
+        //INICIALIZACION DE ENTITIES
+        player = new Player(400, 400, 20, entitiesJuego);
+
+        //INICIACION DE LA UI (siempre despies del player)
+
+        UI = new UI(player);
 
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
@@ -121,6 +131,9 @@ public class Juego extends JPanel implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        imageBufferJuego = roomInicio.backgroundSala;
+        imageBufferDetailsJuego = roomInicio.detailsSala;
+
 
         mainTimer = new Timer(TIMERDELAY, this);
         mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
@@ -283,7 +296,13 @@ public class Juego extends JPanel implements ActionListener {
 
         //TERCER PINTADA: DETALLES
         graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
-        graphics2D.drawImage(UI,0,0,null);
+        graphics2D.drawImage(UI.getUIImage(),0,0,null);
+        Graphics2D nuevosGraphs = (Graphics2D) this.getGraphics();
+
+        UI.drawBarra(graphics2D, "vida", player);
+        UI.drawBarra(graphics2D, "energia",player);
+        UI.drawBarra(graphics2D, "armor",player);
+        UI.drawBarra(graphics2D, "exp",player);
 
     }
 

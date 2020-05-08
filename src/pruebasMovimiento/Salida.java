@@ -9,6 +9,7 @@ public class Salida {
     private Salida conexion;
     private Room origen;
 
+
     public Salida(Rectangle area) {
         this.area = area;
     }
