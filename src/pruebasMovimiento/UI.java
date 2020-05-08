@@ -29,8 +29,9 @@ public class UI {
 
      */
 
-
+    static boolean map;
     BufferedImage UIImage;
+    BufferedImage UIImageMap;
     Player player;
     double danyobloq, vidaMaxima, energiaMax, expMax;
     Rectangle energiaTotRect, experienciaTotRect, vidaTotalRect, armorTotRect;
@@ -42,10 +43,12 @@ public class UI {
 
         try {
             UIImage = ImageIO.read(new File("res/img/UI_juego.png"));
+            UIImageMap = ImageIO.read(new File("res/img/UI_juego_map.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         stroke2 = new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 2.0f, new float[]{10f, 7f}, 3.0f);
+        map = false;
 
         //INICIAMOS TODOS LOS RECTANGULOS DE PARAMETROS MAXIMOS SOLO
         this.player = player;
@@ -72,7 +75,7 @@ public class UI {
         switch (tipo) {
 
             case "vida":
-                Rectangle vidaActual = new Rectangle(40, 5, (int) ((double) player.hp / vidaMaxima * 100) + 2, 22);
+                Rectangle vidaActual = new Rectangle(40, 5, (int) ((double) p.hp / vidaMaxima * 100) + 2, 22);
 
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
                 g.draw(vidaTotalRect);
@@ -86,7 +89,7 @@ public class UI {
 
             case "armor":
 
-                danyobloq = 1.0 - (100.0 / (100.0 + (double) player.getArmorInt()));
+                danyobloq = 1.0 - (100.0 / (100.0 + (double) p.getArmorInt()));
 
                 //System.out.println(danyobloq);
 
@@ -107,13 +110,13 @@ public class UI {
             case "energia":
 
 
-                if (player.getEnergia() <= 0){
+                if (p.getEnergia() <= 0) {
                     g.draw(energiaTotRect);
                     g.setStroke(defStroke);
                     break;
                 }
 
-                Rectangle energAct = new Rectangle(40, 62, (int) ((double) player.getEnergia() / energiaMax * 100) + 2, 22);
+                Rectangle energAct = new Rectangle(40, 62, (int) ((double) p.getEnergia() / energiaMax * 100) + 2, 22);
 
 
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
@@ -128,8 +131,17 @@ public class UI {
                 break;
 
             case "exp":
-                Rectangle expActual = new Rectangle(40, 92, (int) ((double) player.getExperiencia() * 10) + 2, 23);
 
+
+                Rectangle expActual = new Rectangle(40, 92, (int) ((double) p.getExperiencia() * 10) + 2, 23);
+                if (expActual.getWidth() >= experienciaTotRect.getWidth()) {
+
+
+                    expActual.setSize(0, expActual.height);
+                    p.experiencia = 0;
+                    p.level++;
+
+                }
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
                 g.draw(experienciaTotRect);
 
@@ -138,16 +150,35 @@ public class UI {
                 g.setPaint(Color.GREEN);
                 g.fill(expActual);
                 g.draw(expActual);
+                g.setStroke(defStroke);
+                g.setPaint(Color.BLACK);
+
+                g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+                g.drawString(p.getLevel() + "", 55, 146);
                 break;
             default:
                 break;
 
+
         }
-
-
     }
 
     public BufferedImage getUIImage() {
         return UIImage;
+    }
+
+    public BufferedImage draw(Graphics2D graphics2D) {
+
+        drawBarra(graphics2D, "vida", player);
+        drawBarra(graphics2D, "energia",player);
+        drawBarra(graphics2D, "armor",player);
+        drawBarra(graphics2D, "exp",player);
+
+
+        if (map) return UIImageMap;
+
+        return UIImage;
+
+
     }
 }

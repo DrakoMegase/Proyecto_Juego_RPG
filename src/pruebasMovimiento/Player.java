@@ -16,7 +16,8 @@ public class Player extends Entity {
     private long tiempo=0;
     private int armorInt;
     private int energia;
-    private int experiencia;
+    protected int experiencia;
+    protected int level = 1;
 
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
@@ -53,6 +54,14 @@ public class Player extends Entity {
 
     public int getExperiencia() {
         return experiencia;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public void update() {
@@ -238,11 +247,16 @@ public class Player extends Entity {
                  }
                 break;
 
+            case KeyEvent.VK_M:
+
+                UI.map =! UI.map;
+                break;
+
             case KeyEvent.VK_F:
 
 
 
-                hp -= 1;
+                //hp -= 1;
                 energia -=2;
                 experiencia += 1;
                 //TODO sistema niveles.
