@@ -2,6 +2,7 @@ package pruebasMovimiento;
 
 import herramientas.ManipulacionDatos;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -40,7 +41,7 @@ public class Juego extends JPanel implements ActionListener {
     static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage UI;                            //spriteSheet UI
     static private BufferedImage spriteSheetJuego;             //spriteSheet del terreno
-    static private UI UI;                            //spriteSheet UI
+    static private UI ui;                            //spriteSheet UI
     //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
 
     //Atributos de camara
@@ -105,7 +106,7 @@ public class Juego extends JPanel implements ActionListener {
 
         //INICIACION DE LA UI (siempre despies del player)
 
-        UI = new UI(player);
+        ui = new UI(player);
 
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
@@ -131,8 +132,8 @@ public class Juego extends JPanel implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imageBufferJuego = roomInicio.backgroundSala;
-        imageBufferDetailsJuego = roomInicio.detailsSala;
+        imageBufferJuego = inicio.backgroundSala;
+        imageBufferDetailsJuego = inicio.detailsSala;
 
 
         mainTimer = new Timer(TIMERDELAY, this);
@@ -296,13 +297,13 @@ public class Juego extends JPanel implements ActionListener {
 
         //TERCER PINTADA: DETALLES
         graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
-        graphics2D.drawImage(UI.getUIImage(),0,0,null);
+        graphics2D.drawImage(ui.getUIImage(),0,0,null);
         Graphics2D nuevosGraphs = (Graphics2D) this.getGraphics();
 
-        UI.drawBarra(graphics2D, "vida", player);
-        UI.drawBarra(graphics2D, "energia",player);
-        UI.drawBarra(graphics2D, "armor",player);
-        UI.drawBarra(graphics2D, "exp",player);
+        ui.drawBarra(graphics2D, "vida", player);
+        ui.drawBarra(graphics2D, "energia",player);
+        ui.drawBarra(graphics2D, "armor",player);
+        ui.drawBarra(graphics2D, "exp",player);
 
     }
 
