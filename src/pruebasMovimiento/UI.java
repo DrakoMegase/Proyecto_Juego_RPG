@@ -69,6 +69,10 @@ public class UI {
         return minimapa;
     }
 
+    public static Rectangle getMapa() {
+        return mapa;
+    }
+
     void drawBarra(Graphics2D g, String tipo, Player p) {
 
 

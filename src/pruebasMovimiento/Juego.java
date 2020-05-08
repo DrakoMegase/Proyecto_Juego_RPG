@@ -38,6 +38,7 @@ public class Juego extends JPanel implements ActionListener {
     static private BufferedImage spriteSheetJuego;             //spriteSheet del terreno
     static private UI ui;                                       //spriteSheet UI
     static private Rectangle uiRecMinimap;
+    static private Rectangle map;
     //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
     Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
     Stroke strokeAuxiliar;     //Esto sirve para hacer los rectangulos (las lineas y eso)
@@ -122,6 +123,7 @@ public class Juego extends JPanel implements ActionListener {
 
         ui = new UI(player);
         uiRecMinimap = ui.getMinimapa();
+        map = ui.getMapa();
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
         for (Room r : salas
@@ -367,6 +369,39 @@ public class Juego extends JPanel implements ActionListener {
                 }
             }
 
+            else if (ui.map) {
+                //CENTRO: 410,80
+                int offsetXMinimap = 240;
+                int offsetYMinimap = 230;
+
+                int casillacentroX = player.salaPlayer.x;
+                int casillacentroY = player.salaPlayer.y;
+
+
+                Rectangle mapa = new Rectangle(offsetXMinimap + ((r.x - casillacentroX) * 25), offsetYMinimap + ((r.y - casillacentroY) * 25), 20, 20);
+                //System.out.println(casillaMinimap);
+                if (map.contains(mapa)) {
+                    if (player.salaPlayer == r) {
+                        graphics2D.setPaint(Color.RED);
+                        graphics2D.draw(mapa);
+                        if (r.isClear()) {
+                            graphics2D.fill(mapa);
+                            continue;
+                        }
+                    }
+
+                    graphics2D.setPaint(Color.BLACK);
+                    if (r.isClear()) {
+                        graphics2D.fill(mapa);
+                    }
+                    graphics2D.draw(mapa);
+                    continue;
+                } else {
+//                graphics2D.setPaint(Color.BLACK);
+//                graphics2D.draw(casillaMinimap);
+
+                }
+            }
 
         }
     }
