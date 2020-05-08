@@ -336,5 +336,11 @@ public class Player extends Entity {
 
     }
 
+    public LinkedList<Entity> getAddEntities() {
+        return addEntities;
+    }
 
+    public void setAddEntities(LinkedList<Entity> addEntities) {
+        this.addEntities = addEntities;
+    }
 }

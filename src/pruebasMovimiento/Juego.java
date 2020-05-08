@@ -62,8 +62,8 @@ public class Juego extends JPanel implements ActionListener {
 
 
         //INICIALIZACION DE ENTITIES
-        player = new Player(400, 400, 20, entitiesJuego);
 
+        player = new Player(400, 400, 20, entitiesJuego);
 
         salas = new ArrayList<>();
         Room[][] level = MapGenerator.generateMap(12);
@@ -126,6 +126,9 @@ public class Juego extends JPanel implements ActionListener {
         map = ui.getMapa();
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
+
+        player.setAddEntities(entitiesJuego);
+
         for (Room r : salas
         ) {
 
@@ -215,6 +218,7 @@ public class Juego extends JPanel implements ActionListener {
         salidasJuego = room.salidas;
         //Añadimos al jugador
         entitiesJuego.add(player);
+        player.setAddEntities(entitiesJuego);
 
         player.setPos(400, 400);
 
