@@ -15,6 +15,7 @@ public class MapGenerator {
         Room[][] roomArray = new Room[mapLimit][mapLimit];
 
 
+
         int exits = 4;
         int start = mapLimit / 2;
         LinkedList<int[]> rooms = new LinkedList<>();
@@ -22,8 +23,11 @@ public class MapGenerator {
         rooms.add(startRoom);
         map[start][start][0] = 15;
         map[start][start][1] = 0;
-        roomArray[start][start]=new Room(15);
-        roomArray[start][start].salaClass=0;
+        Room firstRoom=new Room(15);
+        firstRoom.salaClass=0;
+        firstRoom.x=start;
+        firstRoom.y=start;
+        roomArray[start][start]=firstRoom;
 
 
         boolean shop = false, boss = false;
@@ -94,6 +98,8 @@ public class MapGenerator {
 
 
                             Room nuevaSala=new Room(roomVal);
+                            nuevaSala.x=room[0];
+                            nuevaSala.y=room[1];
                             map[room[0]][room[1]][0] = roomVal;
                             map[room[0]][room[1]][1] = val;
                             roomArray[room[0]][room[1]] =  nuevaSala;
