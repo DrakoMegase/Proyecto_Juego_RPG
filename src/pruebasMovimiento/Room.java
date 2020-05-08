@@ -29,12 +29,19 @@ public class Room {
     boolean clear;
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     static BufferedImage spriteSheet;
+    protected Player player;
 
     Room(int salaType) {
         this.salaType = salaType;
-        contador++;
         this.idSala = contador;
         salidas =new HashMap<>();
+
+        if (contador == 0){
+            player = Juego.player;
+        }
+        contador++;
+
+
     }
 
     Room(String rutaJsonRoom, String rutaSpriteSheet) {
@@ -68,7 +75,9 @@ public class Room {
         printBackground(backgroundSala, spriteInts);
         printBackgroundDetails(detailsSala, spriteInts);
 
-
+        if (contador == 0){
+            player = Juego.player;
+        }
 
         contador++;
         this.idSala = contador;
@@ -211,6 +220,10 @@ public class Room {
 
     public void setSalaClass(int salaClass) {
         this.salaClass = salaClass;
+    }
+
+    public boolean isClear() {
+        return clear;
     }
 
     @Override

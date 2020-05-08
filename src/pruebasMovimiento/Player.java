@@ -18,7 +18,7 @@ public class Player extends Entity {
     private int energia;
     protected int experiencia;
     protected int level = 1;
-
+    protected Room salaPlayer;
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);

@@ -29,12 +29,13 @@ public class UI {
 
      */
 
-    static boolean map;
+    public static boolean map;
     BufferedImage UIImage;
     BufferedImage UIImageMap;
     Player player;
     double danyobloq, vidaMaxima, energiaMax, expMax;
     Rectangle energiaTotRect, experienciaTotRect, vidaTotalRect, armorTotRect;
+    static protected Rectangle minimapa, mapa;
 
     Stroke stroke2;     //Esto sirve para hacer los rectangulos (las lineas y eso)
 
@@ -47,8 +48,10 @@ public class UI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        minimapa = new Rectangle(358,23,115,115);
+        mapa = new Rectangle(94,72,300,300);
         stroke2 = new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 2.0f, new float[]{10f, 7f}, 3.0f);
-        map = false;
 
         //INICIAMOS TODOS LOS RECTANGULOS DE PARAMETROS MAXIMOS SOLO
         this.player = player;
@@ -60,6 +63,10 @@ public class UI {
         this.energiaTotRect = new Rectangle(41, 63, 100, 20);
         this.experienciaTotRect = new Rectangle(41, 93, 100, 20);
 
+    }
+
+    public static Rectangle getMinimapa() {
+        return minimapa;
     }
 
     void drawBarra(Graphics2D g, String tipo, Player p) {
@@ -167,6 +174,21 @@ public class UI {
         return UIImage;
     }
 
+
+    public BufferedImage minimap(Graphics2D g){
+
+
+        if (map) {
+
+            g.draw(mapa);
+            return UIImageMap;
+        }
+
+        g.draw(minimapa);
+        return UIImage;
+
+    }
+
     public BufferedImage draw(Graphics2D graphics2D) {
 
         drawBarra(graphics2D, "vida", player);
@@ -174,10 +196,9 @@ public class UI {
         drawBarra(graphics2D, "armor",player);
         drawBarra(graphics2D, "exp",player);
 
+        return minimap(graphics2D);
 
-        if (map) return UIImageMap;
 
-        return UIImage;
 
 
     }
