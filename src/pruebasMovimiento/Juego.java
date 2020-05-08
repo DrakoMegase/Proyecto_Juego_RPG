@@ -49,7 +49,7 @@ public class Juego extends JPanel implements ActionListener {
     static public int offSetY = 0;
 
     //Atributos del juego
-    static private int TIMERDELAY = 20;        //Delay del timer
+    static private int TIMERDELAY = 10;        //Delay del timer
     static public Timer mainTimer;            //Declaracion de un timer
     public static ArrayList<Room> salas;
     private static HashMap<String,Salida> salidasJuego;

@@ -9,7 +9,7 @@ public class Player extends Entity {
     private int lastSpdX=0;
     private int lastSpdY=2;
     private LinkedList<Entity> addEntities;
-    private Weapon weapon;
+    private Weapon[] weapons=new Weapon[2];
     private Armor[] armor=new Armor[3];
     private int state=0;
     private long startTime=0;
@@ -31,9 +31,10 @@ public class Player extends Entity {
         canBeMoved=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
 
-        weapon=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,30,10);
-//        weapon=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15);
-//        weapon=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15);
+        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,30,10);
+        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,10);
+//        weapons=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15);
+//        weapons=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15);
         armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
         armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
         armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
@@ -79,6 +80,9 @@ public class Player extends Entity {
             case 2:
                 shoot();
                 break;
+            case 3:
+                shoot();
+                break;
         }
 
 
@@ -88,8 +92,8 @@ public class Player extends Entity {
 
     private void slash() {
         long actionTime=System.currentTimeMillis()- startTime;
-        int range=weapon.getAttackRange();
-        int width=weapon.getAttackWidth();
+        int range= weapons[0].getAttackRange();
+        int width= weapons[0].getAttackWidth();
         int knocback=5;
 
         if(actionTime>=280){
@@ -116,7 +120,7 @@ public class Player extends Entity {
             for (Entity entity:addEntities) {
                 if (!entity.equals(this)&&entity.hitbox.intersects(slash)){
                     System.out.println("DAMAGESS");
-                    entity.damage(weapon.getDamage());
+                    entity.damage(weapons[0].getDamage());
                     entity.push(lastSpdX*knocback,lastSpdY*knocback);
                 }
             }
@@ -151,12 +155,22 @@ public class Player extends Entity {
         }
 
         int multySpriteX=0;
-        if(state==0&&(velX!=0||velY!=0)){
-            multySpriteX=1+(int)((System.currentTimeMillis()/100)%8);
-        }else if(state==1){
-            multySpriteX=(int)((System.currentTimeMillis()-startTime)/40)%6;
-        }else if(state==2){
-            multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%7;
+
+        switch (state) {
+            case 0:
+                if(velX!=0||velY!=0) {
+                    multySpriteX=1+(int)((System.currentTimeMillis()/100)%8);
+                }
+                break;
+            case 1:
+                multySpriteX=(int)((System.currentTimeMillis()-startTime)/40)%6;
+                break;
+            case 2:
+                multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%7;
+                break;
+            case 3:
+                multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%13;
+                break;
         }
 
         // Width and height of sprite
@@ -176,8 +190,13 @@ public class Player extends Entity {
             }
         }
 
-        if(state==1){
-            weapon.draw(graphics2D,px,py,multySpriteX,multiSpriteY);
+        switch (state){
+            case 1:
+                weapons[0].draw(graphics2D,px,py,multySpriteX,multiSpriteY);
+                break;
+            case 3:
+                weapons[1].draw(graphics2D,px,py,multySpriteX,multiSpriteY);
+                break;
         }
 
     }
@@ -233,18 +252,25 @@ public class Player extends Entity {
                 }
                 break;
 
-            case KeyEvent.VK_J:
+            case KeyEvent.VK_U:
                 if(state==0){
                     state=2;
                     startTime =System.currentTimeMillis();
                 }
                 break;
 
-             case KeyEvent.VK_SPACE:
-                 if(state==0){
-                     state=1;
-                     startTime =System.currentTimeMillis();
-                 }
+            case KeyEvent.VK_J:
+                if(state==0){
+                    state=1;
+                    startTime =System.currentTimeMillis();
+                }
+                break;
+
+            case KeyEvent.VK_K:
+                if(state==0){
+                    state=3;
+                    startTime =System.currentTimeMillis();
+                }
                 break;
 
             case KeyEvent.VK_M:
