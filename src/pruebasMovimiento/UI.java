@@ -88,7 +88,7 @@ public class UI {
 
                 danyobloq = 1.0 - (100.0 / (100.0 + (double) player.getArmorInt()));
 
-                System.out.println(danyobloq);
+                //System.out.println(danyobloq);
 
                 Rectangle armorActual = new Rectangle(40, 32, (int) (danyobloq * 100 + 2), 22);
 
@@ -109,7 +109,8 @@ public class UI {
 
                 if (player.getEnergia() <= 0){
                     g.draw(energiaTotRect);
-                    return;
+                    g.setStroke(defStroke);
+                    break;
                 }
 
                 Rectangle energAct = new Rectangle(40, 62, (int) ((double) player.getEnergia() / energiaMax * 100) + 2, 22);
@@ -127,7 +128,7 @@ public class UI {
                 break;
 
             case "exp":
-                Rectangle expActual = new Rectangle(40, 93, (int) ((double) player.getExperiencia() * 10) + 2, 22);
+                Rectangle expActual = new Rectangle(40, 92, (int) ((double) player.getExperiencia() * 10) + 2, 23);
 
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
                 g.draw(experienciaTotRect);

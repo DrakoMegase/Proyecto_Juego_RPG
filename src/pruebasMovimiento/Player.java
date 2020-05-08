@@ -246,7 +246,7 @@ public class Player extends Entity {
                 energia -=2;
                 experiencia += 1;
                 //TODO sistema niveles.
-                move(this.velX * 8, this.velY * 8);
+                //move(this.velX * 8, this.velY * 8);
                 //TODO
 
 

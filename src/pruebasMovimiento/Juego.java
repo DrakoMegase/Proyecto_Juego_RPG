@@ -188,12 +188,12 @@ public class Juego extends JPanel implements ActionListener {
         //Limpiamos nuestras listas
         entitiesJuego.remove(player);
         entitiesJuego=room.entities;
-        entitiesJuego.add(player);
         salidasJuego=room.salidas;
         //Añadimos al jugador
         entitiesJuego.add(player);
 
         player.setPos(400, 400);
+
 
         Set<String> keySet=salidasJuego.keySet();
 
@@ -206,6 +206,8 @@ public class Juego extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        System.out.println(        mainTimer.getDelay());
 
         for (int i = 0; i < entitiesJuego.size();) {
             Entity entity = entitiesJuego.get(i);
@@ -304,6 +306,7 @@ public class Juego extends JPanel implements ActionListener {
         ui.drawBarra(graphics2D, "energia",player);
         ui.drawBarra(graphics2D, "armor",player);
         ui.drawBarra(graphics2D, "exp",player);
+
 
     }
 
