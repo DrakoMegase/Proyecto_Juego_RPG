@@ -7,21 +7,38 @@ public class Salida {
 
     private Rectangle area;
     private Salida conexion;
+    private Room origen;
 
     public Salida(Rectangle area) {
         this.area = area;
     }
 
+    Salida(Room origen, int val) {
+        this.origen = origen;
+        origen.salidas.put(""+val,this);
+    }
 
-    public Rectangle getArea() {
+    Rectangle getArea() {
         return area;
     }
 
-    public Salida getConexion() {
+    void setArea(Rectangle area) {
+        this.area = area;
+    }
+
+    Salida getConexion() {
         return conexion;
     }
 
-    public void setConexion(Salida conexion) {
+    void setConexion(Salida conexion) {
         this.conexion = conexion;
+    }
+
+    Room getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(Room origen) {
+        this.origen = origen;
     }
 }

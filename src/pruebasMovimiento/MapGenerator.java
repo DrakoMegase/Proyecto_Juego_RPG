@@ -7,21 +7,24 @@ import java.util.Scanner;
 
 public class MapGenerator {
 
-    static Room[][] roomArray;
 
-    public static int[][][] generateMap(int maxRoom) {
+    static Room[][] generateMap(int maxRoom) {
 
-        int[][][] map = new int[maxRoom][maxRoom][2];
-        roomArray = new Room[maxRoom][maxRoom];
+        int mapLimit=20;
+        int[][][] map = new int[mapLimit][mapLimit][2];
+        Room[][] roomArray = new Room[mapLimit][mapLimit];
 
 
         int exits = 4;
-        int start = maxRoom / 2;
+        int start = mapLimit / 2;
         LinkedList<int[]> rooms = new LinkedList<>();
         int[] startRoom = {start, start};
         rooms.add(startRoom);
         map[start][start][0] = 15;
         map[start][start][1] = 0;
+        roomArray[start][start]=new Room(15);
+        roomArray[start][start].salaClass=0;
+
 
         boolean shop = false, boss = false;
 
@@ -29,16 +32,18 @@ public class MapGenerator {
         for (int i = 0; i < rooms.size(); i++) {
             int roomX = rooms.get(i)[0];
             int roomY = rooms.get(i)[1];
+            Room salaActual=roomArray[roomX][roomY];
 
             boolean[] booleans = numToBool(map[roomX][roomY][0]);
             if (map[roomX][roomY][1] != 0) {
                 booleans[map[roomX][roomY][1] - 1] = false;
                 if (!shop && rooms.size() > start && (int) (Math.random() * 2) == 1) {
                     map[roomX][roomY][1] = 2;
+                    roomArray[roomX][roomY].salaClass=2;
                     shop = true;
-                    System.out.println("Tiendecita");
                 } else {
                     map[roomX][roomY][1] = 1;
+                    roomArray[roomX][roomY].salaClass=1;
                 }
             }
 
@@ -71,13 +76,13 @@ public class MapGenerator {
                     if (room[0] < 0) {
                         map[roomX][roomY][0] -= 1;
                         exits--;
-                    } else if (room[0] >= maxRoom) {
+                    } else if (room[0] >= mapLimit) {
                         map[roomX][roomY][0] -= 2;
                         exits--;
                     } else if (room[1] < 0) {
                         map[roomX][roomY][0] -= 4;
                         exits--;
-                    } else if (room[1] >= maxRoom) {
+                    } else if (room[1] >= mapLimit) {
                         map[roomX][roomY][0] -= 8;
                         exits--;
                     } else {
@@ -88,61 +93,79 @@ public class MapGenerator {
 
 
 
+                            Room nuevaSala=new Room(roomVal);
                             map[room[0]][room[1]][0] = roomVal;
                             map[room[0]][room[1]][1] = val;
-                            roomArray[room[0]][room[1]] =  nuevasala(roomVal);
+                            roomArray[room[0]][room[1]] =  nuevaSala;
                             exits += -2 + numToExits(roomVal);
+
+                            Salida salidaActual= new Salida(salaActual,j+1);
+                            Salida nuevaSalida= new Salida(nuevaSala,val);
+
+                            salidaActual.setConexion(nuevaSalida);
+                            nuevaSalida.setConexion(salidaActual);
+
 
                             if (!limit) {
                                 rooms.add(room);
                             } else if (!boss) {
                                 map[room[0]][room[1]][1] = 3;
+                                roomArray[room[0]][room[1]].salaClass=3;
                                 boss = true;
-                                System.out.println("Boss");
                             } else {
                                 map[room[0]][room[1]][1] = 1;
+                                roomArray[room[0]][room[1]].salaClass=1;
                             }
 
                         } else {
                             boolean[] nextRoom = numToBool(map[room[0]][room[1]][0]);
                             if (!nextRoom[val - 1]) {
                                 map[room[0]][room[1]][0] += Math.pow(2, 3 - (val - 1));
+
+                                Room nuevaSala=roomArray[room[0]][room[1]];
+
+                                nuevaSala.salaType+= Math.pow(2, 3 - (val - 1));
+
+                                Salida salidaActual= new Salida(salaActual,j+1);
+                                Salida nuevaSalida= new Salida(nuevaSala,val);
+
+                                salidaActual.setConexion(nuevaSalida);
+                                nuevaSalida.setConexion(salidaActual);
+
                                 exits -= 2;
                             } else {
+                                Room nuevaSala=roomArray[room[0]][room[1]];
+                                Salida salidaActual= new Salida(salaActual,j+1);
+                                Salida nuevaSalida= new Salida(nuevaSala,val);
+                                salidaActual.setConexion(nuevaSalida);
+                                nuevaSalida.setConexion(salidaActual);
                                 exits--;
                             }
                         }
                     }
-                    /*for (int y = 0; y < 12; y++) {
-                        for (int x = 0; x < 12; x++) {
-                            System.out.print(map[x][y][0]+"\t");
-                        }
-                        System.out.print("\n");
-                    }
-
-                    System.out.println();
-
-                    for (int y = 0; y < 12; y++) {
-                        for (int x = 0; x < 12; x++) {
-                            System.out.print(map[x][y][1]+"\t");
-                        }
-                        System.out.print("\n");
-                    }
-
-                    System.out.println();
-                    Scanner scanner=new Scanner(System.in);
-                    scanner.nextLine();*/
                 }
             }
 
 
         }
+        /*for (int i = 0; i < roomArray.length ; i++) {
+            for (int j = 0; j <roomArray[i].length ; j++) {
 
-        return map;
+
+                if (roomArray[j][i] == null){
+                    System.out.print("0\t");
+                }else System.out.print(roomArray[j][i].getSalaType() + "\t");
+
+
+            }
+            System.out.println();
+        }*/
+
+        return roomArray;
     }
 
     private static Room nuevasala(int salaType) {
-        Room r = new Room("res/jsonsMapasPruebas/0001.json","res/img/terrain_atlas.png");
+        Room r = new Room("res/jsonsMapasPruebas/"+salaType+".json","res/img/terrain_atlas.png");
         r.setSalaType(salaType);
 
         return r;
@@ -195,75 +218,6 @@ public class MapGenerator {
             }
         }
         return 8 * nums[0] + 4 * nums[1] + 2 * nums[2] + nums[3];
-
-    }
-
-
-    public static ArrayList<Room> cargarSalasNivel(ArrayList<Room> salas, int maxRoom, String spriteSheet) {
-
-
-        int[][][] map = generateMap(maxRoom);
-
-        Room[][] mapaRooms = new Room[maxRoom][maxRoom];
-
-
-
-
-
-
-
-        return salas;
-    }
-
-
-    public static void main(String[] args) {
-
-        int[][][] map = generateMap(12);
-
-        System.out.println("GENERACION MAPA RANDOM");
-        //Puertas sala
-        for (int y = 0; y < 12; y++) {
-            for (int x = 0; x < 12; x++) {
-                System.out.print(map[x][y][0] + "\t");
-            }
-            System.out.print("\n");
-        }
-
-        System.out.println();
-
-        //Tipos sala
-        for (int y = 0; y < 12; y++) {
-            for (int x = 0; x < 12; x++) {
-                System.out.print(map[x][y][1] + "\t");
-            }
-            System.out.print("\n");
-        }
-
-
-        ArrayList<Room>salas = new ArrayList<>();
-        //System.out.println(cargarSalasNivel(salas, 12, "res/img/terrain_atlas.png"));
-
-
-        System.out.println("  ");
-        for (int i = 0; i < roomArray.length ; i++) {
-            for (int j = 0; j <roomArray[i].length ; j++) {
-
-
-                if (roomArray[i][j] == null){
-                    System.out.print("0\t");
-                }else System.out.print(roomArray[i][j].getSalaType() + "\t");
-
-
-            }
-            System.out.println("");
-        }
-
-
-//        System.out.println(numToExits(13));
-
-//        System.out.println(Arrays.toString(numToBool(7)));
-
-//        System.out.println(generateNum(3,false));
 
     }
 

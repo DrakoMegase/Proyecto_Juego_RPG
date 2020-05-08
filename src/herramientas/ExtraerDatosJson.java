@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 final public class ExtraerDatosJson {
 
@@ -243,8 +244,8 @@ final public class ExtraerDatosJson {
     }
 
 
-    public static ArrayList<Salida>salidasMapa(String ruta){
-        ArrayList<Salida> salidaArrayList = new ArrayList<>();
+    public static HashMap<String,Salida> salidasMapa(String ruta){
+        HashMap<String,Salida> salidaHashMap = new HashMap<>();
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
@@ -260,6 +261,7 @@ final public class ExtraerDatosJson {
 
 
         int aa = 0;
+        Salida salida;
         JSONArray jsonArray = (JSONArray) arrayADevolver.get("layers");
         for (Object o:jsonArray
         ) {
@@ -283,13 +285,16 @@ final public class ExtraerDatosJson {
                     int height = (int) Double.parseDouble(jsonObjectArrayObjects.get("height").toString());
                     int x = (int) Double.parseDouble(jsonObjectArrayObjects.get("x").toString());
                     int y = (int) Double.parseDouble(jsonObjectArrayObjects.get("y").toString());
+                    String key = jsonObjectArrayObjects.get("type").toString();
 
                     //System.out.println("x  " + x + " y  " + y  + "  width "  + width + " height " + height);
 
                     if (width <= 0) width = 1;
                     if (height <= 0) height = 1;
 
-                    salidaArrayList.add(new Salida(new Rectangle(x,y,width,height)));
+                    salida=new Salida(new Rectangle(x,y,width,height));
+
+                    salidaHashMap.put(key,salida);
 
 
                 }
@@ -301,7 +306,7 @@ final public class ExtraerDatosJson {
 
 
 
-        return salidaArrayList;
+        return salidaHashMap;
     }
 
 
@@ -312,8 +317,8 @@ final public class ExtraerDatosJson {
 
 
 
-        //System.out.println(salidasMapa("res/jsonsMapasPruebas/1110.json"));
-        System.out.println(objetosMapa("res/jsonsMapasPruebas/0001.json"));
+        //System.out.println(salidasMapa("res/jsonsMapasPruebas/14.json"));
+        System.out.println(objetosMapa("res/jsonsMapasPruebas/1.json"));
         //System.out.println(ManipulacionDatos.rectanglesToEntityObjects(rectangleArrayList, "res/json/mapa6.json"));
 
 

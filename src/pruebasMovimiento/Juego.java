@@ -4,16 +4,14 @@ import herramientas.ManipulacionDatos;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 import static herramientas.ExtraerDatosJson.extraerValorJson;
 import static herramientas.ExtraerDatosJson.salidasMapa;
@@ -37,9 +35,7 @@ public class Juego extends JPanel implements ActionListener {
     //Atributos graficos
     static private BufferedImage imageBufferJuego;             //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
-    static private BufferedImage spriteSheetJuego;             //spriteSheet del terreno
     static private BufferedImage UI;                            //spriteSheet UI
-    //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
 
     //Atributos de camara
     static public int offSetX = 0;
@@ -49,14 +45,31 @@ public class Juego extends JPanel implements ActionListener {
     static private int TIMERDELAY = 20;        //Delay del timer
     static private Timer mainTimer;            //Declaracion de un timer
     public static ArrayList<Room> salas;
-    private static LinkedList<Salida> salidasJuego;
+    private static HashMap<String,Salida> salidasJuego;
     protected static LinkedList<Entity> entitiesJuego;
-    protected static LinkedList<Entity> addEntitiesJuego;
 
     static Rectangle slash;
 
     //Constructor de la clase Juego
     public Juego(String rutaJson, String rutaSpriteSheet) {
+
+        salas = new ArrayList<>();
+        Room[][] level= MapGenerator.generateMap(12);
+        Room inicio=null;
+        Room sala=null;
+        for (int i = 0; i < level.length; i++) {
+            for (int j = 0; j < level[i].length; j++) {
+                if(level[i][j]!=null){
+                    sala=level[i][j];
+                    sala.inicializarSala();
+                    salas.add(sala);
+                    if(sala.salaClass==0){
+                        inicio=sala;
+                    }
+                }
+            }
+        }
+
 
         //Definimos atributos para su uso en ventana.
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJson, "tileheight"));
@@ -66,7 +79,7 @@ public class Juego extends JPanel implements ActionListener {
         HEIGHT = ROWS * TILESIZE;
 
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
-        setSize(WIDTH, HEIGHT);
+//        setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
         setBackground(Color.black);
         setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
@@ -74,18 +87,17 @@ public class Juego extends JPanel implements ActionListener {
 
 
         //INICIALIZACION DE LAS LISTAS QUE USAREMOS
-        entitiesJuego = new LinkedList<>();
-        addEntitiesJuego = new LinkedList<>();
-        salidasJuego = new LinkedList<>();
-        salas = new ArrayList<>();
+        entitiesJuego = inicio.entities;
+        salidasJuego = inicio.salidas;
+
+
+
 
         //INICIALIZACION DE ENTITIES
         player = new Player(200, 200, 20, entitiesJuego);
 
 
         //CARGAR DATOS EN LAS LISTAS
-        ManipulacionDatos.rectanglesToEntityObjects(rutaJson, entitiesJuego);
-        salidasJuego.addAll(salidasMapa(rutaJson));
         entitiesJuego.add(player);
 
 //        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
@@ -98,17 +110,12 @@ public class Juego extends JPanel implements ActionListener {
 
         //Cargar datos salas.
 
-        cargarSalasNivel(salas);
-
-
 
         addKeyListener(new KeyAdapt(player));
 
-        Room roomInicio = new Room(rutaJson, rutaSpriteSheet);
-        salas.add(roomInicio);
 
-        imageBufferJuego = roomInicio.backgroundSala;
-        imageBufferDetailsJuego = roomInicio.detailsSala;
+        imageBufferJuego = inicio.backgroundSala;
+        imageBufferDetailsJuego = inicio.detailsSala;
         try {
             UI = ImageIO.read(new File("res/img/UI.png"));
         } catch (IOException e) {
@@ -123,7 +130,6 @@ public class Juego extends JPanel implements ActionListener {
     private ArrayList<Room> cargarSalasNivel(ArrayList<Room> salas) {
 
 
-        int [][][] map = generateMap(12);
 
 
 
@@ -166,18 +172,21 @@ public class Juego extends JPanel implements ActionListener {
         imageBufferDetailsJuego = room.detailsSala;
 
         //Limpiamos nuestras listas
-        entitiesJuego.clear();
-        salidasJuego.clear();
+        entitiesJuego.remove(player);
+        entitiesJuego=room.entities;
+        entitiesJuego.add(player);
+        salidasJuego=room.salidas;
         //Añadimos al jugador
         entitiesJuego.add(player);
-        //Añadimos todas las nuevas entities y salidas a la nueva sala.
-        entitiesJuego.addAll(room.entities);
-        entitiesJuego.removeIf(Objects::isNull);
-        salidasJuego.addAll(room.salidas);
-        salidasJuego.removeIf(Objects::isNull);
 
         player.setPos(400, 400);
 
+        Set<String> keySet=salidasJuego.keySet();
+
+        for(String key:keySet){
+            System.out.println(key+" "+salidasJuego.get(key).getConexion());
+        }
+        System.out.println();
 
     }
 
@@ -213,11 +222,12 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         if(salidasJuego!=null) {
-
-            for (int i = 0; i < salidasJuego.size() ; i++) {
-                if (player.hitbox.intersects(salidasJuego.get(i).getArea())) {
-                    System.out.println("POLLA");
-                    Room room2 = new Room("res/jsonsMapasPruebas/1111.json","resources/terrain_atlas.png");
+            Set<String> keys=salidasJuego.keySet();
+            Salida salida;
+            for (String key : keys){
+                salida=salidasJuego.get(key);
+                if (salida!=null&&player.hitbox.intersects(salida.getArea())) {
+                    Room room2 = salida.getConexion().getOrigen();
                     cargarSala(room2);
 
                 }
@@ -253,7 +263,10 @@ public class Juego extends JPanel implements ActionListener {
             //graphics2D.draw(entity.hitbox);
         }
 
-        for (Salida salida : salidasJuego){
+        Set<String> keys=salidasJuego.keySet();
+        Salida salida;
+        for (String key : keys){
+            salida=salidasJuego.get(key);
             Rectangle rectSalida = (Rectangle) salida.getArea().clone();
             rectSalida.x -= offSetX;
             rectSalida.y -= offSetY;
@@ -276,9 +289,9 @@ public class Juego extends JPanel implements ActionListener {
 
 
     public static void main(String[] args) {
-        Juego juego = new Juego("res/jsonsMapasPruebas/0001.json","resources/terrain_atlas.png");
+        Juego juego = new Juego("res/jsonsMapasPruebas/1.json","resources/terrain_atlas.png");
         JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
-        frame.setSize(500, 500);                                                   //Tamaño de la ventana
+        frame.setSize(500, 529);                                                   //Tamaño de la ventana
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                             //Accion cuando cerramos la ventana
         frame.setResizable(false);                                                        //Negamos que la ventana pueda ser modificada en tamaño
         frame.add(juego);
