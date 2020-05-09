@@ -76,13 +76,13 @@ public class Entity implements Comparable<Entity> {
 
         if (img.contains(":")) {
             /**
-             * img:tipo:xSprite:ySprite:width:height
+             * img:tipo:xSprite:ySprite:width:height:nFrames
              * tipo 0=imagen unica, 1=animacion unica, 2=animaciones para cada direccion
              *
              */
             String[] split = img.split(":");
             this.img = getImg(split[0]);
-            spritesPos = new int[5];
+            spritesPos = new int[6];
             for (int i = 0; i < spritesPos.length; i++) {
                 spritesPos[i] = Integer.parseInt(split[i + 1]);
             }
@@ -100,6 +100,7 @@ public class Entity implements Comparable<Entity> {
 
     void damage(int dmg) {
         if (canBeDamaged&&!damageWait) {
+            System.out.println(name+": ouch");
             hp -= dmg;
             damageTime=System.currentTimeMillis();
             damageWait=true;
@@ -160,7 +161,7 @@ public class Entity implements Comparable<Entity> {
 
         int multyMov = 0;
         if (spritesPos[0] != 0 && (velX != 0 || velY != 0)) {
-            multyMov = (int) Math.abs(System.currentTimeMillis() / 150) % 3;
+            multyMov = (int) Math.abs(System.currentTimeMillis() / 150) % spritesPos[5];
         }
 
         // Width and height of sprite

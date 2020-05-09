@@ -9,6 +9,8 @@ public class Enemy extends Entity{
     private Player player;
     private int velMov;
     private int movPath;
+    private int type;
+    private int time;
     private int spinMult=1;
 
     public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov, int movPath) {
@@ -35,6 +37,10 @@ public class Enemy extends Entity{
         }
 
         adjustMovement();
+
+        if(player.hitbox.intersects(hitbox)){
+            player.damage(5);
+        }
 
         if(hp<=0){
             remove=true;
@@ -101,7 +107,7 @@ public class Enemy extends Entity{
                 break;
             case 1:
                 int distance=CompareNearEntities.distance(hitbox.x,hitbox.y,player.hitbox.x,player.hitbox.y);
-                int enemyDist=50;
+                int enemyDist=150;
                 int tolerancia=3;
                 if(distance>enemyDist+tolerancia){
                     //System.out.println("lejos");
@@ -133,15 +139,24 @@ public class Enemy extends Entity{
                     //System.out.println("medio "+velX+"-"+velY);
                     if(player.hitbox.x>=hitbox.x&&player.hitbox.y>=hitbox.y){
                         velY=-velMov*spinMult;
-                    }else if(player.hitbox.x>=hitbox.x&&player.hitbox.y<hitbox.y){
+                    }else if(player.hitbox.x>=hitbox.x){
                         velX=-velMov*spinMult;
-                    }else if(player.hitbox.x<hitbox.x&&player.hitbox.y>=hitbox.y){
+                    }else if(player.hitbox.y>=hitbox.y){
                         velX=velMov*spinMult;
-                    }else if(player.hitbox.x<hitbox.x&&player.hitbox.y<hitbox.y){
+                    }else{
                         velY=velMov*spinMult;
                     }
 
                 }
+                break;
+            case 2:
+                if(System.currentTimeMillis()/3000%2==0){
+                    movPath=0;
+                }else {
+                    movPath=1;
+                }
+                adjustMovement();
+                movPath=2;
         }
     }
 }

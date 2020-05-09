@@ -7,12 +7,13 @@ public class Projectile extends Entity{
 
     private Entity creator;
     LinkedList<Entity> entities;
-    int WIDTH = Juego.WIDTH;
-    int HEIGHT = Juego.HEIGHT;
+    final int WIDTH = Juego.WIDTH;
+    final int HEIGHT = Juego.HEIGHT;
+    int damage;
 
 
 
-    public Projectile(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, int velX, int velY, Entity creator,    LinkedList<Entity> entities) {
+    public Projectile(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, int velX, int velY, Entity creator, LinkedList<Entity> entities, int damage) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
         this.velX=velX;
         this.velY=velY;

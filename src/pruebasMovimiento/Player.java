@@ -43,6 +43,8 @@ public class Player extends Entity {
         this.armorInt = 100;
         this.energia = 10;
         this.experiencia = 0;
+
+        canBeDamaged=true;
     }
 
     public int getArmorInt() {
@@ -78,7 +80,7 @@ public class Player extends Entity {
                 slash();
                 break;
             case 2:
-                shoot();
+                skill();
                 break;
             case 3:
                 shoot();
@@ -135,12 +137,36 @@ public class Player extends Entity {
 
         if(actionTime>=480){
             state=0;
-            int shootX=hitbox.x+hitbox.width/3;
-            int shootY=hitbox.y-hitbox.width*3;
 
-            addEntities.add(new Projectile(shootX,shootY,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
-            addEntities.add(new Projectile(shootX+lastSpdY*10,shootY+lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
-            addEntities.add(new Projectile(shootX-lastSpdY*10,shootY-lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
+            int modX=Math.abs(lastSpdX)/2;
+            int modY=Math.abs(lastSpdY)/2;
+
+
+            String img="img/projectiles/flecha.png:2:0:0:64:64:1";
+
+
+            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+        }
+    }
+
+
+    private void skill(){
+        long actionTime=System.currentTimeMillis()- startTime;
+
+        if(actionTime>=480){
+            state=0;
+
+            int modX=Math.abs(lastSpdX)/2;
+            int modY=Math.abs(lastSpdY)/2;
+            String img="img/projectiles/flecha.png:2:0:0:64:64:1";
+
+            int mod=20;
+
+            addEntities.add(new Projectile(x+mod,y+mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x+mod,y-mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x-mod,y+mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x-mod,y-mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+
         }
     }
 

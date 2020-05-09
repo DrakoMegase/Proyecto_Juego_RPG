@@ -140,12 +140,12 @@ public class Juego extends JPanel implements ActionListener {
 
         //CARGAR ENEMIGOS
 
-//        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
-//        entitiesJuego.add(new Enemy(500,300,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(500,150,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(150,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(300,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+//        entitiesJuego.add(new Enemy(200, 500, 20, "img/enemies.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+//        entitiesJuego.add(new Enemy(500,300,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(500,150,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(150,500,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(300,500,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(200, 500, 20, "img/enemies.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
 //
 
         //Cargar datos salas.
@@ -200,7 +200,7 @@ public class Juego extends JPanel implements ActionListener {
         Las salas estan formadas por 3 elementos (a grosso modo):
         1.El background (una BufferedImage)
         2.Los detalles (donde el personaje se pinta antes que estos) Otra bufferedImage
-        3.Todos los entities, aqui tenemos tanto los obstaculos como los enemigos y el jugador.
+        3.Todos los entities, aqui tenemos tanto los obstaculos como los enemies y el jugador.
         */
 
 
