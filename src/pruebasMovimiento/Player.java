@@ -158,14 +158,14 @@ public class Player extends Entity {
 
             int modX=Math.abs(lastSpdX)/2;
             int modY=Math.abs(lastSpdY)/2;
-            String img="img/projectiles/flecha.png:2:0:0:64:64:1";
+            String img="img/projectiles/bola.png:1:0:0:64:64:4";
 
             int mod=20;
 
-            addEntities.add(new Projectile(x+mod,y+mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
-            addEntities.add(new Projectile(x+mod,y-mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
-            addEntities.add(new Projectile(x-mod,y+mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
-            addEntities.add(new Projectile(x-mod,y-mod,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x+mod,y+mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x-mod,y+mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x+mod,y-mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
+            addEntities.add(new Projectile(x-mod,y-mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
 
         }
     }
