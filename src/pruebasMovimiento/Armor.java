@@ -2,7 +2,7 @@ package pruebasMovimiento;
 
 import java.awt.*;
 
-public class Armor {
+public class Armor extends ItemProperties {
     private String name;
     private int armor;
     private int slot; //0 cabeza, 1 Cuerpo, 2 Piernas
@@ -10,7 +10,10 @@ public class Armor {
     private Image img;
     private Image icon;
 
+
+
     public Armor(String name, String img, int armor, int slot, int spriteSize) {
+        super(name, img, spriteSize, null);
         this.name = name;
         this.armor = armor;
         this.slot = slot;

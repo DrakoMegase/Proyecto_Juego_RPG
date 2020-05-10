@@ -2,6 +2,7 @@ package pruebasMovimiento;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Player extends Entity {
@@ -19,6 +20,10 @@ public class Player extends Entity {
     protected int experiencia;
     protected int level = 1;
     protected Room salaPlayer;
+    protected int dinero;
+
+
+
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);
@@ -31,8 +36,8 @@ public class Player extends Entity {
         canBeMoved=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
 
-        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,30,10);
-        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,10);
+        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,null,20,20);
+        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,null,20,20);
 //        weapons=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15);
 //        weapons=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15);
         armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
@@ -43,8 +48,7 @@ public class Player extends Entity {
         this.armorInt = 100;
         this.energia = 10;
         this.experiencia = 0;
-
-        canBeDamaged=true;
+        this.dinero = 0;
     }
 
     public int getArmorInt() {
@@ -80,7 +84,7 @@ public class Player extends Entity {
                 slash();
                 break;
             case 2:
-                skill();
+                shoot();
                 break;
             case 3:
                 shoot();
@@ -137,36 +141,12 @@ public class Player extends Entity {
 
         if(actionTime>=480){
             state=0;
+            int shootX=hitbox.x+hitbox.width/3;
+            int shootY=hitbox.y-hitbox.width*3;
 
-            int modX=Math.abs(lastSpdX)/2;
-            int modY=Math.abs(lastSpdY)/2;
-
-
-            String img="img/projectiles/flecha.png:2:0:0:64:64:1";
-
-
-            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
-        }
-    }
-
-
-    private void skill(){
-        long actionTime=System.currentTimeMillis()- startTime;
-
-        if(actionTime>=480){
-            state=0;
-
-            int modX=Math.abs(lastSpdX)/2;
-            int modY=Math.abs(lastSpdY)/2;
-            String img="img/projectiles/bola.png:1:0:0:64:64:4";
-
-            int mod=20;
-
-            addEntities.add(new Projectile(x+mod,y+mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
-            addEntities.add(new Projectile(x-mod,y+mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
-            addEntities.add(new Projectile(x+mod,y-mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
-            addEntities.add(new Projectile(x-mod,y-mod,20, img,20,21,25,25,true,false,lastSpdX*2,lastSpdY*2,this,addEntities,weapons[1].getDamage()));
-
+            addEntities.add(new Projectile(shootX,shootY,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
+            addEntities.add(new Projectile(shootX+lastSpdY*10,shootY+lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
+            addEntities.add(new Projectile(shootX-lastSpdY*10,shootY-lastSpdX*10,20,"img/proyectil.png",16,18,32,32,true,false,lastSpdX*2,lastSpdY*2,this,addEntities));
         }
     }
 
@@ -311,6 +291,7 @@ public class Player extends Entity {
                 //hp -= 1;
                 energia -=2;
                 experiencia += 1;
+                dinero +=1;
                 //TODO sistema niveles.
                 //move(this.velX * 8, this.velY * 8);
                 //TODO
@@ -326,6 +307,9 @@ public class Player extends Entity {
 
     }
 
+    public void setAddEntities(LinkedList<Entity> addEntities) {
+        this.addEntities = addEntities;
+    }
 
     void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
@@ -362,11 +346,5 @@ public class Player extends Entity {
 
     }
 
-    public LinkedList<Entity> getAddEntities() {
-        return addEntities;
-    }
 
-    public void setAddEntities(LinkedList<Entity> addEntities) {
-        this.addEntities = addEntities;
-    }
 }

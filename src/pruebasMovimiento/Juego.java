@@ -60,10 +60,9 @@ public class Juego extends JPanel implements ActionListener {
     //Constructor de la clase Juego
     public Juego(String rutaJson, String rutaSpriteSheet) {
 
-
         //INICIALIZACION DE ENTITIES
+        player = new Player(400, 400, 20, null);
 
-        player = new Player(400, 400, 20, entitiesJuego);
 
         salas = new ArrayList<>();
         Room[][] level = MapGenerator.generateMap(12);
@@ -117,7 +116,8 @@ public class Juego extends JPanel implements ActionListener {
         //INICIALIZACION DE LAS LISTAS QUE USAREMOS
         entitiesJuego = inicio.entities;
         salidasJuego = inicio.salidas;
-
+        //DAMOS LAS ENTITIES AL PLAYER
+        player.setAddEntities(entitiesJuego);
 
         //INICIACION DE LA UI (siempre despies del player)
 
@@ -126,29 +126,36 @@ public class Juego extends JPanel implements ActionListener {
         map = ui.getMapa();
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
-
-        player.setAddEntities(entitiesJuego);
-
         for (Room r : salas
         ) {
-
-            if (r.player != null) player.salaPlayer = r;
-
+            if (r.player != null) {
+                player.salaPlayer = r;
+                r.setVisited(true);
+            }
 
         }
 
 
         //CARGAR ENEMIGOS
 
-//        entitiesJuego.add(new Enemy(200, 500, 20, "img/enemies.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
-//        entitiesJuego.add(new Enemy(500,300,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(500,150,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(150,500,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(300,500,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(200, 500, 20, "img/enemies.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+//        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
+//        entitiesJuego.add(new Enemy(500,300,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(500,150,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(150,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(300,500,20,"img/spritesheetTest.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
+//        entitiesJuego.add(new Enemy(200, 500, 20, "img/spritesheetTest.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
 //
 
         //Cargar datos salas.
+        //TODO
+        for (String s : player.salaPlayer.salidas.keySet()
+        ) {
+
+            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
+            r.setNear(true);
+
+            System.out.println(r);
+        }
 
 
         addKeyListener(new KeyAdapt(player));
@@ -200,7 +207,7 @@ public class Juego extends JPanel implements ActionListener {
         Las salas estan formadas por 3 elementos (a grosso modo):
         1.El background (una BufferedImage)
         2.Los detalles (donde el personaje se pinta antes que estos) Otra bufferedImage
-        3.Todos los entities, aqui tenemos tanto los obstaculos como los enemies y el jugador.
+        3.Todos los entities, aqui tenemos tanto los obstaculos como los enemigos y el jugador.
         */
 
 
@@ -218,7 +225,6 @@ public class Juego extends JPanel implements ActionListener {
         salidasJuego = room.salidas;
         //Añadimos al jugador
         entitiesJuego.add(player);
-        player.setAddEntities(entitiesJuego);
 
         player.setPos(400, 400);
 
@@ -272,13 +278,23 @@ public class Juego extends JPanel implements ActionListener {
                     Room room2 = salida.getConexion().getOrigen();
                     cargarSala(room2);
                     player.salaPlayer.player = null;
+                    room2.setVisited(true);
                     room2.player = player;
                     player.salaPlayer = room2;
+
 
                 }
             }
 
 
+        }
+        for (String s : player.salaPlayer.salidas.keySet()
+        ) {
+
+            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
+            r.setNear(true);
+
+            //System.out.println(r);
         }
 
 
@@ -339,6 +355,8 @@ public class Juego extends JPanel implements ActionListener {
         for (Room r : salas
         ) {
 
+
+            //DIBUJO DEL MINIMAPA (LOS RECTANGULITOS) (ROJO DONDE ESTA EL PLAYER, NEGROS LOS QUE NO HA VISITADO Y NEGROS RELLENOS LOS QUE SI)
             if (!ui.map) {
                 //CENTRO: 410,80
                 int offsetXMinimap = 410;
@@ -361,18 +379,20 @@ public class Juego extends JPanel implements ActionListener {
                     }
 
                     graphics2D.setPaint(Color.BLACK);
-                    if (r.isClear()) {
-                        graphics2D.fill(casillaMinimap);
+                    if (r.isVisited()) {
+                        if (r.isClear()) {
+                            graphics2D.setPaint(Color.BLACK);
+                            graphics2D.fill(casillaMinimap);
+                            continue;
+                        }
+                    } else if (r.isNear()) {
+                        graphics2D.setPaint(Color.gray);
+                        graphics2D.draw(casillaMinimap);
                     }
-                    graphics2D.draw(casillaMinimap);
-                    continue;
-                } else {
-//                graphics2D.setPaint(Color.BLACK);
-//                graphics2D.draw(casillaMinimap);
-
                 }
             }
 
+            //DIBUJO DEL MAPAAAAAAA (LOS RECTANGULITOS) (ROJO DONDE ESTA EL PLAYER, NEGROS LOS QUE NO HA VISITADO Y NEGROS RELLENOS LOS QUE SI)
             else if (ui.map) {
                 //CENTRO: 410,80
                 int offsetXMinimap = 240;
@@ -382,30 +402,42 @@ public class Juego extends JPanel implements ActionListener {
                 int casillacentroY = player.salaPlayer.y;
 
 
-                Rectangle mapa = new Rectangle(offsetXMinimap + ((r.x - casillacentroX) * 25), offsetYMinimap + ((r.y - casillacentroY) * 25), 20, 20);
+                Rectangle mapa = new Rectangle(offsetXMinimap + ((r.x - casillacentroX) * 20), offsetYMinimap + ((r.y - casillacentroY) * 20), 17, 17);
                 //System.out.println(casillaMinimap);
                 if (map.contains(mapa)) {
                     if (player.salaPlayer == r) {
-                        graphics2D.setPaint(Color.RED);
-                        graphics2D.draw(mapa);
+                        if (r.isNear()) {
+                            graphics2D.setPaint(Color.GREEN);
+                            graphics2D.draw(mapa);
+
+                        }
+                        if (r.isVisited()) {
+                            graphics2D.setPaint(Color.RED);
+                            graphics2D.draw(mapa);
+                            if (r.isClear()) {
+                                graphics2D.fill(mapa);
+                                continue;
+                            }
+                        }
+                    }
+                    //TODO
+                    graphics2D.setPaint(Color.BLACK);
+                    if (r.isVisited()) {
                         if (r.isClear()) {
+                            graphics2D.setPaint(Color.BLACK);
                             graphics2D.fill(mapa);
                             continue;
                         }
+                    } else if (r.isNear()) {
+                        graphics2D.setPaint(Color.gray);
+                        graphics2D.draw(mapa);
                     }
-
-                    graphics2D.setPaint(Color.BLACK);
-                    if (r.isClear()) {
-                        graphics2D.fill(mapa);
-                    }
-                    graphics2D.draw(mapa);
-                    continue;
-                } else {
-//                graphics2D.setPaint(Color.BLACK);
-//                graphics2D.draw(casillaMinimap);
 
                 }
+
             }
+//                graphics2D.setPaint(Color.BLACK);
+//                graphics2D.draw(casillaMinimap);
 
         }
     }

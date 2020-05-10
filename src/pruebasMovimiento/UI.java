@@ -161,12 +161,22 @@ public class UI {
                 g.setPaint(Color.GREEN);
                 g.fill(expActual);
                 g.draw(expActual);
-                g.setStroke(defStroke);
                 g.setPaint(Color.BLACK);
 
                 g.setFont(new Font("TimesRoman", Font.BOLD, 20));
                 g.drawString(p.getLevel() + "", 55, 146);
+                g.setStroke(defStroke);
+
                 break;
+
+            case "dinero":
+                g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+                g.drawString(p.dinero + "", 405, 467);
+                g.setStroke(defStroke);
+
+
+                break;
+
             default:
                 break;
 
@@ -199,6 +209,7 @@ public class UI {
         drawBarra(graphics2D, "energia",player);
         drawBarra(graphics2D, "armor",player);
         drawBarra(graphics2D, "exp",player);
+        drawBarra(graphics2D, "dinero",player);
 
         return minimap(graphics2D);
 

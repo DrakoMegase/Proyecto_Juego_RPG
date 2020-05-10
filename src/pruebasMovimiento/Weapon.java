@@ -2,7 +2,7 @@ package pruebasMovimiento;
 
 import java.awt.*;
 
-public class Weapon {
+public class Weapon extends ItemProperties{
     private String name;
     private int weaponType; //0=Melee 1=Ranged
     private int attackRange;
@@ -12,7 +12,10 @@ public class Weapon {
     private Image img;
     private Image icon;
 
-    public Weapon(String name, String img, int spriteSize, int attackRange, int attackWidth, int damage) {
+
+
+    public Weapon(String name, String img, int spriteSize, int attackRange, int attackWidth, int damage, Image icon) {
+        super(name, spriteSize, img, icon, new Rectangle(attackWidth,attackRange));
         this.name = name;
         this.attackRange = attackRange;
         this.attackWidth = attackWidth;
@@ -22,13 +25,16 @@ public class Weapon {
         this.img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
     }
 
-    public Weapon(String name, String img, int spriteSize, int damage) {
+    public Weapon(String name, String img, int spriteSize, int damage, Image icon, int attackRange, int attackWidth) {
+        super(name, spriteSize, img, icon, new Rectangle(attackWidth,attackRange));
         this.name = name;
         this.damage = damage;
         this.spriteSize = spriteSize;
         this.img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
         weaponType=1;
     }
+
+
 
     public void draw(Graphics2D graphics2D, int x, int y, int multiSpriteX, int multiSpriteY) {
 

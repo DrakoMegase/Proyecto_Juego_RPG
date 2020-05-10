@@ -30,6 +30,9 @@ public class Room {
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     static BufferedImage spriteSheet;
     protected Player player;
+    private ArrayList<ItemProperties>objetosMapa;
+    private boolean visited;
+    private boolean near;
 
     Room(int salaType) {
         this.salaType = salaType;
@@ -65,6 +68,7 @@ public class Room {
         detailsSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         entities = new LinkedList<>();
         salidas =new HashMap<>();
+
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
@@ -157,6 +161,22 @@ public class Room {
 
         return imageBuffer;
 
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public boolean isNear() {
+        return near;
+    }
+
+    public void setNear(boolean near) {
+        this.near = near;
     }
 
     BufferedImage printBackgroundDetails(BufferedImage imageBuffer, int spriteInts[][]) {
