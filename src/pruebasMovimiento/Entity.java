@@ -100,7 +100,6 @@ public class Entity implements Comparable<Entity> {
 
     void damage(int dmg) {
         if (canBeDamaged&&!damageWait) {
-            System.out.println(name+": ouch");
             hp -= dmg;
             damageTime=System.currentTimeMillis();
             damageWait=true;

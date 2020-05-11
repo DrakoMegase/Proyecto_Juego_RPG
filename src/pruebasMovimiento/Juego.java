@@ -6,8 +6,6 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +16,7 @@ import java.util.LinkedList;
 
 import static herramientas.ExtraerDatosJson.extraerValorJson;
 
-public class Juego extends JPanel implements ActionListener, KeyListener {
+public class Juego extends JPanel implements ActionListener {
 
 
     //Atributos del jugador.
@@ -132,7 +130,7 @@ public class Juego extends JPanel implements ActionListener, KeyListener {
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
 
-        player.setAddEntities(entitiesJuego);
+//        player.setAddEntities(entitiesJuego);
 
         for (Room r : salas
         ) {
@@ -181,7 +179,7 @@ public class Juego extends JPanel implements ActionListener, KeyListener {
 
 
         mainTimer = new Timer(TIMERDELAY, this);
-
+        mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
 
     }
@@ -305,6 +303,7 @@ public class Juego extends JPanel implements ActionListener, KeyListener {
 
             //System.out.println(r);
         }
+
 
         repaint();
 
@@ -451,11 +450,6 @@ public class Juego extends JPanel implements ActionListener, KeyListener {
     }
 
 
-    public void start(){
-        mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
-    }
-
-
     public static void main(String[] args) {
         Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
         JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
@@ -469,20 +463,4 @@ public class Juego extends JPanel implements ActionListener, KeyListener {
 
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println("aaa");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
-        player.keyPressed(e);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println(e.getKeyChar());
-        player.keyReleased(e);
-    }
 }

@@ -8,30 +8,38 @@ public class Weapon extends ItemProperties{
     private int attackRange;
     private int attackWidth;
     private int damage;
+    private int speed;
     private int spriteSize;
     private Image img;
     private Image icon;
 
 
 
-    public Weapon(String name, String img, int spriteSize, int attackRange, int attackWidth, int damage, Image icon) {
-        super(name, spriteSize, img, icon, new Rectangle(attackWidth,attackRange));
+    public Weapon(String name, String img, int spriteSize, int attackRange, int attackWidth, int damage, int speed, Image icon) {
+        super(name, spriteSize, img, icon, new Rectangle(0,0));
+//        super(name, spriteSize, img, icon, new Rectangle(icon.getWidth(null),icon.getHeight(null)));
         this.name = name;
         this.attackRange = attackRange;
         this.attackWidth = attackWidth;
+
+        this.speed=speed;
+
         this.damage = damage;
         weaponType=0;
         this.spriteSize=spriteSize;
         this.img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
     }
 
-    public Weapon(String name, String img, int spriteSize, int damage, Image icon, int attackRange, int attackWidth) {
-        super(name, spriteSize, img, icon, new Rectangle(attackWidth,attackRange));
+    public Weapon(String name, String img, int spriteSize, int damage, int speed, Image icon) {
+        super(name, spriteSize, img, icon, new Rectangle(0,0));
+//        super(name, spriteSize, img, icon, new Rectangle(icon.getWidth(null),icon.getHeight(null)));
         this.name = name;
         this.damage = damage;
         this.spriteSize = spriteSize;
         this.img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
         weaponType=1;
+        this.speed=speed;
+
     }
 
 
@@ -109,5 +117,13 @@ public class Weapon extends ItemProperties{
 
     public void setIcon(Image icon) {
         this.icon = icon;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

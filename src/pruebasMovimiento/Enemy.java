@@ -12,19 +12,21 @@ public class Enemy extends Entity{
     private int type;
     private int time;
     private int spinMult=1;
+    private int damage;
 
-    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov, int movPath) {
+    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov, int movPath, int damage) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
         this.player=player;
         this.velMov=velMov;
         this.movPath=movPath;
+        this.damage=damage;
     }
 
     public void update() {
         move(velX,velY);
         //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
-        if(damageWait&&System.currentTimeMillis()-damageTime>500){
+        if(damageWait&&System.currentTimeMillis()-damageTime>300){
             damageWait=false;
             damageTime=0;
         }
@@ -38,9 +40,6 @@ public class Enemy extends Entity{
 
         adjustMovement();
 
-        if(player.hitbox.intersects(hitbox)){
-            player.damage(5);
-        }
 
         if(hp<=0){
             remove=true;
@@ -59,8 +58,9 @@ public class Enemy extends Entity{
                 if(entity2 instanceof Enemy){
                     ((Enemy) entity2).spinMult*=-1;
                 }else if(entity2.canBeDamaged){
-                    entity2.damage(5);
+                    entity2.damage(damage);
                 }
+
 
                 if (!entity2.push(force[0], force[1])) {
 

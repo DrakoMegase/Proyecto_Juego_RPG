@@ -34,12 +34,14 @@ public class Player extends Entity {
         this.name="Player";
 
         canBeMoved=true;
+        canBeDamaged=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
 
-        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,null,20,20);
-        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,null,20,20);
-//        weapons=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15);
-//        weapons=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15);
+//        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,20,20,null);
+//        weapons[0]=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15,null);
+//        weapons[0]=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15,null);
+        weapons[0]=new Weapon("Espada Laser Azul", "img/weapons/glowsword_blue.png",192,42,78,15,1,null);
+        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,10,null);
         armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
         armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
         armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
@@ -74,6 +76,10 @@ public class Player extends Entity {
     public void update() {
 
 
+        if(damageWait&&System.currentTimeMillis()-damageTime>500){
+            damageWait=false;
+            damageTime=0;
+        }
 
         switch (state) {
             case 0:
@@ -97,14 +103,17 @@ public class Player extends Entity {
     }
 
     private void slash() {
+
+
         long actionTime=System.currentTimeMillis()- startTime;
         int range= weapons[0].getAttackRange();
         int width= weapons[0].getAttackWidth();
         int knocback=5;
 
-        if(actionTime>=280){
+        if(actionTime>=120*weapons[0].getSpeed()){
             state=0;
         }else{
+
             int modSizeX=Math.abs(lastSpdX)/2;
             int modSizeY=Math.abs(lastSpdY)/2;
 
@@ -121,6 +130,7 @@ public class Player extends Entity {
             }
 
             Rectangle slash=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,width*modSizeY+range*modSizeX,width*modSizeX+range*modSizeY);
+//            Rectangle slash=new Rectangle(400,400,width*modSizeY+range*modSizeX,width*modSizeX+range*modSizeY);
             Juego.slash=slash;
 
             for (Entity entity:addEntities) {
@@ -137,9 +147,9 @@ public class Player extends Entity {
 
     private void shoot(){
 
-        long actionTime=System.currentTimeMillis()- startTime;
+        long actionTime=System.currentTimeMillis()-startTime;
 
-        if(actionTime>=480){
+        if(actionTime>=20*weapons[1].getSpeed()){
             state=0;
 
             int modX=Math.abs(lastSpdX)/2;
@@ -172,13 +182,13 @@ public class Player extends Entity {
                 }
                 break;
             case 1:
-                multySpriteX=(int)((System.currentTimeMillis()-startTime)/40)%6;
+                multySpriteX=(int)((System.currentTimeMillis()-startTime)/20*weapons[0].getSpeed())%6;
                 break;
             case 2:
                 multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%7;
                 break;
             case 3:
-                multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%13;
+                multySpriteX=(int)((System.currentTimeMillis()-startTime)/20*weapons[1].getSpeed())%13;
                 break;
         }
 
@@ -323,21 +333,38 @@ public class Player extends Entity {
             case KeyEvent.VK_W:
                 if(velY<0) {
                     velY = 0;
+                    if(velX!=0){
+                        lastSpdY=0;
+                        lastSpdX=velX;
+                    }
                 }
-                break;
+
+                    break;
             case KeyEvent.VK_S:
                 if(velY>0) {
                     velY = 0;
+                    if(velX!=0){
+                        lastSpdY=0;
+                        lastSpdX=velX;
+                    }
                 }
                 break;
             case KeyEvent.VK_A:
                 if(velX<0) {
                     velX = 0;
+                    if(velY!=0){
+                        lastSpdY=velY;
+                        lastSpdX=0;
+                    }
                 }
                 break;
             case KeyEvent.VK_D:
                 if(velX>0) {
                     velX = 0;
+                    if(velY!=0){
+                        lastSpdY=velY;
+                        lastSpdX=0;
+                    }
                 }
                 break;
 

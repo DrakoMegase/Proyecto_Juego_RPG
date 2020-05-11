@@ -111,10 +111,15 @@ public class Room {
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
 
-        entities.add(new Enemy(200,200,40,"img/enemies/darksoldier.png:2:0:0:64:64:6",25,46,14,15,true,true,Juego.player,1,2));
-        entities.add(new Enemy(400,200,40,"img/enemies/darksoldier.png:2:0:0:64:64:6",25,46,14,15,true,true,Juego.player,1,2));
-        entities.add(new Enemy(200,400,40,"img/enemies/darksoldier.png:2:0:0:64:64:6",25,46,14,15,true,true,Juego.player,1,2));
-        entities.add(new Enemy(400,400,40,"img/enemies/darksoldier.png:2:0:0:64:64:6",25,46,14,15,true,true,Juego.player,1,2));
+        if(salaClass==1) {
+            int max=HEIGHT-100;
+            int min=100;
+
+            entities.add(new Enemy(min, min, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
+            entities.add(new Enemy(max, min, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
+            entities.add(new Enemy(min, max, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
+            entities.add(new Enemy(max, max, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
+        }
 
         HashMap<String,Salida> salidas1=salidasMapa(rutaJsonRoom);
         Set<String> keySet=salidas1.keySet();
