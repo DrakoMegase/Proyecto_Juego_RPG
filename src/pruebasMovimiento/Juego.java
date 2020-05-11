@@ -120,7 +120,7 @@ public class Juego extends JPanel implements ActionListener {
         entitiesJuego = inicio.entities;
         salidasJuego = inicio.salidas;
         //DAMOS LAS ENTITIES AL PLAYER
-        //player.setAddEntities(entitiesJuego);
+        player.setAddEntities(entitiesJuego);
 
         //INICIACION DE LA UI (siempre despies del player)
 
@@ -130,7 +130,7 @@ public class Juego extends JPanel implements ActionListener {
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
 
-        //player.setAddEntities(entitiesJuego);
+//        player.setAddEntities(entitiesJuego);
 
         for (Room r : salas
         ) {
@@ -231,7 +231,7 @@ public class Juego extends JPanel implements ActionListener {
         salidasJuego = room.salidas;
         //Añadimos al jugador
         entitiesJuego.add(player);
-        //player.setAddEntities(entitiesJuego);
+        player.setAddEntities(entitiesJuego);
 
         player.setPos(400, 400);
 
