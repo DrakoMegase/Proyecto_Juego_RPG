@@ -6,6 +6,8 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.util.LinkedList;
 
 import static herramientas.ExtraerDatosJson.extraerValorJson;
 
-public class Juego extends JPanel implements ActionListener {
+public class Juego extends JPanel implements ActionListener, KeyListener {
 
 
     //Atributos del jugador.
@@ -120,7 +122,7 @@ public class Juego extends JPanel implements ActionListener {
         entitiesJuego = inicio.entities;
         salidasJuego = inicio.salidas;
         //DAMOS LAS ENTITIES AL PLAYER
-        //player.setAddEntities(entitiesJuego);
+        player.setAddEntities(entitiesJuego);
 
         //INICIACION DE LA UI (siempre despies del player)
 
@@ -130,7 +132,7 @@ public class Juego extends JPanel implements ActionListener {
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
 
-        //player.setAddEntities(entitiesJuego);
+        player.setAddEntities(entitiesJuego);
 
         for (Room r : salas
         ) {
@@ -179,7 +181,7 @@ public class Juego extends JPanel implements ActionListener {
 
 
         mainTimer = new Timer(TIMERDELAY, this);
-        mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
+
 
 
     }
@@ -231,7 +233,7 @@ public class Juego extends JPanel implements ActionListener {
         salidasJuego = room.salidas;
         //Añadimos al jugador
         entitiesJuego.add(player);
-        //player.setAddEntities(entitiesJuego);
+        player.setAddEntities(entitiesJuego);
 
         player.setPos(400, 400);
 
@@ -303,7 +305,6 @@ public class Juego extends JPanel implements ActionListener {
 
             //System.out.println(r);
         }
-
 
         repaint();
 
@@ -450,6 +451,11 @@ public class Juego extends JPanel implements ActionListener {
     }
 
 
+    public void start(){
+        mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
+    }
+
+
     public static void main(String[] args) {
         Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
         JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
@@ -463,4 +469,20 @@ public class Juego extends JPanel implements ActionListener {
 
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("aaa");
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyChar());
+        player.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println(e.getKeyChar());
+        player.keyReleased(e);
+    }
 }
