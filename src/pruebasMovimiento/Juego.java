@@ -193,10 +193,8 @@ public class Juego extends JPanel implements ActionListener {
     }
 
 
-    public void cargarSala(Room room) {
+    public void cargarSala(Room room, String exit) {
 
-
-        //TODO peta por todos los lados
 
         /*
         Al cargar una sala utilizaremos el siguiente criterio:
@@ -223,7 +221,21 @@ public class Juego extends JPanel implements ActionListener {
         entitiesJuego.add(player);
         player.setAddEntities(entitiesJuego);
 
-        player.setPos(400, 400);
+        switch (exit){
+            case "2":
+                player.setPos(player.x,100);
+                break;
+            case "1":
+                player.setPos(player.x,HEIGHT-100-player.hitbox.height);
+                break;
+            case "4":
+                player.setPos(WIDTH-100-player.hitbox.width,player.y);
+                break;
+            case "3":
+                player.setPos(100,player.y);
+                break;
+
+        }
 
 
         Set<String> keySet = salidasJuego.keySet();
@@ -239,14 +251,24 @@ public class Juego extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
 
+        boolean clear=true;
+
         for (int i = 0; i < entitiesJuego.size(); ) {
             Entity entity = entitiesJuego.get(i);
             entity.update();
+            if(!player.salaPlayer.clear&&clear&&entity instanceof Enemy){
+                clear=false;
+            }
+
             if (entity.remove) {
                 entitiesJuego.remove(entity);
             } else {
                 i++;
             }
+        }
+
+        if(!player.salaPlayer.clear&&clear){
+            player.salaPlayer.clear=true;
         }
 
 
@@ -266,18 +288,19 @@ public class Juego extends JPanel implements ActionListener {
             return;
         }
 
-        if (salidasJuego != null) {
+        if (player.salaPlayer.clear&&salidasJuego != null) {
             Set<String> keys = salidasJuego.keySet();
             Salida salida;
             for (String key : keys) {
                 salida = salidasJuego.get(key);
                 if (salida != null && player.hitbox.intersects(salida.getArea())) {
                     Room room2 = salida.getConexion().getOrigen();
-                    cargarSala(room2);
+                    cargarSala(room2, key);
                     player.salaPlayer.player = null;
                     room2.setVisited(true);
                     room2.player = player;
                     player.salaPlayer = room2;
+
 
 
                 }
@@ -346,7 +369,6 @@ public class Juego extends JPanel implements ActionListener {
         graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
         graphics2D.drawImage(ui.draw(graphics2D), 0, 0, null);
 
-        player.salaPlayer.clear = true;
 
         for (Room r : salas
         ) {

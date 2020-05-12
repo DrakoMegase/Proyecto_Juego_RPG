@@ -40,9 +40,9 @@ public class Player extends Entity {
 
 //        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,20,20,null);
 //        weapons[0]=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15,null);
-//        weapons[0]=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15,null);
-        weapons[0]=new Weapon("Espada Laser Azul", "img/weapons/glowsword_blue.png",192,42,78,15,5,null);
-        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,5,null);
+        weapons[0]=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15,1,null);
+//        weapons[0]=new Weapon("Espada Laser Azul", "img/weapons/glowsword_blue.png",192,42,78,15,5,null);
+        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,1,null);
         armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
         armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
         armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
