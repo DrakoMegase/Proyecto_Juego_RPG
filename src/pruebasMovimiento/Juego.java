@@ -169,7 +169,7 @@ public class Juego extends JPanel implements ActionListener {
 
 
         mainTimer = new Timer(TIMERDELAY, this);
-        mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
+        //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
 
     }
@@ -293,7 +293,6 @@ public class Juego extends JPanel implements ActionListener {
 
             //System.out.println(r);
         }
-
 
         repaint();
 
@@ -449,8 +448,13 @@ public class Juego extends JPanel implements ActionListener {
         frame.add(juego);
         frame.setVisible(true);
         frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
+        juego.start();
 
 
     }
 
+    public void start() {
+
+        mainTimer.start();
+    }
 }
