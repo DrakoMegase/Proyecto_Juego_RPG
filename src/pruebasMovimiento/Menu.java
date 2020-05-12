@@ -13,9 +13,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Menu extends JFrame implements KeyListener {
-
-
+public class Menu extends JFrame {
+    static Juego juego;
+    final static String GAME = "SLOANEGATE";
+    final static int WIDTH = 512;
+    final static int HEIGHT = 573;
 
     public static void main(String[] args) {
 
@@ -23,45 +25,64 @@ public class Menu extends JFrame implements KeyListener {
         game.setVisible(true);
 
 
-
     }
 
     public Menu() throws HeadlessException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(1,1,500,529);
+        setBounds(0, 0, WIDTH, HEIGHT);
+        setTitle(GAME);
+        setResizable(false);
+        setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
+
+
         JPanel panelPadre = new JPanel();
-        panelPadre.setBorder(new EmptyBorder(5, 5, 5, 5));
+        panelPadre.setBorder(new EmptyBorder(0, 0, 0, 0));
         setContentPane(panelPadre);
         panelPadre.setLayout(null);
 
 
         JPanel backgroundPanel = new JPanel();
-        backgroundPanel.setBounds(0, 0, 501, 500);
+        backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
         panelPadre.add(backgroundPanel);
+
+        JButton nuevo_juego = new JButton("Nuevo juego");
+        nuevo_juego.setBounds(181, 300, 150, 30);
+        panelPadre.add(nuevo_juego);
+
+
+        JButton cargar_partida = new JButton("Cargar partida");
+        cargar_partida.setBounds(181, 345, 150, 30);
+        panelPadre.add(cargar_partida);
+
+
+        JButton highscores = new JButton("Mejores puntuaciones");
+        highscores.setBounds(181, 390, 150, 30);
+        panelPadre.add(highscores);
+
+        JButton sonido = new JButton("Sonido");
+        sonido.setBounds(181, 435, 150, 30);
+        panelPadre.add(sonido);
+
         backgroundPanel.setLayout(null);
 
-        JButton btnNewButton = new JButton("New game");
-        btnNewButton.setBounds(322, 112, 89, 23);
-        backgroundPanel.add(btnNewButton);
-        btnNewButton.addActionListener(new ActionListener() {
+
+        nuevo_juego.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                setFocusable(true);
                 remove(panelPadre);
                 remove(backgroundPanel);
                 repaint();
 
+                juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
+                juego.start();
 
-                Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
                 setContentPane(juego);
-                setFocusable(true);
                 validate();
                 juego.setVisible(true);
-                //TODO LAS PUTAS TECLAAAAAAAAAAAAAAAAAAS
-                setFocusTraversalKeysEnabled(false);
-                addKeyListener(juego);
-                juego.start();
-//                setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
+
+                addKeyListener(new KeyAdapt(Juego.player));
 
 
             }
@@ -70,31 +91,20 @@ public class Menu extends JFrame implements KeyListener {
 
 
 
+
+
         JLabel backgroundLabel;
         try {
             backgroundLabel = new JLabel(new ImageIcon(ImageIO.read(new File("res/img/interfazmenu/primerapantalla.png"))));
-            backgroundLabel.setBounds(0, 0, 500, 500);
+            backgroundLabel.setBounds(0, 0, WIDTH, HEIGHT);
             backgroundPanel.add(backgroundLabel);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println(e.getKeyChar());
 
-    }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
-    }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println(e.getKeyChar());
-        System.out.println("aaaa");
-    }
+
 }
