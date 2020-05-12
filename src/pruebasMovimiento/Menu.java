@@ -34,6 +34,8 @@ public class Menu extends JFrame {
         setResizable(false);
         setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(0, 0, WIDTH, HEIGHT);
 
         JPanel panelPadre = new JPanel();
         panelPadre.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -44,27 +46,28 @@ public class Menu extends JFrame {
         JPanel backgroundPanel = new JPanel();
         backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
         panelPadre.add(backgroundPanel);
+        backgroundPanel.setLayout(null);
+
 
         JButton nuevo_juego = new JButton("Nuevo juego");
-        nuevo_juego.setBounds(181, 300, 150, 30);
-        panelPadre.add(nuevo_juego);
+        nuevo_juego.setBounds(181, 200, 150, 30);
+        backgroundPanel.add(nuevo_juego);
 
 
         JButton cargar_partida = new JButton("Cargar partida");
-        cargar_partida.setBounds(181, 345, 150, 30);
-        panelPadre.add(cargar_partida);
+        cargar_partida.setBounds(181, 245, 150, 30);
+        backgroundPanel.add(cargar_partida);
 
 
         JButton highscores = new JButton("Mejores puntuaciones");
-        highscores.setBounds(181, 390, 150, 30);
-        panelPadre.add(highscores);
+        highscores.setBounds(181, 290, 150, 30);
+        backgroundPanel.add(highscores);
 
         JButton sonido = new JButton("Sonido");
-        sonido.setBounds(181, 435, 150, 30);
-        panelPadre.add(sonido);
+        sonido.setBounds(181, 335, 150, 30);
+        backgroundPanel.add(sonido);
 
         backgroundPanel.setLayout(null);
-
 
         nuevo_juego.addActionListener(new ActionListener() {
             @Override
@@ -91,20 +94,35 @@ public class Menu extends JFrame {
 
 
 
+        cargar_partida.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+
+                NuevaPartida n1 = new NuevaPartida();
+                remove(backgroundPanel);
+                remove(panelPadre);
+                add(n1);
+                setContentPane(n1);
+                n1.invalidate();
+                validate();
+
+
+            }
+        });
 
         JLabel backgroundLabel;
-        try {
-            backgroundLabel = new JLabel(new ImageIcon(ImageIO.read(new File("res/img/interfazmenu/primerapantalla.png"))));
+
+
+            Image a = new ImageIcon(getClass().getClassLoader().getResource("img/background.png"))
+                    .getImage();
+            backgroundLabel = new JLabel(new ImageIcon(a));
+
             backgroundLabel.setBounds(0, 0, WIDTH, HEIGHT);
             backgroundPanel.add(backgroundLabel);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
     }
-
-
-
 
 
 }
