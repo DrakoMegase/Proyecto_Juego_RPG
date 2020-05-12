@@ -87,7 +87,7 @@ public class Room {
         this.idSala = contador;
     }
 
-    void inicializarSala(){
+    void inicializarSala(int nivel){
 
         String rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
         String rutaSpriteSheet="res/img/terrain_atlas.png";
@@ -111,15 +111,33 @@ public class Room {
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
 
-        if(salaClass==1) {
-            int max=HEIGHT-100;
-            int min=100;
 
-            entities.add(new Enemy(min, min, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
-            entities.add(new Enemy(max, min, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
-            entities.add(new Enemy(min, max, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
-            entities.add(new Enemy(max, max, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, Juego.player, 1, 2, 5));
+        switch (salaClass) {
+            case 1:
+                int max=HEIGHT-100;
+                int min=100;
+                int extra=(int)(Math.random()*5);
+                for (int i = 0; i < 4+extra; i++) {
+                    int posx=max,posy=max;
+                    if(i%2==0){
+                        posx=min;
+                    }
+                    if((i/2)%2==0){
+                        posy=min;
+                    }
+
+                    entities.add(Enemy.createEnemy(nivel*2+(int)(Math.random()*2), posx, posy, Juego.player));
+                }
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+
         }
+
 
         HashMap<String,Salida> salidas1=salidasMapa(rutaJsonRoom);
         Set<String> keySet=salidas1.keySet();

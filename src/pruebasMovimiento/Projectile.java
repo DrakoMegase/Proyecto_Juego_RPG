@@ -27,7 +27,7 @@ public class Projectile extends Entity{
 
         boolean hit=false;
         for (Entity entity:entities) {
-            if (!entity.equals(this)&&!entity.equals(creator)&&!((entity instanceof Projectile)&&((Projectile)entity).creator.equals(creator))&&hitbox.intersects(entity.hitbox)){
+            if (!entity.equals(this)&&!entity.equals(creator)&&!(entity instanceof Projectile)&&!((creator instanceof Enemy)&&(entity instanceof Enemy))&&hitbox.intersects(entity.hitbox)){
                 entity.damage(5);
                 hit=true;
                 int knockback=5;

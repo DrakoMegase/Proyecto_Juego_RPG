@@ -9,17 +9,18 @@ public class Enemy extends Entity{
     private Player player;
     private int velMov;
     private int movPath;
-    private int type;
-    private int time;
+    private int id;
+    private long time;
     private int spinMult=1;
     private int damage;
 
-    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov, int movPath, int damage) {
+    public Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov, int movPath, int damage, int id) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
         this.player=player;
         this.velMov=velMov;
         this.movPath=movPath;
         this.damage=damage;
+        this.id=id;
     }
 
     public void update() {
@@ -45,6 +46,15 @@ public class Enemy extends Entity{
             remove=true;
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "Enemy{" +
+                "id=" + id +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 
     @Override
@@ -146,8 +156,49 @@ public class Enemy extends Entity{
                     }else{
                         velY=velMov*spinMult;
                     }
+                }
+
+                if(System.currentTimeMillis()-time>2500){
+                    int movX=0;
+                    int movY=0;
+                    int velPro=velMov+1;
+
+                    time=System.currentTimeMillis();
+
+                    if(player.hitbox.x>hitbox.x){
+                        movX=velPro;
+                    }else if(player.hitbox.x<hitbox.x){
+                        movX=-velPro;
+                    }
+
+                    if(player.hitbox.y>hitbox.y){
+                        movY=velPro;
+                    }else if(player.hitbox.y<hitbox.y){
+                        movY=-velPro;
+                    }
+
+                    Projectile projectile=null;
+                    String img="";
+                    switch (id){
+                        case 3:
+                            img="img/projectiles/bolaMarron.png:1:0:0:64:64:4";
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            break;
+                        case 5:
+                            img="img/projectiles/bolaRoja.png:1:0:0:64:64:4";
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            break;
+                        default:
+                            img="img/projectiles/bola.png:1:0:0:29:29:4";
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,player.getAddEntities(),damage);
+                    }
+
+
+
+                    player.getAddEntities().add(projectile);
 
                 }
+
                 break;
             case 2:
                 if(System.currentTimeMillis()/3000%2==0){
@@ -158,5 +209,43 @@ public class Enemy extends Entity{
                 adjustMovement();
                 movPath=2;
         }
+    }
+
+    /*
+    * 0:slime
+    * 1:golem
+    * 2:araña
+    * 3:escarabajo
+    * 4:calabera
+    * 5:caballero
+    * */
+    static Enemy createEnemy(int id, int posX, int posY, Player player){
+
+        Enemy enemy=null;
+
+        switch (id){
+            case 0:
+                enemy=new Enemy(posX, posY, 20, "img/enemies/enemies.png:1:48:0:16:16:3", 3, 11, 10, 5, true, true, player, 1, 0, 3, id);
+                break;
+            case 1:
+                enemy=new Enemy(posX, posY, 30, "img/enemies/enemies.png:2:0:64:32:32:3", 9, 22, 14, 9, true, true, player, 1, 0, 5, id);
+                break;
+            case 2:
+                enemy=new Enemy(posX, posY, 40, "img/enemies/spider11.png:2:0:0:64:64:7", 23, 29, 16, 16, true, true, player, 1, 0, 5, id);
+                break;
+            case 3:
+                enemy=new Enemy(posX, posY, 40, "img/enemies/beetle49.png:2:0:0:49:49:5", 18, 21, 14, 14, true, true, player, 1, 1, 5, id);
+                break;
+            case 4:
+                enemy=new Enemy(posX, posY, 40, "img/enemies/enemies.png:2:192:0:16:32:3", 3, 26, 9, 5, true, true, player, 1, 2, 5, id);
+                break;
+            case 5:
+                enemy=new Enemy(posX, posY, 40, "img/enemies/darksoldier.png:2:0:0:64:64:6", 25, 46, 14, 15, true, true, player, 1, 2, 5, id);
+                break;
+
+        }
+
+
+        return enemy;
     }
 }

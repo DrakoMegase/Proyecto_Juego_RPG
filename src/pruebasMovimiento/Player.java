@@ -12,9 +12,10 @@ public class Player extends Entity {
     private LinkedList<Entity> addEntities;
     private Weapon[] weapons=new Weapon[2];
     private Armor[] armor=new Armor[3];
+    private boolean canShoot=true;
     private int state=0;
+    private int skill=0;
     private long startTime=0;
-    private long tiempo=0;
     private int armorInt;
     private int energia;
     protected int experiencia;
@@ -40,8 +41,8 @@ public class Player extends Entity {
 //        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,20,20,null);
 //        weapons[0]=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15,null);
 //        weapons[0]=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15,null);
-        weapons[0]=new Weapon("Espada Laser Azul", "img/weapons/glowsword_blue.png",192,42,78,15,1,null);
-        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,10,null);
+        weapons[0]=new Weapon("Espada Laser Azul", "img/weapons/glowsword_blue.png",192,42,78,15,5,null);
+        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,5,null);
         armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
         armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
         armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
@@ -90,7 +91,7 @@ public class Player extends Entity {
                 slash();
                 break;
             case 2:
-                shoot();
+                skill();
                 break;
             case 3:
                 shoot();
@@ -99,6 +100,25 @@ public class Player extends Entity {
 
 
 
+
+    }
+
+    private void skill() {
+
+        long actionTime=System.currentTimeMillis()-startTime;
+
+        if(actionTime>=20*weapons[1].getSpeed()){
+            state=0;
+
+            int modX=Math.abs(lastSpdX)/2;
+            int modY=Math.abs(lastSpdY)/2;
+
+
+            String img="img/projectiles/flecha.png:2:0:0:64:64:1";
+
+
+            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,false,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+        }
 
     }
 
@@ -112,8 +132,7 @@ public class Player extends Entity {
 
         if(actionTime>=120*weapons[0].getSpeed()){
             state=0;
-        }else{
-
+        }else if(actionTime>=(120*weapons[0].getSpeed())-((120*weapons[0].getSpeed())/6)*2){
             int modSizeX=Math.abs(lastSpdX)/2;
             int modSizeY=Math.abs(lastSpdY)/2;
 
@@ -130,7 +149,6 @@ public class Player extends Entity {
             }
 
             Rectangle slash=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,width*modSizeY+range*modSizeX,width*modSizeX+range*modSizeY);
-//            Rectangle slash=new Rectangle(400,400,width*modSizeY+range*modSizeX,width*modSizeX+range*modSizeY);
             Juego.slash=slash;
 
             for (Entity entity:addEntities) {
@@ -140,6 +158,7 @@ public class Player extends Entity {
                     entity.push(lastSpdX*knocback,lastSpdY*knocback);
                 }
             }
+
         }
 
 
@@ -149,17 +168,16 @@ public class Player extends Entity {
 
         long actionTime=System.currentTimeMillis()-startTime;
 
-        if(actionTime>=20*weapons[1].getSpeed()){
+        if(actionTime>=200*weapons[1].getSpeed()){
             state=0;
-
-            int modX=Math.abs(lastSpdX)/2;
+            canShoot=true;
+        }else if(canShoot&&actionTime>=180*weapons[1].getSpeed()){
             int modY=Math.abs(lastSpdY)/2;
-
-
+            int modX=Math.abs(lastSpdX)/2;
             String img="img/projectiles/flecha.png:2:0:0:64:64:1";
+            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,false,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
 
-
-            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,true,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+            canShoot=false;
         }
     }
 
@@ -182,13 +200,14 @@ public class Player extends Entity {
                 }
                 break;
             case 1:
-                multySpriteX=(int)((System.currentTimeMillis()-startTime)/20*weapons[0].getSpeed())%6;
+                multySpriteX=(int)(((System.currentTimeMillis()-startTime)/(20*weapons[0].getSpeed()))%6);
+                System.out.println(System.currentTimeMillis()-startTime);
                 break;
             case 2:
-                multySpriteX=(int)((System.currentTimeMillis()-startTime)/60)%7;
+                multySpriteX=(int)(((System.currentTimeMillis()-startTime)/60)%7);
                 break;
             case 3:
-                multySpriteX=(int)((System.currentTimeMillis()-startTime)/20*weapons[1].getSpeed())%13;
+                multySpriteX=(int)(((System.currentTimeMillis()-startTime)/(20*weapons[1].getSpeed()))%10);
                 break;
         }
 
@@ -226,14 +245,6 @@ public class Player extends Entity {
         return pic;                                                                      //La convertimos a imagen
 
     }
-
-    public Rectangle createHitbox(){
-        int xMargin=img.getWidth(null)/6;
-        int yMargin=img.getHeight(null)/2;
-        int[] hitbox={xMargin,img.getWidth(null)-xMargin,yMargin,img.getHeight(null)};
-        return new Rectangle(x+xMargin,y+yMargin,img.getWidth(null)-xMargin*2,yMargin);
-    }
-
 
 
     void keyPressed(KeyEvent e) {
@@ -376,5 +387,7 @@ public class Player extends Entity {
 
     }
 
-
+    public LinkedList<Entity> getAddEntities() {
+        return addEntities;
+    }
 }

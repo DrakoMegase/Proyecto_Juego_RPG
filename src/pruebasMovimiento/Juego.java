@@ -31,6 +31,8 @@ public class Juego extends JPanel implements ActionListener {
     static public int ROWS;      //FILAS
     static public int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
+    static private int nivel=0;
+
     //Atributos graficos
     static private BufferedImage imageBufferJuego;             //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
@@ -62,13 +64,10 @@ public class Juego extends JPanel implements ActionListener {
 
         //INICIALIZACION DE ENTITIES
 
-        player = new Player(400, 400, 20, null);
-
-
         player = new Player(400, 400, 20, entitiesJuego);
 
         salas = new ArrayList<>();
-        Room[][] level = MapGenerator.generateMap(12);
+        Room[][] level = MapGenerator.generateMap(5*(1+nivel));
         Room inicio = null;
         Room sala = null;
         String[][] salasint = new String[level.length][level.length];
@@ -77,9 +76,9 @@ public class Juego extends JPanel implements ActionListener {
             for (int j = 0; j < level[i].length; j++) {
                 if (level[i][j] != null) {
                     sala = level[i][j];
-                    sala.inicializarSala();
+                    sala.inicializarSala(nivel);
                     salas.add(sala);
-                    salasint[sala.x][sala.y] = "[]";
+                    salasint[sala.x][sala.y] = "["+sala.salaClass+"]";
                     rectangles[sala.x][sala.y] = new Rectangle(200 + sala.x * 12, 200 + sala.y * 12, 8, 8);
                     if (sala.salaClass == 0) {
                         inicio = sala;
@@ -141,15 +140,6 @@ public class Juego extends JPanel implements ActionListener {
 
         }
 
-
-        //CARGAR ENEMIGOS
-
-//        entitiesJuego.add(new Enemy(200, 500, 20, "img/enemies.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
-//        entitiesJuego.add(new Enemy(500,300,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(500,150,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(150,500,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(300,500,20,"img/enemies.png:1:48:0:16:16",4,8,8,8,true,true,player,1,0));
-//        entitiesJuego.add(new Enemy(200, 500, 20, "img/enemies.png:2:192:0:16:32", 3, 10, 9, 11, true, true, player, 1, 1));
 //
 
         //Cargar datos salas.
