@@ -18,10 +18,12 @@ public class Menu extends JFrame {
     final static String GAME = "SLOANEGATE";
     final static int WIDTH = 512;
     final static int HEIGHT = 573;
+    static Menu game;
+
 
     public static void main(String[] args) {
+        game = new Menu();
 
-        Menu game = new Menu();
         game.setVisible(true);
 
 
@@ -60,7 +62,7 @@ public class Menu extends JFrame {
 
 
         JButton highscores = new JButton("Mejores puntuaciones");
-        highscores.setBounds(181, 290, 150, 30);
+        highscores.setBounds(171, 290, 170, 30);
         backgroundPanel.add(highscores);
 
         JButton sonido = new JButton("Sonido");
@@ -69,9 +71,11 @@ public class Menu extends JFrame {
 
         backgroundPanel.setLayout(null);
 
+
         nuevo_juego.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
 
                 setFocusable(true);
                 remove(panelPadre);
@@ -91,7 +95,6 @@ public class Menu extends JFrame {
             }
 
         });
-
 
 
         cargar_partida.addActionListener(new ActionListener() {
@@ -114,12 +117,12 @@ public class Menu extends JFrame {
         JLabel backgroundLabel;
 
 
-            Image a = new ImageIcon(getClass().getClassLoader().getResource("img/background.png"))
-                    .getImage();
-            backgroundLabel = new JLabel(new ImageIcon(a));
+        Image a = new ImageIcon(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png"))
+                .getImage();
+        backgroundLabel = new JLabel(new ImageIcon(a));
 
-            backgroundLabel.setBounds(0, 0, WIDTH, HEIGHT);
-            backgroundPanel.add(backgroundLabel);
+        backgroundLabel.setBounds(0, 0, WIDTH, HEIGHT);
+        backgroundPanel.add(backgroundLabel);
 
 
     }

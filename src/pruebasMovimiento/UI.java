@@ -1,7 +1,11 @@
 package pruebasMovimiento;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +33,22 @@ public class UI {
 
      */
 
+
+
+    /*
+    ESCAPE MENU:
+
+    BOTON 1:
+
+        GUARDAR Y SALIR
+
+    BOTON 2:
+
+        VOLVER AL JUEGO
+
+
+     */
+
     public static boolean map;
     BufferedImage UIImage;
     BufferedImage UIImageMap;
@@ -38,6 +58,10 @@ public class UI {
     static protected Rectangle minimapa, mapa;
 
     Stroke stroke2;     //Esto sirve para hacer los rectangulos (las lineas y eso)
+
+
+
+
 
 
     public UI(Player player) {
@@ -72,6 +96,8 @@ public class UI {
     public static Rectangle getMapa() {
         return mapa;
     }
+
+
 
     void drawBarra(Graphics2D g, String tipo, Player p) {
 

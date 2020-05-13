@@ -324,6 +324,17 @@ public class Player extends Entity {
 
                 break;
 
+            case KeyEvent.VK_ESCAPE:
+
+                Juego.menuEsc =! Juego.menuEsc;     //switch menu
+
+
+
+
+                System.out.println("Escape" + Juego.menuEsc);
+
+                break;
+
             default:
 
 

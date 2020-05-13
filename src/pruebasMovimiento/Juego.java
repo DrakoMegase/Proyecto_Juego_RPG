@@ -3,6 +3,7 @@ package pruebasMovimiento;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +38,7 @@ public class Juego extends JPanel implements ActionListener {
     static private BufferedImage imageBufferJuego;             //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage UI;                            //spriteSheet UI
+    static private BufferedImage escapeMenuImg;                            //menu escape
     static private BufferedImage spriteSheetJuego;             //spriteSheet del terreno
     static private UI ui;                                       //spriteSheet UI
     static private Rectangle uiRecMinimap;
@@ -44,6 +46,7 @@ public class Juego extends JPanel implements ActionListener {
     //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
     Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
     Stroke strokeAuxiliar;     //Esto sirve para hacer los rectangulos (las lineas y eso)
+    JPanel backgroundPanel;
 
     //Atributos de camara
     static public int offSetX = 0;
@@ -56,13 +59,20 @@ public class Juego extends JPanel implements ActionListener {
     private static HashMap<String, Salida> salidasJuego;
     protected static LinkedList<Entity> entitiesJuego;
     Rectangle[][] rectangles;
+    protected static boolean menuEsc;
+    protected static boolean paintSt;
 
+
+
+    Image imagenEscape;
     static Rectangle slash;
 
     //Constructor de la clase Juego
     public Juego(String rutaJson, String rutaSpriteSheet) {
 
         //INICIALIZACION DE ENTITIES
+
+
 
         player = new Player(400, 400, 20, entitiesJuego);
 
@@ -112,7 +122,15 @@ public class Juego extends JPanel implements ActionListener {
         setVisible(true);                                       //Hacemos la ventana visible
         setBackground(Color.black);
         setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+        setLayout(null);
+
         //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
+
+
+        //TODO
+        imagenEscape = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardar.png")))
+                .getImage();
+        backgroundPanel = new JPanel();
 
 
         //INICIALIZACION DE LAS LISTAS QUE USAREMOS
@@ -123,9 +141,16 @@ public class Juego extends JPanel implements ActionListener {
 
         //INICIACION DE LA UI (siempre despies del player)
 
+
+        //backgroundPanel = new JPanel();
         ui = new UI(player);
         uiRecMinimap = ui.getMinimapa();
         map = ui.getMapa();
+        try {
+            UI = ImageIO.read(new File("res/img/UI.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //CARGAR DATOS EN LAS LISTAS
         entitiesJuego.add(player);
 
@@ -141,6 +166,7 @@ public class Juego extends JPanel implements ActionListener {
         }
 
 //
+
 
         //Cargar datos salas.
         //TODO
@@ -160,7 +186,7 @@ public class Juego extends JPanel implements ActionListener {
         imageBufferJuego = inicio.backgroundSala;
         imageBufferDetailsJuego = inicio.detailsSala;
         try {
-            UI = ImageIO.read(new File("res/img/UI.png"));
+            escapeMenuImg = ImageIO.read(new File("res/img/guardar.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -317,6 +343,8 @@ public class Juego extends JPanel implements ActionListener {
             //System.out.println(r);
         }
 
+
+
         repaint();
 
     }
@@ -324,13 +352,26 @@ public class Juego extends JPanel implements ActionListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
+        if (menuEsc){
+
+            //TODO hacer un nuevo JPANEL y añadir ahi el menu de pausa.
+
+            escape(imagenEscape);
+            repaint();
+            return;
+        }
+        remove(backgroundPanel);
         camaraUpdate();
+        Graphics2D graphics2D = (Graphics2D) g;
 
 
         //PRIMERA PINTADA: FONDO
 
-        Graphics2D graphics2D = (Graphics2D) g;
         graphics2D.drawImage(imageBufferJuego, -offSetX, -offSetY, null);
+
+
+
 
         if (defStroke == null) {
             defStroke = graphics2D.getStroke();
@@ -454,12 +495,61 @@ public class Juego extends JPanel implements ActionListener {
                 }
 
             }
+
+
 //                graphics2D.setPaint(Color.BLACK);
 //                graphics2D.draw(casillaMinimap);
+
+
 
         }
     }
 
+    private void escape(Image image) {
+
+        setBorder(new EmptyBorder(0, 0, 0, 0));
+
+
+        backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
+        add(backgroundPanel);
+        backgroundPanel.setLayout(null);
+        backgroundPanel.setBackground(Color.black);
+
+
+
+        JButton guardar_y_salir = new JButton("Guardar y salir");
+        guardar_y_salir.setBounds(181, 250, 150, 30);
+        backgroundPanel.add(guardar_y_salir);
+        guardar_y_salir.setFocusable(false);
+
+        JButton volver_al_juego = new JButton("Volver al juego");
+        volver_al_juego.setBounds(181, 345, 150, 30);
+        backgroundPanel.add(volver_al_juego);
+        volver_al_juego.setFocusable(false);
+
+
+
+
+        volver_al_juego.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuEsc = false;
+            }
+        });
+
+
+
+        JLabel backgroundLabel;
+        Image a = new ImageIcon(image)
+                .getImage();
+        backgroundLabel = new JLabel(new ImageIcon(a));
+        backgroundLabel.setBounds(-140, -110, WIDTH, HEIGHT);
+        backgroundPanel.add(backgroundLabel);
+
+        repaint();
+
+
+    }
 
     public static void main(String[] args) {
         Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");

@@ -19,6 +19,9 @@ public class NuevaPartida extends JPanel {
         this.add(background);
 
 
+        JButton b1 = new JButton("G1");
+        b1.setBounds(62, 220, 70, 70);
+        background.add(b1);
 
     }
 
