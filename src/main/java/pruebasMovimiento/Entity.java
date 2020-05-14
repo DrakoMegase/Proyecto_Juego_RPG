@@ -287,6 +287,46 @@ public class Entity implements Comparable<Entity> {
         return force;
     }
 
+    public int getHp() {
+        return hp;
+    }
+
+    public int[] getSpritesPos() {
+        return spritesPos;
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    public boolean isCanBeMoved() {
+        return canBeMoved;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public boolean isCanBeDamaged() {
+        return canBeDamaged;
+    }
+
+    public boolean isDamageWait() {
+        return damageWait;
+    }
+
+    public long getDamageTime() {
+        return damageTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
     @Override
     public String toString() {
         return "Entity{" +

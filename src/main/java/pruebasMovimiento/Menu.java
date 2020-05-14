@@ -4,6 +4,10 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
+import sun.audio.AudioData;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import sun.audio.ContinuousAudioDataStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -35,6 +39,7 @@ public class Menu extends JFrame {
     }
 
     public Menu() throws HeadlessException {
+        musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
         setTitle(GAME);
@@ -106,8 +111,7 @@ public class Menu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-
-                NuevaPartida n1 = new NuevaPartida();
+                NuevaPartida n1 = new NuevaPartida(game, backgroundPanel, panelPadre);
                 remove(backgroundPanel);
                 remove(panelPadre);
                 add(n1);
@@ -178,6 +182,20 @@ public class Menu extends JFrame {
                 }
             });
 
+
+
+    }
+
+    void musica(String path){
+        InputStream music;
+
+        try {
+            music = new FileInputStream(new File(path));
+            AudioStream audios = new AudioStream(music);
+            AudioPlayer.player.start(audios);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }

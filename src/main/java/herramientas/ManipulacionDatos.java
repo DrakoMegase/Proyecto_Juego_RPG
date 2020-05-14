@@ -26,8 +26,7 @@ final public class ManipulacionDatos {
 
 
     public static void main(String[] args) {
-
-
+        
         LinkedList<Entity>entities = new LinkedList<>();
         rectanglesToEntityObjects("res/json/mapa6.json",entities);
         System.out.println(entities.size());

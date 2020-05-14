@@ -123,7 +123,7 @@ public class Juego extends JPanel implements ActionListener {
 
 
         //TODO
-        imagenEscape = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardar.png")))
+        imagenEscape = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardar1.png")))
                 .getImage();
         backgroundPanel = new JPanel();
 
@@ -142,7 +142,7 @@ public class Juego extends JPanel implements ActionListener {
         uiRecMinimap = UI.getMinimapa();
         map = UI.getMapa();
         try {
-            UIBuffImg = ImageIO.read(new File("res/img/UIBuffImg.png"));
+            UIBuffImg = ImageIO.read(new File("res/img/UI.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -560,8 +560,17 @@ public class Juego extends JPanel implements ActionListener {
 
     }
 
+
+
     void start() {
 
         mainTimer.start();
+    }
+
+
+    //GETTERS
+
+    public static Player getPlayer() {
+        return player;
     }
 }
