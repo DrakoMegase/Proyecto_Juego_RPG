@@ -1,6 +1,5 @@
 package herramientas;
 
-import org.w3c.dom.css.Rect;
 import pruebasMovimiento.Entity;
 
 import java.awt.*;

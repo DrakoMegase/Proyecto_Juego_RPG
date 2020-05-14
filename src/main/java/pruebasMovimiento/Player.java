@@ -12,6 +12,7 @@ public class Player extends Entity {
     private LinkedList<Entity> addEntities;
     private Weapon[] weapons=new Weapon[2];
     private Armor[] armor=new Armor[3];
+    static final Image ICONS =Toolkit.getDefaultToolkit().getImage(Weapon.class.getClassLoader().getResource("img/icons/icons.png"));
     private boolean canShoot=true;
     private int state=0;
     private int skill=0;
@@ -37,8 +38,8 @@ public class Player extends Entity {
         canBeDamaged=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
 
-        weapons[0]=Weapon.createWeapon(4);
-        weapons[1]=Weapon.createWeapon(6);
+        weapons[0]=Weapon.createWeapon(0);
+        weapons[1]=Weapon.createWeapon(5);
         armor[0]=Armor.createArmor(3);
         armor[1]=Armor.createArmor(7);
         armor[2]=Armor.createArmor(2);
@@ -397,5 +398,9 @@ public class Player extends Entity {
 
     Armor[] getArmor() {
         return armor;
+    }
+
+    Weapon[] getWeapons() {
+        return weapons;
     }
 }

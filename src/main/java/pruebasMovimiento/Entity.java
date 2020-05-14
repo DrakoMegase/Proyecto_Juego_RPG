@@ -1,6 +1,5 @@
 package pruebasMovimiento;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -17,7 +16,7 @@ public class Entity implements Comparable<Entity> {
     boolean canBeDamaged;
     boolean damageWait=false;
     long damageTime=0;
-    int[] spritesPos;
+    private int[] spritesPos;
     Rectangle hitbox;
     String name;
     private static int count = 0;
@@ -75,26 +74,25 @@ public class Entity implements Comparable<Entity> {
         name = "Entity: " + count++;
 
         if (img.contains(":")) {
-            /**
+            /*
              * img:tipo:xSprite:ySprite:width:height:nFrames
              * tipo 0=imagen unica, 1=animacion unica, 2=animaciones para cada direccion
              *
              */
             String[] split = img.split(":");
-            this.img = getImg(split[0]);
+            this.img = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(split[0]));
             spritesPos = new int[6];
             for (int i = 0; i < spritesPos.length; i++) {
                 spritesPos[i] = Integer.parseInt(split[i + 1]);
             }
 
         } else {
-            this.img = getImg(img);
+            this.img = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
         }
         this.canBeMoved = canBeMoved;
 
 
         hitbox = new Rectangle(x + hitX, y + hitY, hitWidth, hitHeight);
-
 
     }
 
@@ -127,14 +125,6 @@ public class Entity implements Comparable<Entity> {
         return x < 0 || x > Juego.HEIGHT - hitbox.width || y < 0 || y > Juego.WIDTH - hitbox.height;
     }
 
-    private Image getImg(String img) {
-
-        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
-
-        return pic;
-
-    }
-
     public void draw(Graphics2D graphics2D, int offSetX, int offSetY) {
         if (img != null) {
 
@@ -146,7 +136,7 @@ public class Entity implements Comparable<Entity> {
         }
     }
 
-    void drawAnimation(Graphics2D graphics2D, int offSetX, int offSetY) {
+    private void drawAnimation(Graphics2D graphics2D, int offSetX, int offSetY) {
         int multiOr = 0;
         if (spritesPos[0] > 1) {
             if (velY < 0) {
@@ -187,7 +177,7 @@ public class Entity implements Comparable<Entity> {
         this.hitbox = hitbox;
     }
 
-    public void setPos(int x, int y) {
+    void setPos(int x, int y) {
 
         int antiguaX = this.getX();
         int antiguay = this.getY();
@@ -226,13 +216,18 @@ public class Entity implements Comparable<Entity> {
 
 
     protected void checkCollisions(LinkedList<Entity> entities, int count) {
-        int[] force = null;
+        int[] force;
 
 
             for (Entity entity2 : entities) {
                 if (!this.equals(entity2) && entity2.canBeMoved && !(entity2 instanceof Projectile)) {
                     force = intersect(this, entity2);
                     if (force != null) {
+                        if(entity2 instanceof Enemy){
+                            Enemy enemy=(Enemy)entity2;
+                            damage(enemy.damage);
+                        }
+
                         if (!entity2.push(force[0], force[1])) {
                             this.push(-force[0], -force[1]);
                             if (force[0] == 0) {
@@ -262,7 +257,7 @@ public class Entity implements Comparable<Entity> {
     }
 
 
-    protected static int[] intersect(Entity p, Entity e) {
+    static int[] intersect(Entity p, Entity e) {
 
         int[] force = null;
 

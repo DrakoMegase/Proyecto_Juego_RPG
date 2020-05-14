@@ -12,8 +12,7 @@ public class Weapon extends ItemProperties{
     private int speed;
     private int spriteSize;
     private Image img;
-    private Image icon;
-    private static Image arrow=Toolkit.getDefaultToolkit().getImage(Weapon.class.getClassLoader().getResource("img/weapons/WEAPON_arrow.png"));
+    private static final Image ARROW =Toolkit.getDefaultToolkit().getImage(Weapon.class.getClassLoader().getResource("img/weapons/WEAPON_arrow.png"));
 
 
 
@@ -58,7 +57,7 @@ public class Weapon extends ItemProperties{
             // Coordinates of desired sprite image
             int i = 64 * multiSpriteX;
             int j = 64 * multiSpriteY;
-            graphics2D.drawImage(arrow, x, y, x + sw, y + sh, i, j, i + sw, j + sh, null);
+            graphics2D.drawImage(ARROW, x, y, x + sw, y + sh, i, j, i + sw, j + sh, null);
         }
 
         // Width and height of sprite
@@ -75,7 +74,13 @@ public class Weapon extends ItemProperties{
     }
 
     public void drawIcon(Graphics2D graphics2D, int x,int y){
-
+        // Width and height of sprite
+        int sw = 30;
+        int sh = 30;
+        // Coordinates of desired sprite image
+        int i = 30*id;
+        int j = 0;
+        graphics2D.drawImage(Player.ICONS, x,y, x+sw,y+sh, i, j, i+sw, j+sh, null);
     }
 
     public String getName() {
@@ -126,14 +131,6 @@ public class Weapon extends ItemProperties{
         this.img = img;
     }
 
-    public Image getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Image icon) {
-        this.icon = icon;
-    }
-
     int getSpeed() {
         return speed;
     }
@@ -157,7 +154,7 @@ public class Weapon extends ItemProperties{
 
         switch (id){
             case 0:
-                weapon=new Weapon("Dagita",id,"img/weapons/WEAPON_dagger.png",64,20,20,3,3,null);
+                weapon=new Weapon("Dagita",id,"img/weapons/WEAPON_dagger.png",64,20,20,3,2,null);
                 break;
             case 1:
                 weapon=new Weapon("Estoque",id,"img/weapons/WEAPON_rapier.png",192,42,78,6,4,null);
@@ -169,10 +166,10 @@ public class Weapon extends ItemProperties{
                 weapon=new Weapon("Maza",id,"img/weapons/mace_sheet.png",128,20,20,14,5,null);
                 break;
             case 4:
-                weapon=new Weapon("Sable",id,"img/weapons/sabre_sheet.png",128,42,78,10,3,null);
+                weapon=new Weapon("Sable",id,"img/weapons/sabre_sheet.png",128,20,20,10,2,null);
                 break;
             case 5:
-                weapon=new Weapon("Arco",id,"img/weapons/WEAPON_bow.png",128,3,2,null);
+                weapon=new Weapon("Arco",id,"img/weapons/WEAPON_bow.png",64,2,2,null);
                 break;
             case 6:
                 weapon=new Weapon("Arco Curvo",id,"img/weapons/recurvebow_sheet.png",128,6,2,null);
@@ -183,5 +180,9 @@ public class Weapon extends ItemProperties{
         }
 
         return weapon;
+    }
+
+    int getWeaponType() {
+        return weaponType;
     }
 }

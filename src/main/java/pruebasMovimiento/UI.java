@@ -244,12 +244,40 @@ public class UI {
 
     }
 
-    void drawArmor(Graphics2D graphics2D){
+    void drawIcons(Graphics2D graphics2D){
         Armor[] armors=player.getArmor();
         for (int i = 0; i < 3; i++) {
             if(armors[i]!=null){
                 armors[i].drawIcon(graphics2D,437,198+41*i);
             }
+        }
+
+        Weapon[] weapons=player.getWeapons();
+        for (int i = 0; i < 2; i++) {
+            if(weapons[i]!=null){
+                weapons[i].drawIcon(graphics2D,17+weapons[i].getWeaponType()*41,439);
+            }
+        }
+
+        for (int i = 0; i < 2; i++) {
+            drawSkillIcon(graphics2D,i,106+42*i,439);
+        }
+
+    }
+
+     private void drawSkillIcon(Graphics2D graphics2D, int id, int x, int y){
+        // Width and height of sprite
+        int sw = 30;
+        int sh = 30;
+        // Coordinates of desired sprite image
+        int i = 30*id;
+        int j = 30;
+        graphics2D.drawImage(Player.ICONS, x,y, x+sw,y+sh, i, j, i+sw, j+sh, null);
+
+        if(player.level<2+2*id){
+            i=0;
+            j=60;
+            graphics2D.drawImage(Player.ICONS, x,y, x+sw,y+sh, i, j, i+sw, j+sh, null);
         }
     }
 }

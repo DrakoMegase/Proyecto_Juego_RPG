@@ -37,10 +37,9 @@ public class Juego extends JPanel implements ActionListener {
     //Atributos graficos
     static private BufferedImage imageBufferJuego;             //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
     static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
-    static private BufferedImage UI;                            //spriteSheet UI
+    static private BufferedImage UIBuffImg;                            //spriteSheet UIBuffImg
     static private BufferedImage escapeMenuImg;                            //menu escape
-    static private BufferedImage spriteSheetJuego;             //spriteSheet del terreno
-    static private UI ui;                                       //spriteSheet UI
+    static private UI ui;                                       //spriteSheet UIBuffImg
     static private Rectangle uiRecMinimap;
     static private Rectangle map;
     //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
@@ -57,7 +56,6 @@ public class Juego extends JPanel implements ActionListener {
     private static ArrayList<Room> salas;
     private static HashMap<String, Salida> salidasJuego;
     private static LinkedList<Entity> entitiesJuego;
-    private Rectangle[][] rectangles;
     static boolean menuEsc;
     protected static boolean paintSt;
 
@@ -79,34 +77,32 @@ public class Juego extends JPanel implements ActionListener {
         Room[][] level = MapGenerator.generateMap(5*(1+nivel));
         Room inicio = null;
         Room sala;
-        String[][] salasint = new String[level.length][level.length];
-        rectangles = new Rectangle[level.length][level.length];
+//        String[][] salasint = new String[level.length][level.length];
         for (int i = 0; i < level.length; i++) {
             for (int j = 0; j < level[i].length; j++) {
                 if (level[i][j] != null) {
                     sala = level[i][j];
                     sala.inicializarSala(nivel);
                     salas.add(sala);
-                    salasint[sala.x][sala.y] = "["+sala.salaClass+"]";
-                    rectangles[sala.x][sala.y] = new Rectangle(200 + sala.x * 12, 200 + sala.y * 12, 8, 8);
+//                    salasint[sala.x][sala.y] = "["+sala.salaClass+"]";
                     if (sala.salaClass == 0) {
                         inicio = sala;
                     }
                 }
-                if (level[i][j] == null) salasint[i][j] = " ";
+//                if (level[i][j] == null) salasint[i][j] = " ";
 
             }
         }
 
 
-        for (int i = 0; i < salasint.length; i++) {
+        /*for (int i = 0; i < salasint.length; i++) {
             for (int j = 0; j < salasint.length; j++) {
 
                 System.out.print(salasint[j][i] + "\t");
 
             }
             System.out.println();
-        }
+        }*/
 
 
         //Definimos atributos para su uso en ventana.
@@ -138,15 +134,15 @@ public class Juego extends JPanel implements ActionListener {
         //DAMOS LAS ENTITIES AL PLAYER
         player.setAddEntities(entitiesJuego);
 
-        //INICIACION DE LA UI (siempre despies del player)
+        //INICIACION DE LA UIBuffImg (siempre despies del player)
 
 
         //backgroundPanel = new JPanel();
         ui = new UI(player);
-        uiRecMinimap = ui.getMinimapa();
-        map = ui.getMapa();
+        uiRecMinimap = UI.getMinimapa();
+        map = UI.getMapa();
         try {
-            UI = ImageIO.read(new File("res/img/UI.png"));
+            UIBuffImg = ImageIO.read(new File("res/img/UIBuffImg.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -409,7 +405,7 @@ public class Juego extends JPanel implements ActionListener {
         graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
         graphics2D.drawImage(ui.draw(graphics2D), 0, 0, null);
 
-        ui.drawArmor(graphics2D);
+        ui.drawIcons(graphics2D);
 
 
         for (Room r : salas
@@ -417,7 +413,7 @@ public class Juego extends JPanel implements ActionListener {
 
 
             //DIBUJO DEL MINIMAPA (LOS RECTANGULITOS) (ROJO DONDE ESTA EL PLAYER, NEGROS LOS QUE NO HA VISITADO Y NEGROS RELLENOS LOS QUE SI)
-            if (!ui.map) {
+            if (!UI.map) {
                 //CENTRO: 410,80
                 int offsetXMinimap = 410;
                 int offsetYMinimap = 80;
@@ -452,7 +448,7 @@ public class Juego extends JPanel implements ActionListener {
             }
 
             //DIBUJO DEL MAPAAAAAAA (LOS RECTANGULITOS) (ROJO DONDE ESTA EL PLAYER, NEGROS LOS QUE NO HA VISITADO Y NEGROS RELLENOS LOS QUE SI)
-            else if (ui.map) {
+            else{
                 //CENTRO: 410,80
                 int offsetXMinimap = 240;
                 int offsetYMinimap = 230;
