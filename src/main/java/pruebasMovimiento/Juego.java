@@ -21,16 +21,16 @@ public class Juego extends JPanel implements ActionListener {
 
 
     //Atributos del jugador.
-    public static Player player;                          //Declaracion de un player
+    static Player player;                          //Declaracion de un player
     static private int cuerpoPlayerX;
     static private int cuerpoPlayerY;
 
     //Atributos de pantalla
-    static public int WIDTH;       //COLUMNAS
-    static public int COLUMNS;       //COLUMNAS
-    static public int HEIGHT;      //FILAS
-    static public int ROWS;      //FILAS
-    static public int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
+    static int WIDTH;       //COLUMNAS
+    static int COLUMNS;       //COLUMNAS
+    static int HEIGHT;      //FILAS
+    static int ROWS;      //FILAS
+    static int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
     static private int nivel=0;
 
@@ -44,31 +44,30 @@ public class Juego extends JPanel implements ActionListener {
     static private Rectangle uiRecMinimap;
     static private Rectangle map;
     //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
-    Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
-    Stroke strokeAuxiliar;     //Esto sirve para hacer los rectangulos (las lineas y eso)
-    JPanel backgroundPanel;
+    private Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
+    private JPanel backgroundPanel;
 
     //Atributos de camara
-    static public int offSetX = 0;
-    static public int offSetY = 0;
+    static private int offSetX = 0;
+    static private int offSetY = 0;
 
     //Atributos del juego
     static private int TIMERDELAY = 10;        //Delay del timer
-    static public Timer mainTimer;            //Declaracion de un timer
-    public static ArrayList<Room> salas;
+    static private Timer mainTimer;            //Declaracion de un timer
+    private static ArrayList<Room> salas;
     private static HashMap<String, Salida> salidasJuego;
-    protected static LinkedList<Entity> entitiesJuego;
-    Rectangle[][] rectangles;
-    protected static boolean menuEsc;
+    private static LinkedList<Entity> entitiesJuego;
+    private Rectangle[][] rectangles;
+    static boolean menuEsc;
     protected static boolean paintSt;
 
 
 
-    Image imagenEscape;
+    private Image imagenEscape;
     static Rectangle slash;
 
     //Constructor de la clase Juego
-    public Juego(String rutaJson, String rutaSpriteSheet) {
+    Juego(String rutaJson, String rutaSpriteSheet) {
 
         //INICIALIZACION DE ENTITIES
 
@@ -79,7 +78,7 @@ public class Juego extends JPanel implements ActionListener {
         salas = new ArrayList<>();
         Room[][] level = MapGenerator.generateMap(5*(1+nivel));
         Room inicio = null;
-        Room sala = null;
+        Room sala;
         String[][] salasint = new String[level.length][level.length];
         rectangles = new Rectangle[level.length][level.length];
         for (int i = 0; i < level.length; i++) {
@@ -106,7 +105,7 @@ public class Juego extends JPanel implements ActionListener {
                 System.out.print(salasint[j][i] + "\t");
 
             }
-            System.out.println("");
+            System.out.println();
         }
 
 
@@ -219,7 +218,7 @@ public class Juego extends JPanel implements ActionListener {
     }
 
 
-    public void cargarSala(Room room, String exit) {
+    private void cargarSala(Room room, String exit) {
 
 
         /*
@@ -410,6 +409,8 @@ public class Juego extends JPanel implements ActionListener {
         graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
         graphics2D.drawImage(ui.draw(graphics2D), 0, 0, null);
 
+        ui.drawArmor(graphics2D);
+
 
         for (Room r : salas
         ) {
@@ -442,7 +443,6 @@ public class Juego extends JPanel implements ActionListener {
                         if (r.isClear()) {
                             graphics2D.setPaint(Color.BLACK);
                             graphics2D.fill(casillaMinimap);
-                            continue;
                         }
                     } else if (r.isNear()) {
                         graphics2D.setPaint(Color.gray);
@@ -485,7 +485,6 @@ public class Juego extends JPanel implements ActionListener {
                         if (r.isClear()) {
                             graphics2D.setPaint(Color.BLACK);
                             graphics2D.fill(mapa);
-                            continue;
                         }
                     } else if (r.isNear()) {
                         graphics2D.setPaint(Color.gray);
@@ -565,7 +564,7 @@ public class Juego extends JPanel implements ActionListener {
 
     }
 
-    public void start() {
+    void start() {
 
         mainTimer.start();
     }

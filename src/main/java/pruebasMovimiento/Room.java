@@ -16,7 +16,7 @@ import static pruebasMovimiento.Juego.*;
 
 public class Room {
 
-    int idSala;
+    private int idSala;
     int salaType;
     int salaClass;
     int x;
@@ -28,8 +28,8 @@ public class Room {
     HashMap<String,Salida> salidas;
     boolean clear;
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
-    static BufferedImage spriteSheet;
-    protected Player player;
+    private static BufferedImage spriteSheet;
+    Player player;
     private ArrayList<ItemProperties>objetosMapa;
     private boolean visited;
     private boolean near;
@@ -142,6 +142,10 @@ public class Room {
                         entities.add(Enemy.createEnemy(4,WIDTH/2+50,HEIGHT/2-50,Juego.player));
                         break;
 
+                    case 1:
+
+                        break;
+
                     case 0:
                         entities.add(Enemy.createEnemy(7,WIDTH/2,HEIGHT/2,Juego.player));
                 }
@@ -165,7 +169,7 @@ public class Room {
 
 
 
-    BufferedImage printBackground(BufferedImage imageBuffer,int[][] spriteInts) {
+    private BufferedImage printBackground(BufferedImage imageBuffer,int[][] spriteInts) {
 
 
         int capas = spriteInts.length;
@@ -198,23 +202,23 @@ public class Room {
 
     }
 
-    public boolean isVisited() {
+    boolean isVisited() {
         return visited;
     }
 
-    public void setVisited(boolean visited) {
+    void setVisited(boolean visited) {
         this.visited = visited;
     }
 
-    public boolean isNear() {
+    boolean isNear() {
         return near;
     }
 
-    public void setNear(boolean near) {
+    void setNear(boolean near) {
         this.near = near;
     }
 
-    BufferedImage printBackgroundDetails(BufferedImage imageBuffer, int spriteInts[][]) {
+    private BufferedImage printBackgroundDetails(BufferedImage imageBuffer, int spriteInts[][]) {
 
 
         int capas = spriteInts.length;
@@ -240,33 +244,7 @@ public class Room {
 
     }
 
-
-
-    public void cargarNuevaSala(BufferedImage backgroundSala, LinkedList<Entity> entities, BufferedImage detailsSala){
-
-        backgroundSala = this.backgroundSala;
-        //entities.clear();
-        //entities.addAll(this.entities);
-        detailsSala = this.detailsSala;
-
-
-    }
-
-    public void start(){
-
-        JFrame jFrame = new JFrame();
-        jFrame.setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
-        jFrame.setSize(WIDTH, HEIGHT);
-        jFrame.setVisible(true);                                       //Hacemos la ventana visible
-        jFrame.setBackground(Color.black);
-        jFrame.setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
-        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
-
-
-
-    }
-
-    public void setSalaType(int salaType) {
+    void setSalaType(int salaType) {
         this.salaType = salaType;
     }
 
@@ -282,7 +260,7 @@ public class Room {
         this.salaClass = salaClass;
     }
 
-    public boolean isClear() {
+    boolean isClear() {
         return clear;
     }
 
@@ -295,13 +273,5 @@ public class Room {
                 "} \n";
     }
 
-    public static void main(String[] args) {
-
-        Room room1 = new Room("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
-
-        room1.start();
-
-
-    }
 
 }

@@ -50,21 +50,21 @@ public class UI {
      */
 
     public static boolean map;
-    BufferedImage UIImage;
-    BufferedImage UIImageMap;
-    Player player;
-    double danyobloq, vidaMaxima, energiaMax, expMax;
-    Rectangle energiaTotRect, experienciaTotRect, vidaTotalRect, armorTotRect;
-    static protected Rectangle minimapa, mapa;
+    private BufferedImage UIImage;
+    private BufferedImage UIImageMap;
+    private Player player;
+    private double danyobloq, vidaMaxima, energiaMax, expMax;
+    private Rectangle energiaTotRect, experienciaTotRect, vidaTotalRect, armorTotRect;
+    static private Rectangle minimapa, mapa;
 
-    Stroke stroke2;     //Esto sirve para hacer los rectangulos (las lineas y eso)
-
-
+    private Stroke stroke2;     //Esto sirve para hacer los rectangulos (las lineas y eso)
 
 
 
 
-    public UI(Player player) {
+
+
+    UI(Player player) {
 
         try {
             UIImage = ImageIO.read(new File("res/img/UI_juego.png"));
@@ -89,17 +89,17 @@ public class UI {
 
     }
 
-    public static Rectangle getMinimapa() {
+    static Rectangle getMinimapa() {
         return minimapa;
     }
 
-    public static Rectangle getMapa() {
+    static Rectangle getMapa() {
         return mapa;
     }
 
 
 
-    void drawBarra(Graphics2D g, String tipo, Player p) {
+    private void drawBarra(Graphics2D g, String tipo, Player p) {
 
 
         tipo = tipo.toLowerCase();
@@ -215,7 +215,7 @@ public class UI {
     }
 
 
-    public BufferedImage minimap(Graphics2D g){
+    private BufferedImage minimap(Graphics2D g){
 
 
         if (map) {
@@ -229,7 +229,7 @@ public class UI {
 
     }
 
-    public BufferedImage draw(Graphics2D graphics2D) {
+    BufferedImage draw(Graphics2D graphics2D) {
 
         drawBarra(graphics2D, "vida", player);
         drawBarra(graphics2D, "energia",player);
@@ -242,5 +242,14 @@ public class UI {
 
 
 
+    }
+
+    void drawArmor(Graphics2D graphics2D){
+        Armor[] armors=player.getArmor();
+        for (int i = 0; i < 3; i++) {
+            if(armors[i]!=null){
+                armors[i].drawIcon(graphics2D,437,198+41*i);
+            }
+        }
     }
 }

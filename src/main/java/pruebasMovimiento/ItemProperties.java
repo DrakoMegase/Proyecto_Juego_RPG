@@ -9,20 +9,14 @@ public abstract class ItemProperties {
     private int spriteSize;
     private Image icon;
     private Rectangle hitbox;
+    int id;
 
-    public ItemProperties(String name, int spriteSize, String img, Image icon, Rectangle hitbox) {
+    ItemProperties(String name, int spriteSize, String img, Image icon, Rectangle hitbox) {
         this.name = name;
         this.spriteSize = spriteSize;
         this.img = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
         this.icon = icon;
         this.hitbox = hitbox;
-    }
-
-    public ItemProperties(String name, String img, int spriteSize, Image icon) {
-        this.name = name;
-        this.img = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
-        this.spriteSize = spriteSize;
-        this.icon = icon;
     }
 
     public String getName() {
@@ -44,4 +38,6 @@ public abstract class ItemProperties {
     public Rectangle getHitbox() {
         return hitbox;
     }
+
+    public abstract void drawIcon(Graphics2D graphics2D, int x,int y);
 }

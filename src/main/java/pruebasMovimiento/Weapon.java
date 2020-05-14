@@ -7,16 +7,18 @@ public class Weapon extends ItemProperties{
     private int weaponType; //0=Melee 1=Ranged
     private int attackRange;
     private int attackWidth;
+    private int id;
     private int damage;
     private int speed;
     private int spriteSize;
     private Image img;
     private Image icon;
+    private static Image arrow=Toolkit.getDefaultToolkit().getImage(Weapon.class.getClassLoader().getResource("img/weapons/WEAPON_arrow.png"));
 
 
 
-    public Weapon(String name, String img, int spriteSize, int attackRange, int attackWidth, int damage, int speed, Image icon) {
-        super(name, spriteSize, img, icon, new Rectangle(0,0));
+    private Weapon(String name, int id, String img, int spriteSize, int attackRange, int attackWidth, int damage, int speed, Image icon) {
+        super(name, spriteSize, img, icon, new Rectangle(30,30));
 //        super(name, spriteSize, img, icon, new Rectangle(icon.getWidth(null),icon.getHeight(null)));
         this.name = name;
         this.attackRange = attackRange;
@@ -24,14 +26,16 @@ public class Weapon extends ItemProperties{
 
         this.speed=speed;
 
+        this.id=id;
+
         this.damage = damage;
         weaponType=0;
         this.spriteSize=spriteSize;
         this.img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
     }
 
-    public Weapon(String name, String img, int spriteSize, int damage, int speed, Image icon) {
-        super(name, spriteSize, img, icon, new Rectangle(0,0));
+    private Weapon(String name, int id, String img, int spriteSize, int damage, int speed, Image icon) {
+        super(name, spriteSize, img, icon, new Rectangle(30,30));
 //        super(name, spriteSize, img, icon, new Rectangle(icon.getWidth(null),icon.getHeight(null)));
         this.name = name;
         this.damage = damage;
@@ -40,11 +44,22 @@ public class Weapon extends ItemProperties{
         weaponType=1;
         this.speed=speed;
 
+        this.id=id;
+
     }
 
 
 
-    public void draw(Graphics2D graphics2D, int x, int y, int multiSpriteX, int multiSpriteY) {
+    void draw(Graphics2D graphics2D, int x, int y, int multiSpriteX, int multiSpriteY) {
+        if(weaponType==1) {
+            // Width and height of sprite
+            int sw = 64;
+            int sh = 64;
+            // Coordinates of desired sprite image
+            int i = 64 * multiSpriteX;
+            int j = 64 * multiSpriteY;
+            graphics2D.drawImage(arrow, x, y, x + sw, y + sh, i, j, i + sw, j + sh, null);
+        }
 
         // Width and height of sprite
         int sw = spriteSize;
@@ -71,7 +86,7 @@ public class Weapon extends ItemProperties{
         this.name = name;
     }
 
-    public int getAttackRange() {
+    int getAttackRange() {
         return attackRange;
     }
 
@@ -79,7 +94,7 @@ public class Weapon extends ItemProperties{
         this.attackRange = attackRange;
     }
 
-    public int getAttackWidth() {
+    int getAttackWidth() {
         return attackWidth;
     }
 
@@ -87,7 +102,7 @@ public class Weapon extends ItemProperties{
         this.attackWidth = attackWidth;
     }
 
-    public int getDamage() {
+    int getDamage() {
         return damage;
     }
 
@@ -119,11 +134,54 @@ public class Weapon extends ItemProperties{
         this.icon = icon;
     }
 
-    public int getSpeed() {
+    int getSpeed() {
         return speed;
     }
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+    /*
+     *  id
+     *  0=daga
+     *  1=estoque
+     *  2=espadalarga
+     *  3=maza
+     *  4=sable
+     *  5=arco
+     *  6=arco curvo
+     *  7=arco largo
+     */
+    static Weapon createWeapon(int id){
+        Weapon weapon=null;
+
+        switch (id){
+            case 0:
+                weapon=new Weapon("Dagita",id,"img/weapons/WEAPON_dagger.png",64,20,20,3,3,null);
+                break;
+            case 1:
+                weapon=new Weapon("Estoque",id,"img/weapons/WEAPON_rapier.png",192,42,78,6,4,null);
+                break;
+            case 2:
+                weapon=new Weapon("Espada Larga",id,"img/weapons/WEAPON_longsword.png",192,42,78,16,6,null);
+                break;
+            case 3:
+                weapon=new Weapon("Maza",id,"img/weapons/mace_sheet.png",128,20,20,14,5,null);
+                break;
+            case 4:
+                weapon=new Weapon("Sable",id,"img/weapons/sabre_sheet.png",128,42,78,10,3,null);
+                break;
+            case 5:
+                weapon=new Weapon("Arco",id,"img/weapons/WEAPON_bow.png",128,3,2,null);
+                break;
+            case 6:
+                weapon=new Weapon("Arco Curvo",id,"img/weapons/recurvebow_sheet.png",128,6,2,null);
+                break;
+            case 7:
+                weapon=new Weapon("Arco Largo",id,"img/weapons/greatbow.png",192,16,4,null);
+                break;
+        }
+
+        return weapon;
     }
 }

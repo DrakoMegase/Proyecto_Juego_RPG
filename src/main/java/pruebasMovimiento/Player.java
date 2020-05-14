@@ -16,19 +16,18 @@ public class Player extends Entity {
     private int state=0;
     private int skill=0;
     private long startTime=0;
-    private int armorInt;
     private int energia;
-    protected int experiencia;
-    protected int level = 1;
-    protected Room salaPlayer;
-    protected int dinero;
+    int experiencia;
+    int level = 1;
+    Room salaPlayer;
+    int dinero;
 
 
 
 
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);
-        img=getPlayerImg();
+        img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
 
         this.hp=hp;
 
@@ -38,35 +37,38 @@ public class Player extends Entity {
         canBeDamaged=true;
         hitbox=new Rectangle(x+22,y+46,20,16);
 
-//        weapons[0]=new Weapon("Dagita","img/weapons/WEAPON_dagger.png",64,20,20,20,null);
-//        weapons[0]=new Weapon("Estoque","img/weapons/WEAPON_rapier.png",192,42,78,15,null);
-        weapons[0]=new Weapon("Espada Larga", "img/weapons/WEAPON_longsword.png",192,42,78,15,1,null);
-//        weapons[0]=new Weapon("Espada Laser Azul", "img/weapons/glowsword_blue.png",192,42,78,15,5,null);
-        weapons[1]=new Weapon("Arco de Madera","img/weapons/WEAPON_bow.png",64,20,1,null);
-        armor[0]=new Armor("Casco Cota de Malla", "img/armor/HEAD_chain_armor_helmet.png",3,0,64);
-        armor[1]=new Armor("Pechera Cota de Malla", "img/armor/TORSO_chain_armor_torso.png",3,1,64);
-        armor[2]=new Armor("Pantalones Cota de Malla", "img/armor/LEGS_pants_greenish.png",3,2,64);
+        weapons[0]=Weapon.createWeapon(4);
+        weapons[1]=Weapon.createWeapon(6);
+        armor[0]=Armor.createArmor(3);
+        armor[1]=Armor.createArmor(7);
+        armor[2]=Armor.createArmor(2);
 
         this.addEntities = addEntities;
-        this.armorInt = 100;
         this.energia = 10;
         this.experiencia = 0;
         this.dinero = 0;
     }
 
-    public int getArmorInt() {
+    int getArmorInt() {
+        int armorInt=0;
+        for (int i = 0; i < 3; i++) {
+            if(armor[i]!=null){
+                armorInt+=armor[i].getArmor();
+            }
+        }
+
         return armorInt;
     }
 
-    public int getEnergia() {
+    int getEnergia() {
         return energia;
     }
 
-    public int getExperiencia() {
+    int getExperiencia() {
         return experiencia;
     }
 
-    public int getLevel() {
+    int getLevel() {
         return level;
     }
 
@@ -237,13 +239,6 @@ public class Player extends Entity {
 
     }
 
-    private Image getPlayerImg() {
-
-        Image pic = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
-        return pic;                                                                      //La convertimos a imagen
-
-    }
-
 
     void keyPressed(KeyEvent e) {
 
@@ -340,7 +335,7 @@ public class Player extends Entity {
 
     }
 
-    public void setAddEntities(LinkedList<Entity> addEntities) {
+    void setAddEntities(LinkedList<Entity> addEntities) {
         this.addEntities = addEntities;
     }
 
@@ -396,7 +391,11 @@ public class Player extends Entity {
 
     }
 
-    public LinkedList<Entity> getAddEntities() {
+    LinkedList<Entity> getAddEntities() {
         return addEntities;
+    }
+
+    Armor[] getArmor() {
+        return armor;
     }
 }
