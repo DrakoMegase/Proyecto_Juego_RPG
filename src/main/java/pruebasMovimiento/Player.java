@@ -26,6 +26,8 @@ public class Player extends Entity {
 
 
 
+
+
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);
         img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
@@ -337,6 +339,7 @@ public class Player extends Entity {
 
             case KeyEvent.VK_J:
                 if(state==0){
+
                     state=1;
                     startTime =System.currentTimeMillis();
                 }
@@ -379,6 +382,14 @@ public class Player extends Entity {
 
                 System.out.println("Escape" + Juego.menuEsc);
 
+                break;
+
+            case KeyEvent.VK_SPACE:
+                ItemProperties item=nearItem();
+
+                if(item!=null){
+                    changeWeapon(item);
+                }
                 break;
 
             default:
@@ -455,4 +466,38 @@ public class Player extends Entity {
     Weapon[] getWeapons() {
         return weapons;
     }
+
+    private void changeWeapon(ItemProperties objeto){
+
+        Rectangle hitbox=(Rectangle) objeto.getHitbox().clone();
+
+        if(objeto instanceof Weapon){
+            Weapon weapon=(Weapon)objeto;
+            salaPlayer.objetosMapa.remove(weapon);
+            weapons[weapon.getWeaponType()].setHitbox(hitbox);
+            salaPlayer.objetosMapa.add(weapons[weapon.getWeaponType()]);
+            weapons[weapon.getWeaponType()]=weapon;
+
+        }else {
+            Armor armor=(Armor)objeto;
+            salaPlayer.objetosMapa.remove(armor);
+            this.armor[armor.getSlot()].setHitbox(hitbox);
+            salaPlayer.objetosMapa.add(this.armor[armor.getSlot()]);
+            this.armor[armor.getSlot()]=armor;
+        }
+    }
+
+    private ItemProperties nearItem(){
+
+        ItemProperties item=null;
+        for (int i = 0; i < salaPlayer.objetosMapa.size()&&item==null; i++) {
+            ItemProperties item2=salaPlayer.objetosMapa.get(i);
+            if(item2.getHitbox().intersects(hitbox)){
+                item=item2;
+            }
+        }
+        return item;
+    }
+
+
 }

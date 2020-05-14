@@ -56,6 +56,7 @@ public class Juego extends JPanel implements ActionListener {
     private static ArrayList<Room> salas;
     private static HashMap<String, Salida> salidasJuego;
     private static LinkedList<Entity> entitiesJuego;
+    private static LinkedList<ItemProperties> objetos;
     static boolean menuEsc;
     protected static boolean paintSt;
 
@@ -131,6 +132,7 @@ public class Juego extends JPanel implements ActionListener {
         //INICIALIZACION DE LAS LISTAS QUE USAREMOS
         entitiesJuego = inicio.entities;
         salidasJuego = inicio.salidas;
+        objetos=inicio.objetosMapa;
         //DAMOS LAS ENTITIES AL PLAYER
         player.setAddEntities(entitiesJuego);
 
@@ -159,8 +161,6 @@ public class Juego extends JPanel implements ActionListener {
             }
 
         }
-
-//
 
 
         //Cargar datos salas.
@@ -238,6 +238,7 @@ public class Juego extends JPanel implements ActionListener {
         entitiesJuego.remove(player);
         entitiesJuego = room.entities;
         salidasJuego = room.salidas;
+        objetos=room.objetosMapa;
         //Añadimos al jugador
         entitiesJuego.add(player);
         player.setAddEntities(entitiesJuego);
@@ -365,7 +366,9 @@ public class Juego extends JPanel implements ActionListener {
 
         graphics2D.drawImage(imageBufferJuego, -offSetX, -offSetY, null);
 
-
+        for (int i = 0; i < objetos.size(); i++) {
+            objetos.get(i).drawIcon(offSetX,offSetY,graphics2D);
+        }
 
 
         if (defStroke == null) {
