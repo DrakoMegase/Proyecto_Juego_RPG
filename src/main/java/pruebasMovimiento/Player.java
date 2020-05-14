@@ -26,6 +26,8 @@ public class Player extends Entity {
 
 
 
+
+
     Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
         super(x, y);
         img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
@@ -45,7 +47,7 @@ public class Player extends Entity {
         armor[2]=Armor.createArmor(2);
 
         this.addEntities = addEntities;
-        this.energia = 10;
+        this.energia = level*3;
         this.experiencia = 0;
         this.dinero = 0;
     }
@@ -85,6 +87,10 @@ public class Player extends Entity {
             damageTime=0;
         }
 
+        if(state!=2&&energia<level*3&&System.currentTimeMillis()%20==0){
+            energia++;
+        }
+
         switch (state) {
             case 0:
                 move(velX, velY);
@@ -110,17 +116,54 @@ public class Player extends Entity {
 
         long actionTime=System.currentTimeMillis()-startTime;
 
-        if(actionTime>=20*weapons[1].getSpeed()){
-            state=0;
+        if(skill==0) {
+            if (actionTime >= 420) {
+                state = 0;
 
-            int modX=Math.abs(lastSpdX)/2;
-            int modY=Math.abs(lastSpdY)/2;
+                int damage=3*(1+(level-3)/4);
+
+                int modX = Math.abs(lastSpdX) / 2;
+                int modY = Math.abs(lastSpdY) / 2;
 
 
-            String img="img/projectiles/flecha.png:2:0:0:64:64:1";
+                String img = "img/projectiles/daga.png:2:0:0:64:64:1";
 
+                int distance=20;
 
-            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,false,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+                addEntities.add(new Projectile(x+distance*modY, y+distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, addEntities, damage));
+                addEntities.add(new Projectile(x, y, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, addEntities, damage));
+                addEntities.add(new Projectile(x-distance*modY, y-distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, addEntities, damage));
+            }
+        }else {
+            if (actionTime >= 420) {
+                state = 0;
+                canShoot=true;
+
+            }else if(canShoot&&actionTime>=360){
+                System.out.println("lel");
+                canShoot=false;
+
+                int damage=3*(1+(level-3)/4);
+                int vel=3;
+                String img="img/projectiles/bola.png:1:0:0:29:29:4";
+                for (int i = 0; i < 8; i++) {
+                    int movX=-vel;
+                    int movY=-vel;
+                    if(i%4==0){
+                        movX=0;
+                    }else if(i-4<0){
+                        movX*=-1;
+                    }
+
+                    if(i==2||i==6){
+                        movY=0;
+                    }else if(i>2&&i<6){
+                        movY*=-1;
+                    }
+                    addEntities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,addEntities,damage));
+                }
+
+            }
         }
 
     }
@@ -277,14 +320,26 @@ public class Player extends Entity {
                 break;
 
             case KeyEvent.VK_U:
-                if(state==0){
+                if(state==0&&level>=2&&energia>=3){
                     state=2;
-                    startTime =System.currentTimeMillis();
+                    energia-=3;
+                    skill=0;
+                    startTime=System.currentTimeMillis();
+                }
+                break;
+
+            case KeyEvent.VK_I:
+                if(state==0&&level>=4&&energia>=6){
+                    state=2;
+                    energia-=6;
+                    skill=1;
+                    startTime=System.currentTimeMillis();
                 }
                 break;
 
             case KeyEvent.VK_J:
                 if(state==0){
+
                     state=1;
                     startTime =System.currentTimeMillis();
                 }
@@ -327,6 +382,14 @@ public class Player extends Entity {
 
                 System.out.println("Escape" + Juego.menuEsc);
 
+                break;
+
+            case KeyEvent.VK_SPACE:
+                ItemProperties item=nearItem();
+
+                if(item!=null){
+                    changeWeapon(item);
+                }
                 break;
 
             default:
@@ -403,4 +466,38 @@ public class Player extends Entity {
     Weapon[] getWeapons() {
         return weapons;
     }
+
+    private void changeWeapon(ItemProperties objeto){
+
+        Rectangle hitbox=(Rectangle) objeto.getHitbox().clone();
+
+        if(objeto instanceof Weapon){
+            Weapon weapon=(Weapon)objeto;
+            salaPlayer.objetosMapa.remove(weapon);
+            weapons[weapon.getWeaponType()].setHitbox(hitbox);
+            salaPlayer.objetosMapa.add(weapons[weapon.getWeaponType()]);
+            weapons[weapon.getWeaponType()]=weapon;
+
+        }else {
+            Armor armor=(Armor)objeto;
+            salaPlayer.objetosMapa.remove(armor);
+            this.armor[armor.getSlot()].setHitbox(hitbox);
+            salaPlayer.objetosMapa.add(this.armor[armor.getSlot()]);
+            this.armor[armor.getSlot()]=armor;
+        }
+    }
+
+    private ItemProperties nearItem(){
+
+        ItemProperties item=null;
+        for (int i = 0; i < salaPlayer.objetosMapa.size()&&item==null; i++) {
+            ItemProperties item2=salaPlayer.objetosMapa.get(i);
+            if(item2.getHitbox().intersects(hitbox)){
+                item=item2;
+            }
+        }
+        return item;
+    }
+
+
 }

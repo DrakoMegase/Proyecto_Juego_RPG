@@ -35,9 +35,17 @@ public abstract class ItemProperties {
         return icon;
     }
 
-    public Rectangle getHitbox() {
+    Rectangle getHitbox() {
         return hitbox;
     }
 
-    public abstract void drawIcon(Graphics2D graphics2D, int x,int y);
+    void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
+    }
+
+    public abstract void drawIcon(Graphics2D graphics2D, int x, int y);
+
+    void drawIcon(int offSetX, int offSetY,Graphics2D graphics2D){
+        drawIcon(graphics2D,hitbox.x-offSetX,hitbox.y-offSetY);
+    }
 }

@@ -30,7 +30,7 @@ public class Room {
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     private static BufferedImage spriteSheet;
     Player player;
-    private ArrayList<ItemProperties>objetosMapa;
+    LinkedList<ItemProperties>objetosMapa;
     private boolean visited;
     private boolean near;
 
@@ -107,12 +107,27 @@ public class Room {
         backgroundSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         detailsSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         entities = new LinkedList<>();
+        objetosMapa= new LinkedList<>();
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
 
 
         switch (salaClass) {
+            case 0:
+                Weapon weapon=Weapon.createWeapon(4);
+                weapon.getHitbox().x=WIDTH/2;
+                weapon.getHitbox().y=WIDTH/2;
+                objetosMapa.add(weapon);
+
+                for (int i = 0; i < 3; i++) {
+                    Armor armor=Armor.createArmor(i);
+                    armor.getHitbox().x=WIDTH/2+40*(1+i);
+                    armor.getHitbox().y=WIDTH/2;
+                    objetosMapa.add(armor);
+                }
+
+                break;
             case 1:
                 int max=HEIGHT-100;
                 int min=100;
@@ -236,7 +251,6 @@ public class Room {
             }
             graphics.drawImage(new Sprite(spriteInts[capas - 1][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
             x++;
-
 
         }
 
