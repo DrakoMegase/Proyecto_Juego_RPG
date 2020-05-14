@@ -13,6 +13,7 @@ public class Enemy extends Entity{
     private long time;
     private int spinMult=1;
     int damage;
+    int exp;
 
     Enemy(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged,Player player, int velMov, int movPath, int damage, int id) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
@@ -21,6 +22,7 @@ public class Enemy extends Entity{
         this.movPath=movPath;
         this.damage=damage;
         this.id=id;
+        this.exp=hp;
     }
 
     public void update() {
@@ -44,6 +46,8 @@ public class Enemy extends Entity{
 
         if(hp<=0){
             remove=true;
+            player.experiencia+=exp;
+            player.dinero+=exp/2;
         }
 
     }

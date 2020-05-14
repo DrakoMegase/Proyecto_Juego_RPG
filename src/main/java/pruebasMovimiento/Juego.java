@@ -142,7 +142,7 @@ public class Juego extends JPanel implements ActionListener {
         uiRecMinimap = UI.getMinimapa();
         map = UI.getMapa();
         try {
-            UIBuffImg = ImageIO.read(new File("res/img/UIBuffImg.png"));
+            UIBuffImg = ImageIO.read(new File("res/img/UI.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

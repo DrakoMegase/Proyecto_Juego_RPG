@@ -79,8 +79,9 @@ public class UI {
 
         //INICIAMOS TODOS LOS RECTANGULOS DE PARAMETROS MAXIMOS SOLO
         this.player = player;
-        this.vidaMaxima = player.hp;
-        this.energiaMax = player.getEnergia();
+        this.vidaMaxima = 20+player.level*3;
+        this.energiaMax = player.level*3;
+        this.expMax=100*player.level*(player.level/10+1);
 
         this.vidaTotalRect = new Rectangle(41, 6, 100, 20);
         this.armorTotRect = new Rectangle(41, 33, 100, 20);
@@ -169,14 +170,18 @@ public class UI {
 
             case "exp":
 
-
-                Rectangle expActual = new Rectangle(40, 92, (int) ((double) p.getExperiencia() * 10) + 2, 23);
+                Rectangle expActual = new Rectangle(40, 92, (int)(experienciaTotRect.width*(p.getExperiencia()/expMax)), 23);
                 if (expActual.getWidth() >= experienciaTotRect.getWidth()) {
 
 
                     expActual.setSize(0, expActual.height);
                     p.experiencia = 0;
                     p.level++;
+                    this.vidaMaxima = 20+player.level*3;
+                    p.hp+=3;
+                    this.energiaMax = player.level*3;
+                    this.expMax=100*player.level*(player.level/10+1);
+
 
                 }
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO

@@ -9,7 +9,7 @@ public class Boss extends Enemy{
     private int shootCount=0;
     private int maxHp;
 
-    public Boss(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, Player player, int velMov, int movPath, int damage, int id) {
+    Boss(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, Player player, int velMov, int movPath, int damage, int id) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged, player, velMov, movPath, damage, id);
         maxHp=hp;
     }
@@ -45,6 +45,7 @@ public class Boss extends Enemy{
 
         if(hp<=0){
             remove=true;
+            player.experiencia+=exp;
         }
     }
 
