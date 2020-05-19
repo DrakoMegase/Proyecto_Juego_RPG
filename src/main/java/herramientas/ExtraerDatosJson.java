@@ -163,7 +163,9 @@ final public class ExtraerDatosJson {
             JSONArray ints = (JSONArray) jsonObject.get("data");
 
             for (int j = 0; j < spritePorCapa; j++) {
-                arrayInts[i][j] = Integer.parseInt(ints.get(j).toString());
+                System.out.println(arrayInts[i][j]);
+
+                arrayInts[i][j] = (int) Long.parseLong(ints.get(j).toString());
                 //System.out.println(arrayInts[i][j]);
                 contador++;
             }

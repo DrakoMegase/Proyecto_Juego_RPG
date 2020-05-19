@@ -10,6 +10,7 @@ import sun.audio.AudioStream;
 import sun.audio.ContinuousAudioDataStream;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -28,7 +29,9 @@ public class Menu extends JFrame {
     final static int WIDTH = 512;
     final static int HEIGHT = 573;
     static Menu game;
-
+    Clip clip;
+    Image a;
+    public static float sound =  6.02f;;
 
     public static void main(String[] args) {
         game = new Menu();
@@ -39,7 +42,7 @@ public class Menu extends JFrame {
     }
 
     public Menu() throws HeadlessException {
-//        musica("res/music/soundtrack1.wav");
+        musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
         setTitle(GAME);
@@ -123,10 +126,28 @@ public class Menu extends JFrame {
             }
         });
 
+
+        sonido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+                Configuraciones configuraciones = new Configuraciones(game, clip, backgroundPanel, a);
+
+                remove(backgroundPanel);
+                remove(panelPadre);
+                add(configuraciones);
+                setContentPane(configuraciones);
+                configuraciones.invalidate();
+                validate();
+
+            }
+        });
+
         JLabel backgroundLabel;
 
 
-        Image a = new ImageIcon(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png"))
+        a = new ImageIcon(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png"))
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
 
@@ -187,16 +208,30 @@ public class Menu extends JFrame {
     }
 
     void musica(String path){
-        InputStream music;
+//        InputStream music;
+//
+//
+//        try {
+//            music = new FileInputStream(new File(path));
+//            AudioStream audios = new AudioStream(music);
+//            AudioPlayer.player.start(audios);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
+        clip = null;
         try {
-            music = new FileInputStream(new File(path));
-            AudioStream audios = new AudioStream(music);
-            AudioPlayer.player.start(audios);
-
-        } catch (IOException e) {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
+                    new File(path));
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
+        FloatControl gainControl =
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-20.02f); // Reduce volume by 10 decibels.
+        clip.start();
 
 
     }
