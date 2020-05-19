@@ -53,7 +53,6 @@ public class UI {
     private BufferedImage UIImage;
     private BufferedImage UIImageMap;
     private Player player;
-    private double danyobloq, vidaMaxima, energiaMax, expMax;
     private Rectangle energiaTotRect, experienciaTotRect, vidaTotalRect, armorTotRect;
     static private Rectangle minimapa, mapa;
 
@@ -79,9 +78,6 @@ public class UI {
 
         //INICIAMOS TODOS LOS RECTANGULOS DE PARAMETROS MAXIMOS SOLO
         this.player = player;
-        this.vidaMaxima = 20+player.level*3;
-        this.energiaMax = player.level*3;
-        this.expMax=100*player.level*(player.level/10+1);
 
         this.vidaTotalRect = new Rectangle(41, 6, 100, 20);
         this.armorTotRect = new Rectangle(41, 33, 100, 20);
@@ -113,7 +109,7 @@ public class UI {
         switch (tipo) {
 
             case "vida":
-                Rectangle vidaActual = new Rectangle(40, 5, (int) ((double) p.hp / vidaMaxima * 100) + 2, 22);
+                Rectangle vidaActual = new Rectangle(40, 5, (int) ((double) p.hp / p.getMaxHp() * 100) + 2, 22);
 
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
                 g.draw(vidaTotalRect);
@@ -127,7 +123,7 @@ public class UI {
 
             case "armor":
 
-                danyobloq = 1.0 - (100.0 / (100.0 + (double) p.getArmorInt()));
+                double danyobloq = 1.0 - p.getDmgRecived();
 
                 //System.out.println(danyobloq);
 
@@ -154,7 +150,7 @@ public class UI {
                     break;
                 }
 
-                Rectangle energAct = new Rectangle(40, 62, (int) ((double) p.getEnergia() / energiaMax * 100) + 2, 22);
+                Rectangle energAct = new Rectangle(40, 62, (int) ((double) p.getEnergia() / p.getMaxEnergy() * 100) + 2, 22);
 
 
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
@@ -170,20 +166,8 @@ public class UI {
 
             case "exp":
 
-                Rectangle expActual = new Rectangle(40, 92, (int)(experienciaTotRect.width*(p.getExperiencia()/expMax)), 23);
-                if (expActual.getWidth() >= experienciaTotRect.getWidth()) {
+                Rectangle expActual = new Rectangle(40, 92, (int)(experienciaTotRect.width*(p.getExperiencia()/(double)p.getExpMax())), 23);
 
-
-                    expActual.setSize(0, expActual.height);
-                    p.experiencia = 0;
-                    p.level++;
-                    this.vidaMaxima = 20+player.level*3;
-                    p.hp+=3;
-                    this.energiaMax = player.level*3;
-                    this.expMax=100*player.level*(player.level/10+1);
-
-
-                }
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
                 g.draw(experienciaTotRect);
 

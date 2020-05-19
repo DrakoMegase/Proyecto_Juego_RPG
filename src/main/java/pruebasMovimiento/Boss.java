@@ -72,8 +72,8 @@ public class Boss extends Enemy{
                     }
 
                     String img="img/projectiles/bolaRoja.png:1:0:0:64:64:4";
-                    Projectile projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
-                    player.getAddEntities().add(projectile);
+                    Projectile projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.salaPlayer.entities,damage);
+                    player.salaPlayer.entities.add(projectile);
                     shootCount++;
 
                     if(shootCount==48){

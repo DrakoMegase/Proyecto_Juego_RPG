@@ -1,15 +1,17 @@
 package pruebasMovimiento;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class Player extends Entity {
 
     private int lastSpdX=0;
     private int lastSpdY=2;
-    private LinkedList<Entity> addEntities;
     private Weapon[] weapons=new Weapon[2];
     private Armor[] armor=new Armor[3];
     static final Image ICONS =Toolkit.getDefaultToolkit().getImage(Weapon.class.getClassLoader().getResource("img/icons/icons.png"));
@@ -28,7 +30,7 @@ public class Player extends Entity {
 
 
 
-    Player(int x, int y, int hp, LinkedList<Entity> addEntities) {
+    Player(int x, int y, int hp) {
         super(x, y);
         img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
 
@@ -46,7 +48,6 @@ public class Player extends Entity {
         armor[1]=Armor.createArmor(7);
         armor[2]=Armor.createArmor(2);
 
-        this.addEntities = addEntities;
         this.energia = level*3;
         this.experiencia = 0;
         this.dinero = 0;
@@ -75,12 +76,14 @@ public class Player extends Entity {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public void update() {
 
+        if (experiencia >= getExpMax()) {
+            experiencia = 0;
+            level++;
+            hp+=3;
+
+        }
 
         if(damageWait&&System.currentTimeMillis()-damageTime>500){
             damageWait=false;
@@ -112,6 +115,28 @@ public class Player extends Entity {
 
     }
 
+    @Override
+    void damage(int dmg) {
+        super.damage((int)Math.round(dmg*getDmgRecived()));
+        System.out.println(dmg+"-"+(int)Math.round(dmg*getDmgRecived()));
+    }
+
+    int getMaxEnergy(){
+        return level*3;
+    }
+
+    int getMaxHp(){
+        return  20+level*3;
+    }
+
+    double getDmgRecived(){
+        return (100.0 / (100.0 + (double) getArmorInt()));
+    }
+
+    int getExpMax(){
+        return 100*level*(level/10+1);
+    }
+
     private void skill() {
 
         long actionTime=System.currentTimeMillis()-startTime;
@@ -130,9 +155,9 @@ public class Player extends Entity {
 
                 int distance=20;
 
-                addEntities.add(new Projectile(x+distance*modY, y+distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, addEntities, damage));
-                addEntities.add(new Projectile(x, y, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, addEntities, damage));
-                addEntities.add(new Projectile(x-distance*modY, y-distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, addEntities, damage));
+                salaPlayer.entities.add(new Projectile(x+distance*modY, y+distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
+                salaPlayer.entities.add(new Projectile(x, y, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
+                salaPlayer.entities.add(new Projectile(x-distance*modY, y-distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
             }
         }else {
             if (actionTime >= 420) {
@@ -160,7 +185,7 @@ public class Player extends Entity {
                     }else if(i>2&&i<6){
                         movY*=-1;
                     }
-                    addEntities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,addEntities,damage));
+                    salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,salaPlayer.entities,damage));
                 }
 
             }
@@ -179,6 +204,7 @@ public class Player extends Entity {
         if(actionTime>=120*weapons[0].getSpeed()){
             state=0;
         }else if(actionTime>=(120*weapons[0].getSpeed())-((120*weapons[0].getSpeed())/6)*2){
+            playSound("sounds/slash.wav");
             int modSizeX=Math.abs(lastSpdX)/2;
             int modSizeY=Math.abs(lastSpdY)/2;
 
@@ -197,7 +223,7 @@ public class Player extends Entity {
             Rectangle slash=new Rectangle(hitbox.x+modPosX,hitbox.y+modPosY,width*modSizeY+range*modSizeX,width*modSizeX+range*modSizeY);
             Juego.slash=slash;
 
-            for (Entity entity:addEntities) {
+            for (Entity entity:salaPlayer.entities) {
                 if (!entity.equals(this)&&entity.hitbox.intersects(slash)){
                     entity.damage(weapons[0].getDamage());
                     entity.push(lastSpdX*knocback,lastSpdY*knocback);
@@ -217,10 +243,11 @@ public class Player extends Entity {
             state=0;
             canShoot=true;
         }else if(canShoot&&actionTime>=180*weapons[1].getSpeed()){
+            playSound("sounds/slash.wav");
             int modY=Math.abs(lastSpdY)/2;
             int modX=Math.abs(lastSpdX)/2;
             String img="img/projectiles/flecha.png:2:0:0:64:64:1";
-            addEntities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,false,false,lastSpdX*4,lastSpdY*4,this,addEntities,weapons[1].getDamage()));
+            salaPlayer.entities.add(new Projectile(x,y,20, img,30,30*modY+(hitbox.y-y)*modX,4,4,false,false,lastSpdX*4,lastSpdY*4,this,salaPlayer.entities,weapons[1].getDamage()));
 
             canShoot=false;
         }
@@ -357,22 +384,6 @@ public class Player extends Entity {
                 UI.map =! UI.map;
                 break;
 
-            case KeyEvent.VK_F:
-
-
-
-                //hp -= 1;
-                energia -=2;
-                experiencia += 1;
-                dinero +=1;
-                //TODO sistema niveles.
-                //move(this.velX * 8, this.velY * 8);
-                //TODO
-
-
-
-                break;
-
             case KeyEvent.VK_ESCAPE:
 
                 Juego.menuEsc =! Juego.menuEsc;     //switch menu
@@ -392,6 +403,10 @@ public class Player extends Entity {
                 }
                 break;
 
+            case KeyEvent.VK_R:
+                Juego.eventoCargarTesteo();
+                break;
+
             default:
 
 
@@ -399,9 +414,6 @@ public class Player extends Entity {
 
     }
 
-    void setAddEntities(LinkedList<Entity> addEntities) {
-        this.addEntities = addEntities;
-    }
 
     void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
@@ -455,10 +467,6 @@ public class Player extends Entity {
 
     }
 
-    LinkedList<Entity> getAddEntities() {
-        return addEntities;
-    }
-
     Armor[] getArmor() {
         return armor;
     }
@@ -470,6 +478,12 @@ public class Player extends Entity {
     private void changeWeapon(ItemProperties objeto){
 
         Rectangle hitbox=(Rectangle) objeto.getHitbox().clone();
+        try {
+            AudioStream audioStream=new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream("sounds/inventory.wav"));
+            AudioPlayer.player.start(audioStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if(objeto instanceof Weapon){
             Weapon weapon=(Weapon)objeto;

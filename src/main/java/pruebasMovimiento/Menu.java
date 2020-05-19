@@ -39,7 +39,7 @@ public class Menu extends JFrame {
     }
 
     public Menu() throws HeadlessException {
-        musica("res/music/soundtrack1.wav");
+//        musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
         setTitle(GAME);
@@ -92,7 +92,7 @@ public class Menu extends JFrame {
                 remove(backgroundPanel);
                 repaint();
 
-                juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
+                juego = new Juego("res/jsonsMapasPruebas/1.json");
                 juego.start();
 
                 setContentPane(juego);
@@ -193,6 +193,7 @@ public class Menu extends JFrame {
             music = new FileInputStream(new File(path));
             AudioStream audios = new AudioStream(music);
             AudioPlayer.player.start(audios);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

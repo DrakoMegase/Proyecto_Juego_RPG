@@ -35,7 +35,7 @@ public class GuardarPartida extends JPanel {
         playerJsonObject.put("x",player.getX());
         playerJsonObject.put("hp",player.getHp());
 
-        for (Entity e:player.getAddEntities()
+        for (Entity e:player.salaPlayer.entities
              ) {
 
             JSONObject entitiy = new JSONObject();
@@ -73,7 +73,7 @@ public class GuardarPartida extends JPanel {
 
     public static void main(String[] args) {
 
-        Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
+        Juego juego = new Juego("res/jsonsMapasPruebas/1.json");
 
         GuardarPartida g1 = new GuardarPartida(juego, "slot1");
 

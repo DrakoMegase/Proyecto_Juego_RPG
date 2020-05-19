@@ -185,22 +185,22 @@ public class Enemy extends Entity{
                     switch (id){
                         case 3:
                             img="img/projectiles/bolaMarron.png:1:0:0:64:64:4";
-                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                             break;
                         case 5:
                         case 6:
                         case 7:
                             img="img/projectiles/bolaRoja.png:1:0:0:64:64:4";
-                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                             break;
                         default:
                             img="img/projectiles/bola.png:1:0:0:29:29:4";
-                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                     }
 
 
 
-                    player.getAddEntities().add(projectile);
+                    player.salaPlayer.entities.add(projectile);
 
                 }
 
