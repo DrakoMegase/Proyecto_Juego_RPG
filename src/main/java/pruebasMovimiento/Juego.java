@@ -188,14 +188,11 @@ public class Juego extends JPanel implements ActionListener {
         }
     }
 
-    private static void siguienteNivel(){
+    static void siguienteNivel(){
         nivel++;
         cargarNuevoNivel(player);
     }
 
-    public static void eventoCargarTesteo(){
-        siguienteNivel();
-    }
 
     private static void cargarSala(Room room, String exit) {
 
@@ -287,7 +284,7 @@ public class Juego extends JPanel implements ActionListener {
             Salida salida;
             for (String key : keys) {
                 salida = salaActual.salidas.get(key);
-                if (salida != null && player.hitbox.intersects(salida.getArea())) {
+                if (salida != null && !(salida instanceof Portal) && player.hitbox.intersects(salida.getArea())) {
                     Room room2 = salida.getConexion().getOrigen();
                     cargarSala(room2, key);
                     player.salaPlayer.player = null;
@@ -304,9 +301,10 @@ public class Juego extends JPanel implements ActionListener {
         }
         for (String s : player.salaPlayer.salidas.keySet()
         ) {
-
-            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
-            r.setNear(true);
+            if(!s.equals("portal")) {
+                Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
+                r.setNear(true);
+            }
 
             //System.out.println(r);
         }
@@ -337,6 +335,10 @@ public class Juego extends JPanel implements ActionListener {
         //PRIMERA PINTADA: FONDO
 
         graphics2D.drawImage(salaActual.backgroundSala, -offSetX, -offSetY, null);
+
+        if(salaActual.salidas.containsKey("portal")){
+            ((Portal)salaActual.salidas.get("portal")).draw(graphics2D,offSetX,offSetY);
+        }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
             salaActual.objetosMapa.get(i).drawIcon(offSetX,offSetY,graphics2D);

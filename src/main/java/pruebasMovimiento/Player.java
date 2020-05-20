@@ -118,7 +118,7 @@ public class Player extends Entity {
     @Override
     void damage(int dmg) {
         super.damage((int)Math.round(dmg*getDmgRecived()));
-        System.out.println(dmg+"-"+(int)Math.round(dmg*getDmgRecived()));
+//        System.out.println(dmg+"-"+(int)Math.round(dmg*getDmgRecived()));
     }
 
     int getMaxEnergy(){
@@ -400,11 +400,11 @@ public class Player extends Entity {
 
                 if(item!=null){
                     changeWeapon(item);
+                }else if(salaPlayer.salidas.containsKey("portal")){
+                    if(hitbox.intersects(salaPlayer.salidas.get("portal").getArea())){
+                        Juego.siguienteNivel();
+                    }
                 }
-                break;
-
-            case KeyEvent.VK_R:
-                Juego.eventoCargarTesteo();
                 break;
 
             default:

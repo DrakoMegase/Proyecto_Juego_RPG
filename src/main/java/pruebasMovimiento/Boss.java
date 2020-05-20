@@ -30,6 +30,7 @@ public class Boss extends Enemy{
             if(id==7){
                 velMov+=1;
                 img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/bosses/bat2.png"));
+                movPath=0;
             }
         }
 
@@ -46,7 +47,9 @@ public class Boss extends Enemy{
         if(hp<=0){
             remove=true;
             player.experiencia+=exp;
+            player.salaPlayer.salidas.put("portal",Portal.newPortal());
         }
+
     }
 
 
@@ -83,17 +86,24 @@ public class Boss extends Enemy{
                         shootCount=0;
                     }
 
+
                 }
                 break;
             case 7:
                 if(System.currentTimeMillis()-skillTime>4000){
                     skillTime=System.currentTimeMillis();
                     skill=false;
+                    movPath=2;
                     velMov-=1;
                     img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/bosses/bat.png"));
                 }else {
                     move(velX,velY);
                     adjustMovement();
+                    if(Math.abs(player.hitbox.x-hitbox.x)>Math.abs(player.hitbox.y-hitbox.y)){
+                        velY=0;
+                    }else {
+                        velX=0;
+                    }
                 }
                 break;
             case 8:

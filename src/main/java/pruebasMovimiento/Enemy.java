@@ -8,7 +8,7 @@ public class Enemy extends Entity{
 
     Player player;
     int velMov;
-    private int movPath;
+    int movPath;
     protected int id;
     private long time;
     private int spinMult=1;
