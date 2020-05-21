@@ -53,7 +53,7 @@ public class Player extends Entity {
         this.dinero = 0;
     }
 
-    int getArmorInt() {
+    private int getArmorInt() {
         int armorInt=0;
         for (int i = 0; i < 3; i++) {
             if(armor[i]!=null){
@@ -122,11 +122,11 @@ public class Player extends Entity {
     }
 
     int getMaxEnergy(){
-        return level*3;
+        return level*4;
     }
 
     int getMaxHp(){
-        return  20+level*3;
+        return  20+level*4;
     }
 
     double getDmgRecived(){

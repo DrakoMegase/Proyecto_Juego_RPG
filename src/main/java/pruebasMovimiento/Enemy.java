@@ -223,6 +223,9 @@ public class Enemy extends Entity{
     * 3:escarabajo
     * 4:calabera
     * 5:caballero
+    * 6:demonio
+    * 7:murcielago gigante
+    * 8:mago del bosque
     * */
     static Enemy createEnemy(int id, int posX, int posY, Player player){
 
@@ -253,6 +256,10 @@ public class Enemy extends Entity{
             case 7:
                 enemy=new Boss(posX, posY, 40, "img/bosses/bat.png:2:0:0:96:96:3", 33, 64, 30, 19, true, true, player, 1, 2, 3, id);
                 break;
+            case 8:
+                enemy=new Boss(posX, posY, 60, "img/bosses/mage-1.png:2:0:0:32:32:3", 8, 24, 15, 7, true, true, player, 1, 2, 3, id);
+                break;
+
 
 
         }

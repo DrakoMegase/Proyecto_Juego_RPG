@@ -66,7 +66,7 @@ public class Juego extends JPanel implements ActionListener {
 
 
 
-        player = new Player(400, 400, 20);
+        player = new Player(400, 400, 24);
 
         cargarNuevoNivel(player);
 
@@ -150,21 +150,18 @@ public class Juego extends JPanel implements ActionListener {
         salas = new ArrayList<>();
         Room[][] level = MapGenerator.generateMap(5*(1+nivel));
         Room sala;
-//        String[][] salasint = new String[level.length][level.length];
         for (int i = 0; i < level.length; i++) {
             for (int j = 0; j < level[i].length; j++) {
                 if (level[i][j] != null) {
                     sala = level[i][j];
                     sala.inicializarSala(nivel);
                     salas.add(sala);
-//                    salasint[sala.x][sala.y] = "["+sala.salaClass+"]";
                     if (sala.salaClass == 0) {
                         salaActual = sala;
                         player.salaPlayer=sala;
                         salaActual.entities.add(player);
                     }
                 }
-//                if (level[i][j] == null) salasint[i][j] = " ";
 
             }
         }
@@ -184,12 +181,12 @@ public class Juego extends JPanel implements ActionListener {
             Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
             r.setNear(true);
 
-            System.out.println(r);
         }
     }
 
     static void siguienteNivel(){
         nivel++;
+        player.hp=player.getMaxHp();
         cargarNuevoNivel(player);
     }
 
