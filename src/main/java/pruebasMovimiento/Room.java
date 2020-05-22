@@ -24,8 +24,9 @@ public class Room {
     private static int contador = 0;
     BufferedImage backgroundSala;
     BufferedImage detailsSala;
-    LinkedList<Entity> entities;
-    HashMap<String, Salida> salidas;
+    LinkedList<Entity>entities;
+    private int distancia;
+    HashMap<String,Salida> salidas;
     boolean clear;
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     private static BufferedImage spriteSheet;
@@ -57,6 +58,7 @@ public class Room {
         HEIGHT = ROWS * TILESIZE;
 
 
+
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJsonRoom));  //Poner un iterador que separe las capas HECHO
         try {
             spriteSheet = ImageIO.read(new File(rutaSpriteSheet));
@@ -69,8 +71,10 @@ public class Room {
         salidas = new HashMap<>();
 
 
+
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
 //        salidas.addAll(salidasMapa(rutaJsonRoom));
+
 
 
         printBackground(backgroundSala, spriteInts);
@@ -86,9 +90,8 @@ public class Room {
 
     void inicializarSala(int nivel) {
 
-        String rutaJsonRoom;
-        rutaJsonRoom = "res/jsonsMapasPruebas/" + salaType + ".json";
-        String rutaSpriteSheet = "res/img/terrain_atlas.png";
+        String rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
+        String rutaSpriteSheet="res/img/terrain_atlas.png";
 
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
         ROWS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "height"));
@@ -113,9 +116,10 @@ public class Room {
 
         switch (salaClass) {
             case 0:
-                Weapon weapon = Weapon.createWeapon(4);
-                weapon.getHitbox().x = WIDTH / 2;
-                weapon.getHitbox().y = WIDTH / 2;
+                Weapon weapon=Weapon.createWeapon(4);
+                weapon.getHitbox().x=WIDTH/2;
+                weapon.getHitbox().y=WIDTH/2;
+                System.out.println("inicio:"+x+"-"+y);
                 objetosMapa.add(weapon);
 
                 for (int i = 0; i < 3; i++) {
@@ -147,7 +151,8 @@ public class Room {
                 break;
             case 3:
 
-                switch (nivel) {
+                System.out.println("boss:"+x+"-"+y);
+                switch (nivel){
                     case 2:
                         entities.add(Enemy.createEnemy(6, WIDTH / 2, HEIGHT / 2, Juego.player));
                         entities.add(Enemy.createEnemy(4, WIDTH / 2, HEIGHT / 2 + 100, Juego.player));
@@ -156,7 +161,7 @@ public class Room {
                         break;
 
                     case 1:
-
+                        entities.add(Enemy.createEnemy(8,WIDTH/2,HEIGHT/2,Juego.player));
                         break;
 
                     case 0:
@@ -258,16 +263,12 @@ public class Room {
         this.salaType = salaType;
     }
 
-    public int getSalaType() {
-        return salaType;
+    int getDistancia() {
+        return distancia;
     }
 
-    public int getSalaClass() {
-        return salaClass;
-    }
-
-    public void setSalaClass(int salaClass) {
-        this.salaClass = salaClass;
+    void setDistancia(int distancia) {
+        this.distancia = distancia;
     }
 
     boolean isClear() {

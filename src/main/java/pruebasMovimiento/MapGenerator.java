@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class MapGenerator {
+class MapGenerator {
 
 
     static Room[][] generateMap(int maxRoom) {
@@ -27,10 +27,11 @@ public class MapGenerator {
         firstRoom.salaClass=0;
         firstRoom.x=start;
         firstRoom.y=start;
+        firstRoom.setDistancia(0);
         roomArray[start][start]=firstRoom;
 
 
-        boolean shop = false, boss = false;
+        boolean shop = false;
 
         int[] skip = {1, 2, 3, 4}; // U,D,R,L
         for (int i = 0; i < rooms.size(); i++) {
@@ -95,11 +96,10 @@ public class MapGenerator {
 
                             int roomVal = generateNum(val, limit);
 
-
-
                             Room nuevaSala=new Room(roomVal);
                             nuevaSala.x=room[0];
                             nuevaSala.y=room[1];
+                            nuevaSala.setDistancia(salaActual.getDistancia()+1);
                             map[room[0]][room[1]][0] = roomVal;
                             map[room[0]][room[1]][1] = val;
                             roomArray[room[0]][room[1]] =  nuevaSala;
@@ -114,10 +114,6 @@ public class MapGenerator {
 
                             if (!limit) {
                                 rooms.add(room);
-                            } else if (!boss) {
-                                map[room[0]][room[1]][1] = 3;
-                                roomArray[room[0]][room[1]].salaClass=3;
-                                boss = true;
                             } else {
                                 map[room[0]][room[1]][1] = 1;
                                 roomArray[room[0]][room[1]].salaClass=1;
@@ -154,18 +150,18 @@ public class MapGenerator {
 
 
         }
-        /*for (int i = 0; i < roomArray.length ; i++) {
-            for (int j = 0; j <roomArray[i].length ; j++) {
 
+        boolean boss=false;
 
-                if (roomArray[j][i] == null){
-                    System.out.print("0\t");
-                }else System.out.print(roomArray[j][i].getSalaType() + "\t");
-
-
+        for (int i = 0; !boss && i < roomArray.length ; i++) {
+            for (int j = 0; !boss && j <roomArray[i].length ; j++) {
+                Room room=roomArray[j][i];
+                if(room!=null&&room.getDistancia()>1&&(room.salaType==1||room.salaType==2||room.salaType==4||room.salaType==8)){
+                    boss=true;
+                    room.salaClass=3;
+                }
             }
-            System.out.println();
-        }*/
+        }
 
         return roomArray;
     }

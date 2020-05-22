@@ -1,5 +1,8 @@
 package pruebasMovimiento;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -101,6 +104,13 @@ public class Entity implements Comparable<Entity> {
             hp -= dmg;
             damageTime=System.currentTimeMillis();
             damageWait=true;
+
+            if(this instanceof Enemy){
+//                playSound("sounds/.wav");
+            }else if(this instanceof Player){
+                playSound("sounds/hurt.wav");
+            }
+
         }
     }
 
@@ -343,5 +353,14 @@ public class Entity implements Comparable<Entity> {
                 ", hitbox=" + hitbox +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    static void playSound(String res){
+        try {
+            AudioStream audioStream=new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream(res));
+            AudioPlayer.player.start(audioStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

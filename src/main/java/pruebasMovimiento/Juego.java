@@ -35,10 +35,6 @@ public class Juego extends JPanel implements ActionListener {
     static private int nivel=0;
 
     //Atributos graficos
-    static private BufferedImage imageBufferJuego;             //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
-    static private BufferedImage imageBufferDetailsJuego;      //Utilizaremos esta imagen para pintar los sprites aqui antes de sacarlos por pantalla (para evitar cortes visuales)
-    static private BufferedImage UIBuffImg;                            //spriteSheet UIBuffImg
-    static private BufferedImage escapeMenuImg;                            //menu escape
     static private UI ui;                                       //spriteSheet UIBuffImg
     static private Rectangle uiRecMinimap;
     static private Rectangle map;
@@ -51,12 +47,10 @@ public class Juego extends JPanel implements ActionListener {
     static private int offSetY = 0;
 
     //Atributos del juego
-    static private int TIMERDELAY = 10;        //Delay del timer
+    static final private int TIMERDELAY = 10;        //Delay del timer
     static private Timer mainTimer;            //Declaracion de un timer
     private static ArrayList<Room> salas;
-    private static HashMap<String, Salida> salidasJuego;
-    private static LinkedList<Entity> entitiesJuego;
-    private static LinkedList<ItemProperties> objetos;
+    private static Room salaActual;
     static boolean menuEsc;
     protected static boolean paintSt;
     static JPanel padre;
@@ -66,35 +60,15 @@ public class Juego extends JPanel implements ActionListener {
     static Rectangle slash;
 
     //Constructor de la clase Juego
-    Juego(String rutaJson, String rutaSpriteSheet, JPanel padre) {
+    Juego(String rutaJson) {
 
         //INICIALIZACION DE ENTITIES
 
         this.padre = padre;
 
-        player = new Player(400, 400, 20, entitiesJuego);
+        player = new Player(400, 400, 24);
 
-        salas = new ArrayList<>();
-        Room[][] level = MapGenerator.generateMap(5*(1+nivel));
-        Room inicio = null;
-        Room sala;
-//        String[][] salasint = new String[level.length][level.length];
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level[i].length; j++) {
-                if (level[i][j] != null) {
-                    sala = level[i][j];
-                    sala.inicializarSala(nivel);
-                    salas.add(sala);
-//                    salasint[sala.x][sala.y] = "["+sala.salaClass+"]";
-                    if (sala.salaClass == 0) {
-                        inicio = sala;
-                    }
-                }
-//                if (level[i][j] == null) salasint[i][j] = " ";
-
-            }
-        }
-
+        cargarNuevoNivel(player);
 
         /*for (int i = 0; i < salasint.length; i++) {
             for (int j = 0; j < salasint.length; j++) {
@@ -130,11 +104,7 @@ public class Juego extends JPanel implements ActionListener {
 
 
         //INICIALIZACION DE LAS LISTAS QUE USAREMOS
-        entitiesJuego = inicio.entities;
-        salidasJuego = inicio.salidas;
-        objetos=inicio.objetosMapa;
         //DAMOS LAS ENTITIES AL PLAYER
-        player.setAddEntities(entitiesJuego);
 
         //INICIACION DE LA UIBuffImg (siempre despies del player)
 
@@ -143,13 +113,7 @@ public class Juego extends JPanel implements ActionListener {
         ui = new UI(player);
         uiRecMinimap = UI.getMinimapa();
         map = UI.getMapa();
-        try {
-            UIBuffImg = ImageIO.read(new File("res/img/UI.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //CARGAR DATOS EN LAS LISTAS
-        entitiesJuego.add(player);
+
 
 //        player.setAddEntities(entitiesJuego);
 
@@ -178,17 +142,6 @@ public class Juego extends JPanel implements ActionListener {
         addKeyListener(new KeyAdapt(player));
 
 
-        imageBufferJuego = inicio.backgroundSala;
-        imageBufferDetailsJuego = inicio.detailsSala;
-        try {
-            escapeMenuImg = ImageIO.read(new File("res/img/guardar.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        imageBufferJuego = inicio.backgroundSala;
-        imageBufferDetailsJuego = inicio.detailsSala;
-
-
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
@@ -213,8 +166,52 @@ public class Juego extends JPanel implements ActionListener {
 
     }
 
+    private static void cargarNuevoNivel(Player player){
+        salas = new ArrayList<>();
+        Room[][] level = MapGenerator.generateMap(5*(1+nivel));
+        Room sala;
+        for (int i = 0; i < level.length; i++) {
+            for (int j = 0; j < level[i].length; j++) {
+                if (level[i][j] != null) {
+                    sala = level[i][j];
+                    sala.inicializarSala(nivel);
+                    salas.add(sala);
+                    if (sala.salaClass == 0) {
+                        salaActual = sala;
+                        player.salaPlayer=sala;
+                        salaActual.entities.add(player);
+                    }
+                }
 
-    private void cargarSala(Room room, String exit) {
+            }
+        }
+
+        for (Room r : salas
+        ) {
+            if (r.player != null) {
+                player.salaPlayer = r;
+                r.setVisited(true);
+            }
+
+        }
+
+        for (String s : player.salaPlayer.salidas.keySet()
+        ) {
+
+            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
+            r.setNear(true);
+
+        }
+    }
+
+    static void siguienteNivel(){
+        nivel++;
+        player.hp=player.getMaxHp();
+        cargarNuevoNivel(player);
+    }
+
+
+    private static void cargarSala(Room room, String exit) {
 
 
         /*
@@ -231,17 +228,14 @@ public class Juego extends JPanel implements ActionListener {
 
         //room.cargarNuevaSala(imageBufferJuego,entitiesJuego,imageBufferDetailsJuego);
 
-        imageBufferJuego = room.backgroundSala;
-        imageBufferDetailsJuego = room.detailsSala;
 
         //Limpiamos nuestras listas
-        entitiesJuego.remove(player);
-        entitiesJuego = room.entities;
-        salidasJuego = room.salidas;
-        objetos=room.objetosMapa;
+        salaActual.entities.remove(player);
+
+
+        salaActual=room;
         //Añadimos al jugador
-        entitiesJuego.add(player);
-        player.setAddEntities(entitiesJuego);
+        salaActual.entities.add(player);
 
         switch (exit){
             case "2":
@@ -275,15 +269,15 @@ public class Juego extends JPanel implements ActionListener {
 
         boolean clear=true;
 
-        for (int i = 0; i < entitiesJuego.size(); ) {
-            Entity entity = entitiesJuego.get(i);
+        for (int i = 0; i < salaActual.entities.size(); ) {
+            Entity entity = salaActual.entities.get(i);
             entity.update();
             if(!player.salaPlayer.clear&&clear&&entity instanceof Enemy){
                 clear=false;
             }
 
             if (entity.remove) {
-                entitiesJuego.remove(entity);
+                salaActual.entities.remove(entity);
             } else {
                 i++;
             }
@@ -294,30 +288,29 @@ public class Juego extends JPanel implements ActionListener {
         }
 
 
-        Iterator<Entity> iterator = entitiesJuego.iterator();
+        Iterator<Entity> iterator = salaActual.entities.iterator();
 
-        entitiesJuego.sort(new CompareNearEntities(entitiesJuego));
+        salaActual.entities.sort(new CompareNearEntities(salaActual.entities));
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            entity.checkCollisions(entitiesJuego, 0);
+            entity.checkCollisions(salaActual.entities, 0);
         }
 
         if (player.hp <= 0) {
             //Canbedamaged del player esta en false todo
-
-            entitiesJuego.remove(player);
+            salaActual.entities.remove(player);
             System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
             padre.remove(this);
             GameOver gameOver = new GameOver();
 
         }
 
-        if (player.salaPlayer.clear&&salidasJuego != null) {
-            Set<String> keys = salidasJuego.keySet();
+        if (player.salaPlayer.clear&&salaActual.salidas != null) {
+            Set<String> keys = salaActual.salidas.keySet();
             Salida salida;
             for (String key : keys) {
-                salida = salidasJuego.get(key);
-                if (salida != null && player.hitbox.intersects(salida.getArea())) {
+                salida = salaActual.salidas.get(key);
+                if (salida != null && !(salida instanceof Portal) && player.hitbox.intersects(salida.getArea())) {
                     Room room2 = salida.getConexion().getOrigen();
                     cargarSala(room2, key);
                     player.salaPlayer.player = null;
@@ -334,9 +327,10 @@ public class Juego extends JPanel implements ActionListener {
         }
         for (String s : player.salaPlayer.salidas.keySet()
         ) {
-
-            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
-            r.setNear(true);
+            if(!s.equals("portal")) {
+                Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
+                r.setNear(true);
+            }
 
             //System.out.println(r);
         }
@@ -366,10 +360,14 @@ public class Juego extends JPanel implements ActionListener {
 
         //PRIMERA PINTADA: FONDO
 
-        graphics2D.drawImage(imageBufferJuego, -offSetX, -offSetY, null);
+        graphics2D.drawImage(salaActual.backgroundSala, -offSetX, -offSetY, null);
 
-        for (int i = 0; i < objetos.size(); i++) {
-            objetos.get(i).drawIcon(offSetX,offSetY,graphics2D);
+        if(salaActual.salidas.containsKey("portal")){
+            ((Portal)salaActual.salidas.get("portal")).draw(graphics2D,offSetX,offSetY);
+        }
+
+        for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
+            salaActual.objetosMapa.get(i).drawIcon(offSetX,offSetY,graphics2D);
         }
 
 
@@ -378,8 +376,8 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         //SEGUNDA PINTADA: ENTITIES
-        entitiesJuego.sort(Entity::compareTo);
-        for (Entity entity : entitiesJuego) {
+        salaActual.entities.sort(Entity::compareTo);
+        for (Entity entity : salaActual.entities) {
             entity.draw(graphics2D, offSetX, offSetY);
             Rectangle rectangle = (Rectangle) entity.hitbox.clone();
             rectangle.x -= offSetX;
@@ -388,10 +386,10 @@ public class Juego extends JPanel implements ActionListener {
             //graphics2D.draw(entity.hitbox);
         }
 
-        Set<String> keys = salidasJuego.keySet();
+        Set<String> keys = salaActual.salidas.keySet();
         Salida salida;
         for (String key : keys) {
-            salida = salidasJuego.get(key);
+            salida = salaActual.salidas.get(key);
             Rectangle rectSalida = (Rectangle) salida.getArea().clone();
             rectSalida.x -= offSetX;
             rectSalida.y -= offSetY;
@@ -407,7 +405,7 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         //TERCER PINTADA: DETALLES
-        graphics2D.drawImage(imageBufferDetailsJuego, -offSetX, -offSetY, null);
+        graphics2D.drawImage(salaActual.detailsSala, -offSetX, -offSetY, null);
         graphics2D.drawImage(ui.draw(graphics2D), 0, 0, null);
 
         ui.drawIcons(graphics2D);

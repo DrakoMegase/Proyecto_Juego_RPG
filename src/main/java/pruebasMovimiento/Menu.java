@@ -85,7 +85,6 @@ public class Menu extends JFrame {
         backgroundPanel.setLayout(null);
 
 
-
         nuevo_juego.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,7 +95,7 @@ public class Menu extends JFrame {
                 remove(backgroundPanel);
                 repaint();
 
-                juego = new Juego("res/json/mapaPruebaestilo2.json", "resources/terrain_atlas.png", panelPadre);
+                juego = new Juego("res/jsonsMapasPruebas/1.json");
                 juego.start();
 
                 setContentPane(juego);

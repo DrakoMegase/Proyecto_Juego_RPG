@@ -26,9 +26,7 @@ final public class ExtraerDatosJson {
         try {
             JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));
             arrayADevolver = (JSONArray) obj.get(clave);
-        } catch (ParseException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
@@ -84,16 +82,13 @@ final public class ExtraerDatosJson {
     static public ArrayList<JSONObject> arraysSprites(String rutaJson){
 
 
-        ArrayList<JSONObject> sprites = new ArrayList();
+        ArrayList<JSONObject> sprites = new ArrayList<JSONObject>();
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
         try {
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(rutaJson));
-            arrayADevolver = obj;
-        } catch (ParseException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            arrayADevolver = (JSONObject) parser.parse(new FileReader(rutaJson));
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 
@@ -121,8 +116,7 @@ final public class ExtraerDatosJson {
         JSONObject arrayADevolver = null;
         JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(rutaJson));
-            arrayADevolver = obj;
+            arrayADevolver = (JSONObject) parser.parse(new FileReader(rutaJson));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
@@ -136,7 +130,7 @@ final public class ExtraerDatosJson {
             if (jsonObject.get("type").equals("objectgroup")){
 
                 arrayADevolverArrayJson.add(jsonObject);
-                System.out.println(jsonObject);
+//                System.out.println(jsonObject);
             }
         }
         return arrayADevolverArrayJson;
@@ -163,7 +157,7 @@ final public class ExtraerDatosJson {
             JSONArray ints = (JSONArray) jsonObject.get("data");
 
             for (int j = 0; j < spritePorCapa; j++) {
-                //System.out.println(arrayInts[i][j]);
+//                System.out.println(arrayInts[i][j]);
 
                 arrayInts[i][j] = (int) Long.parseLong(ints.get(j).toString());
                 //System.out.println(arrayInts[i][j]);
@@ -184,21 +178,17 @@ final public class ExtraerDatosJson {
 
 
 
-    public static ArrayList<Rectangle>objetosMapa(String ruta){
+    static ArrayList<Rectangle>objetosMapa(String ruta){
         ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
         //JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));
-            arrayADevolver = obj;
-        } catch (ParseException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            arrayADevolver = (JSONObject) parser.parse(new FileReader(ruta));
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
-
 
         int aa = 0;
         JSONArray jsonArray = (JSONArray) arrayADevolver.get("layers");
@@ -253,11 +243,8 @@ final public class ExtraerDatosJson {
         JSONObject arrayADevolver = null;
         //JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));
-            arrayADevolver = obj;
-        } catch (ParseException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            arrayADevolver = (JSONObject) parser.parse(new FileReader(ruta));
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 

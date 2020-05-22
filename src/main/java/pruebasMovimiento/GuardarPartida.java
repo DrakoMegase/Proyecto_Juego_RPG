@@ -35,7 +35,7 @@ public class GuardarPartida extends JPanel {
         playerJsonObject.put("x",player.getX());
         playerJsonObject.put("hp",player.getHp());
 
-        for (Entity e:player.getAddEntities()
+        for (Entity e:player.salaPlayer.entities
              ) {
 
             JSONObject entitiy = new JSONObject();

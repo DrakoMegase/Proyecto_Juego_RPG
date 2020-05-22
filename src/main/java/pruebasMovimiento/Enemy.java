@@ -8,7 +8,7 @@ public class Enemy extends Entity{
 
     Player player;
     int velMov;
-    private int movPath;
+    int movPath;
     protected int id;
     private long time;
     private int spinMult=1;
@@ -185,22 +185,22 @@ public class Enemy extends Entity{
                     switch (id){
                         case 3:
                             img="img/projectiles/bolaMarron.png:1:0:0:64:64:4";
-                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                             break;
                         case 5:
                         case 6:
                         case 7:
                             img="img/projectiles/bolaRoja.png:1:0:0:64:64:4";
-                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                             break;
                         default:
                             img="img/projectiles/bola.png:1:0:0:29:29:4";
-                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,player.getAddEntities(),damage);
+                            projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                     }
 
 
 
-                    player.getAddEntities().add(projectile);
+                    player.salaPlayer.entities.add(projectile);
 
                 }
 
@@ -223,6 +223,9 @@ public class Enemy extends Entity{
     * 3:escarabajo
     * 4:calabera
     * 5:caballero
+    * 6:demonio
+    * 7:murcielago gigante
+    * 8:mago del bosque
     * */
     static Enemy createEnemy(int id, int posX, int posY, Player player){
 
@@ -253,6 +256,10 @@ public class Enemy extends Entity{
             case 7:
                 enemy=new Boss(posX, posY, 40, "img/bosses/bat.png:2:0:0:96:96:3", 33, 64, 30, 19, true, true, player, 1, 2, 3, id);
                 break;
+            case 8:
+                enemy=new Boss(posX, posY, 60, "img/bosses/mage-1.png:2:0:0:32:32:3", 8, 24, 15, 7, true, true, player, 1, 2, 3, id);
+                break;
+
 
 
         }
