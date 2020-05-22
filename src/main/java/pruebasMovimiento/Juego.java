@@ -59,18 +59,18 @@ public class Juego extends JPanel implements ActionListener {
     private static LinkedList<ItemProperties> objetos;
     static boolean menuEsc;
     protected static boolean paintSt;
-
+    static JPanel padre;
 
 
     private Image imagenEscape;
     static Rectangle slash;
 
     //Constructor de la clase Juego
-    Juego(String rutaJson, String rutaSpriteSheet) {
+    Juego(String rutaJson, String rutaSpriteSheet, JPanel padre) {
 
         //INICIALIZACION DE ENTITIES
 
-
+        this.padre = padre;
 
         player = new Player(400, 400, 20, entitiesJuego);
 
@@ -171,7 +171,7 @@ public class Juego extends JPanel implements ActionListener {
             Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
             r.setNear(true);
 
-            System.out.println(r);
+            //System.out.println(r);
         }
 
 
@@ -262,10 +262,10 @@ public class Juego extends JPanel implements ActionListener {
 
         Set<String> keySet = salidasJuego.keySet();
 
-        for (String key : keySet) {
-            System.out.println(key + " " + salidasJuego.get(key).getConexion());
-        }
-        System.out.println();
+//        for (String key : keySet) {
+//            System.out.println(key + " " + salidasJuego.get(key).getConexion());
+//        }
+//        System.out.println();
 
     }
 
@@ -304,10 +304,12 @@ public class Juego extends JPanel implements ActionListener {
 
         if (player.hp <= 0) {
             //Canbedamaged del player esta en false todo
+
             entitiesJuego.remove(player);
             System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-            System.exit(0);
-            return;
+            padre.remove(this);
+            GameOver gameOver = new GameOver();
+
         }
 
         if (player.salaPlayer.clear&&salidasJuego != null) {
@@ -550,15 +552,15 @@ public class Juego extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
-        Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
-        JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
-        frame.setSize(500, 529);                                                   //Tamaño de la ventana
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                             //Accion cuando cerramos la ventana
-        frame.setResizable(false);                                                        //Negamos que la ventana pueda ser modificada en tamaño
-        frame.add(juego);
-        frame.setVisible(true);
-        frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
-        juego.start();
+//        JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
+//        Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png", frame);
+//        frame.setSize(500, 529);                                                   //Tamaño de la ventana
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                             //Accion cuando cerramos la ventana
+//        frame.setResizable(false);                                                        //Negamos que la ventana pueda ser modificada en tamaño
+//        frame.add(juego);
+//        frame.setVisible(true);
+//        frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
+//        juego.start();
 
 
     }

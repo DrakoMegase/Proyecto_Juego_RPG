@@ -96,7 +96,7 @@ public class Menu extends JFrame {
                 remove(backgroundPanel);
                 repaint();
 
-                juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
+                juego = new Juego("res/json/mapaPruebaestilo2.json", "resources/terrain_atlas.png", panelPadre);
                 juego.start();
 
                 setContentPane(juego);
@@ -192,7 +192,7 @@ public class Menu extends JFrame {
                             Iterator<DataSnapshot> iterator=document.iterator();
                             while (iterator.hasNext()){
                                 String object=iterator.next().getValue().toString();
-                                System.out.println(object);
+                                //System.out.println(object);
                             }
                         }
 

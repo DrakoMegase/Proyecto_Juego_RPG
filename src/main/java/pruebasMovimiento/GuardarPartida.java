@@ -73,11 +73,11 @@ public class GuardarPartida extends JPanel {
 
     public static void main(String[] args) {
 
-        Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
-
-        GuardarPartida g1 = new GuardarPartida(juego, "slot1");
-
-        g1.savePlayer(juego.getPlayer());
+//        Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png");
+//
+//        GuardarPartida g1 = new GuardarPartida(juego, "slot1");
+//
+//        g1.savePlayer(juego.getPlayer());
 
     }
 

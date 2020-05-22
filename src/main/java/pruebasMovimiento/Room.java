@@ -24,22 +24,22 @@ public class Room {
     private static int contador = 0;
     BufferedImage backgroundSala;
     BufferedImage detailsSala;
-    LinkedList<Entity>entities;
-    HashMap<String,Salida> salidas;
+    LinkedList<Entity> entities;
+    HashMap<String, Salida> salidas;
     boolean clear;
     static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
     private static BufferedImage spriteSheet;
     Player player;
-    LinkedList<ItemProperties>objetosMapa;
+    LinkedList<ItemProperties> objetosMapa;
     private boolean visited;
     private boolean near;
 
     Room(int salaType) {
         this.salaType = salaType;
         this.idSala = contador;
-        salidas =new HashMap<>();
+        salidas = new HashMap<>();
 
-        if (contador == 0){
+        if (contador == 0) {
             player = Juego.player;
         }
         contador++;
@@ -57,7 +57,6 @@ public class Room {
         HEIGHT = ROWS * TILESIZE;
 
 
-
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJsonRoom));  //Poner un iterador que separe las capas HECHO
         try {
             spriteSheet = ImageIO.read(new File(rutaSpriteSheet));
@@ -67,19 +66,17 @@ public class Room {
         backgroundSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         detailsSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         entities = new LinkedList<>();
-        salidas =new HashMap<>();
-
+        salidas = new HashMap<>();
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
 //        salidas.addAll(salidasMapa(rutaJsonRoom));
 
 
-
         printBackground(backgroundSala, spriteInts);
         printBackgroundDetails(detailsSala, spriteInts);
 
-        if (contador == 0){
+        if (contador == 0) {
             player = Juego.player;
         }
 
@@ -87,10 +84,11 @@ public class Room {
         this.idSala = contador;
     }
 
-    void inicializarSala(int nivel){
+    void inicializarSala(int nivel) {
 
-        String rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
-        String rutaSpriteSheet="res/img/terrain_atlas.png";
+        String rutaJsonRoom;
+        rutaJsonRoom = "res/jsonsMapasPruebas/" + salaType + ".json";
+        String rutaSpriteSheet = "res/img/terrain_atlas.png";
 
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
         ROWS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "height"));
@@ -107,7 +105,7 @@ public class Room {
         backgroundSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         detailsSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         entities = new LinkedList<>();
-        objetosMapa= new LinkedList<>();
+        objetosMapa = new LinkedList<>();
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
@@ -115,33 +113,33 @@ public class Room {
 
         switch (salaClass) {
             case 0:
-                Weapon weapon=Weapon.createWeapon(4);
-                weapon.getHitbox().x=WIDTH/2;
-                weapon.getHitbox().y=WIDTH/2;
+                Weapon weapon = Weapon.createWeapon(4);
+                weapon.getHitbox().x = WIDTH / 2;
+                weapon.getHitbox().y = WIDTH / 2;
                 objetosMapa.add(weapon);
 
                 for (int i = 0; i < 3; i++) {
-                    Armor armor=Armor.createArmor(i);
-                    armor.getHitbox().x=WIDTH/2+40*(1+i);
-                    armor.getHitbox().y=WIDTH/2;
+                    Armor armor = Armor.createArmor(i);
+                    armor.getHitbox().x = WIDTH / 2 + 40 * (1 + i);
+                    armor.getHitbox().y = WIDTH / 2;
                     objetosMapa.add(armor);
                 }
 
                 break;
             case 1:
-                int max=HEIGHT-100;
-                int min=100;
-                int extra=(int)(Math.random()*5);
-                for (int i = 0; i < 4+extra; i++) {
-                    int posx=max,posy=max;
-                    if(i%2==0){
-                        posx=min;
+                int max = HEIGHT - 100;
+                int min = 100;
+                int extra = (int) (Math.random() * 5);
+                for (int i = 0; i < 4 + extra; i++) {
+                    int posx = max, posy = max;
+                    if (i % 2 == 0) {
+                        posx = min;
                     }
-                    if((i/2)%2==0){
-                        posy=min;
+                    if ((i / 2) % 2 == 0) {
+                        posy = min;
                     }
 
-                    entities.add(Enemy.createEnemy(nivel*2+(int)(Math.random()*2), posx, posy, Juego.player));
+                    entities.add(Enemy.createEnemy(nivel * 2 + (int) (Math.random() * 2), posx, posy, Juego.player));
                 }
                 break;
             case 2:
@@ -149,12 +147,12 @@ public class Room {
                 break;
             case 3:
 
-                switch (nivel){
+                switch (nivel) {
                     case 2:
-                        entities.add(Enemy.createEnemy(6,WIDTH/2,HEIGHT/2,Juego.player));
-                        entities.add(Enemy.createEnemy(4,WIDTH/2,HEIGHT/2+100,Juego.player));
-                        entities.add(Enemy.createEnemy(4,WIDTH/2-50,HEIGHT/2-50,Juego.player));
-                        entities.add(Enemy.createEnemy(4,WIDTH/2+50,HEIGHT/2-50,Juego.player));
+                        entities.add(Enemy.createEnemy(6, WIDTH / 2, HEIGHT / 2, Juego.player));
+                        entities.add(Enemy.createEnemy(4, WIDTH / 2, HEIGHT / 2 + 100, Juego.player));
+                        entities.add(Enemy.createEnemy(4, WIDTH / 2 - 50, HEIGHT / 2 - 50, Juego.player));
+                        entities.add(Enemy.createEnemy(4, WIDTH / 2 + 50, HEIGHT / 2 - 50, Juego.player));
                         break;
 
                     case 1:
@@ -162,7 +160,7 @@ public class Room {
                         break;
 
                     case 0:
-                        entities.add(Enemy.createEnemy(7,WIDTH/2,HEIGHT/2,Juego.player));
+                        entities.add(Enemy.createEnemy(7, WIDTH / 2, HEIGHT / 2, Juego.player));
                 }
 
                 break;
@@ -170,8 +168,8 @@ public class Room {
         }
 
 
-        HashMap<String,Salida> salidas1=salidasMapa(rutaJsonRoom);
-        Set<String> keySet=salidas1.keySet();
+        HashMap<String, Salida> salidas1 = salidasMapa(rutaJsonRoom);
+        Set<String> keySet = salidas1.keySet();
         for (String key :
                 keySet) {
             salidas.get(key).setArea(salidas1.get(key).getArea());
@@ -182,9 +180,7 @@ public class Room {
     }
 
 
-
-
-    private BufferedImage printBackground(BufferedImage imageBuffer,int[][] spriteInts) {
+    private BufferedImage printBackground(BufferedImage imageBuffer, int[][] spriteInts) {
 
 
         int capas = spriteInts.length;
