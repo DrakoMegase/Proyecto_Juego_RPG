@@ -11,6 +11,8 @@ public abstract class ItemProperties {
     private Rectangle hitbox;
     int id;
 
+    ItemProperties(){}
+
     ItemProperties(String name, int spriteSize, String img, Image icon, Rectangle hitbox) {
         this.name = name;
         this.spriteSize = spriteSize;

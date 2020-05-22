@@ -147,6 +147,19 @@ public class Room {
                 }
                 break;
             case 2:
+                System.out.println("tienda:"+x+"-"+y);
+                entities.add(new Entity(WIDTH/2-16,HEIGHT/2-50,20,"img/enemies/BlackSmith.png",8,44,16,10,false,false));
+
+                Weapon weapon2=Weapon.createWeapon(6);
+                weapon2.getHitbox().x=WIDTH/2;
+                weapon2.getHitbox().y=WIDTH/2;
+                objetosMapa.add(new Buyable(weapon2));
+                for (int i = 0; i < 3; i++) {
+                    Armor armor = Armor.createArmor(i);
+                    armor.getHitbox().x = WIDTH / 2 + 40 * (1 + i);
+                    armor.getHitbox().y = WIDTH / 2;
+                    objetosMapa.add(new Buyable(armor));
+                }
 
                 break;
             case 3:

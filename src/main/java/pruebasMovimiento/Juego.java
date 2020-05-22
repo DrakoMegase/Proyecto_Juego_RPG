@@ -53,7 +53,7 @@ public class Juego extends JPanel implements ActionListener {
     private static Room salaActual;
     static boolean menuEsc;
     protected static boolean paintSt;
-    static JPanel padre;
+    private static JPanel padre;
 
 
     private Image imagenEscape;
@@ -64,7 +64,7 @@ public class Juego extends JPanel implements ActionListener {
 
         //INICIALIZACION DE ENTITIES
 
-        this.padre = padre;
+//        Juego.padre = padre;
 
         player = new Player(400, 400, 24);
 
@@ -117,26 +117,6 @@ public class Juego extends JPanel implements ActionListener {
 
 //        player.setAddEntities(entitiesJuego);
 
-        for (Room r : salas
-        ) {
-            if (r.player != null) {
-                player.salaPlayer = r;
-                r.setVisited(true);
-            }
-
-        }
-
-
-        //Cargar datos salas.
-        //TODO
-        for (String s : player.salaPlayer.salidas.keySet()
-        ) {
-
-            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
-            r.setNear(true);
-
-            //System.out.println(r);
-        }
 
 
         addKeyListener(new KeyAdapt(player));
@@ -252,14 +232,6 @@ public class Juego extends JPanel implements ActionListener {
                 break;
 
         }
-
-
-        Set<String> keySet = salidasJuego.keySet();
-
-//        for (String key : keySet) {
-//            System.out.println(key + " " + salidasJuego.get(key).getConexion());
-//        }
-//        System.out.println();
 
     }
 
@@ -559,8 +531,6 @@ public class Juego extends JPanel implements ActionListener {
 //        frame.setVisible(true);
 //        frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
 //        juego.start();
-
-
     }
 
 

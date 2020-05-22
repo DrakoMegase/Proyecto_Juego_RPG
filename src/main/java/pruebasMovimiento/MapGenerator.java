@@ -31,7 +31,6 @@ class MapGenerator {
         roomArray[start][start]=firstRoom;
 
 
-        boolean shop = false;
 
         int[] skip = {1, 2, 3, 4}; // U,D,R,L
         for (int i = 0; i < rooms.size(); i++) {
@@ -42,14 +41,8 @@ class MapGenerator {
             boolean[] booleans = numToBool(map[roomX][roomY][0]);
             if (map[roomX][roomY][1] != 0) {
                 booleans[map[roomX][roomY][1] - 1] = false;
-                if (!shop && rooms.size() > start && (int) (Math.random() * 2) == 1) {
-                    map[roomX][roomY][1] = 2;
-                    roomArray[roomX][roomY].salaClass=2;
-                    shop = true;
-                } else {
-                    map[roomX][roomY][1] = 1;
-                    roomArray[roomX][roomY].salaClass=1;
-                }
+                map[roomX][roomY][1] = 1;
+                roomArray[roomX][roomY].salaClass=1;
             }
 
 
@@ -163,14 +156,20 @@ class MapGenerator {
             }
         }
 
+        boolean shop = false;
+        for (int i = 0; !shop && i < roomArray.length ; i++) {
+            for (int j = 0; !shop && j <roomArray[i].length ; j++) {
+                Room room=roomArray[j][i];
+                if(room!=null&&room.salaClass==1&&room.getDistancia()>1&&(room.salaType==1||room.salaType==2||room.salaType==4||room.salaType==8)){
+                    shop=true;
+                    room.salaClass=2;
+                }
+            }
+        }
+
+
+
         return roomArray;
-    }
-
-    private static Room nuevasala(int salaType) {
-        Room r = new Room("res/jsonsMapasPruebas/"+salaType+".json","res/img/terrain_atlas.png");
-        r.setSalaType(salaType);
-
-        return r;
     }
 
     private static boolean[] numToBool(int num) {

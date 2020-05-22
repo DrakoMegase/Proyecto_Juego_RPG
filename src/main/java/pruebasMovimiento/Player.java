@@ -21,6 +21,7 @@ public class Player extends Entity {
     private long startTime=0;
     private int energia;
     int experiencia;
+    int puntuacion;
     int level = 1;
     Room salaPlayer;
     int dinero;
@@ -477,27 +478,38 @@ public class Player extends Entity {
 
     private void changeWeapon(ItemProperties objeto){
 
-        Rectangle hitbox=(Rectangle) objeto.getHitbox().clone();
-        try {
-            AudioStream audioStream=new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream("sounds/inventory.wav"));
-            AudioPlayer.player.start(audioStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(objeto instanceof Weapon){
-            Weapon weapon=(Weapon)objeto;
-            salaPlayer.objetosMapa.remove(weapon);
-            weapons[weapon.getWeaponType()].setHitbox(hitbox);
-            salaPlayer.objetosMapa.add(weapons[weapon.getWeaponType()]);
-            weapons[weapon.getWeaponType()]=weapon;
+        if(objeto instanceof Buyable){
+            Buyable buyable=(Buyable)objeto;
+            if(buyable.price<=dinero){
+                salaPlayer.objetosMapa.remove(objeto);
+                dinero-=buyable.price;
+                salaPlayer.objetosMapa.add(buyable.item);
+                changeWeapon(buyable.item);
+            }
 
         }else {
-            Armor armor=(Armor)objeto;
-            salaPlayer.objetosMapa.remove(armor);
-            this.armor[armor.getSlot()].setHitbox(hitbox);
-            salaPlayer.objetosMapa.add(this.armor[armor.getSlot()]);
-            this.armor[armor.getSlot()]=armor;
+            Rectangle hitbox = (Rectangle) objeto.getHitbox().clone();
+            try {
+                AudioStream audioStream = new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream("sounds/inventory.wav"));
+                AudioPlayer.player.start(audioStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (objeto instanceof Weapon) {
+                Weapon weapon = (Weapon) objeto;
+                salaPlayer.objetosMapa.remove(weapon);
+                weapons[weapon.getWeaponType()].setHitbox(hitbox);
+                salaPlayer.objetosMapa.add(weapons[weapon.getWeaponType()]);
+                weapons[weapon.getWeaponType()] = weapon;
+
+            } else {
+                Armor armor = (Armor) objeto;
+                salaPlayer.objetosMapa.remove(armor);
+                this.armor[armor.getSlot()].setHitbox(hitbox);
+                salaPlayer.objetosMapa.add(this.armor[armor.getSlot()]);
+                this.armor[armor.getSlot()] = armor;
+            }
         }
     }
 
