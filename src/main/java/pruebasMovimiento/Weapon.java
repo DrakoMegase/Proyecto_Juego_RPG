@@ -7,7 +7,6 @@ public class Weapon extends ItemProperties{
     private int weaponType; //0=Melee 1=Ranged
     private int attackRange;
     private int attackWidth;
-    private int id;
     private int damage;
     private int speed;
     private int spriteSize;

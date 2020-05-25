@@ -32,7 +32,7 @@ public class Juego extends JPanel implements ActionListener {
     static int ROWS;      //FILAS
     static int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
-    static private int nivel=0;
+    static private int nivel=1;
 
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
@@ -53,7 +53,7 @@ public class Juego extends JPanel implements ActionListener {
     private static Room salaActual;
     static boolean menuEsc;
     protected static boolean paintSt;
-    static JPanel padre;
+    private static JPanel padre;
 
 
     private Image imagenEscape;
@@ -64,7 +64,7 @@ public class Juego extends JPanel implements ActionListener {
 
         //INICIALIZACION DE ENTITIES
 
-        this.padre = padre;
+//        Juego.padre = padre;
 
         player = new Player(400, 400, 24);
 
@@ -117,26 +117,6 @@ public class Juego extends JPanel implements ActionListener {
 
 //        player.setAddEntities(entitiesJuego);
 
-        for (Room r : salas
-        ) {
-            if (r.player != null) {
-                player.salaPlayer = r;
-                r.setVisited(true);
-            }
-
-        }
-
-
-        //Cargar datos salas.
-        //TODO
-        for (String s : player.salaPlayer.salidas.keySet()
-        ) {
-
-            Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
-            r.setNear(true);
-
-            //System.out.println(r);
-        }
 
 
         addKeyListener(new KeyAdapt(player));
@@ -145,6 +125,8 @@ public class Juego extends JPanel implements ActionListener {
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
+        WIDTH=salaActual.width;
+        HEIGHT=salaActual.height;
 
     }
 
@@ -236,6 +218,8 @@ public class Juego extends JPanel implements ActionListener {
         salaActual=room;
         //Añadimos al jugador
         salaActual.entities.add(player);
+        WIDTH=salaActual.width;
+        HEIGHT=salaActual.height;
 
         switch (exit){
             case "2":
@@ -252,14 +236,6 @@ public class Juego extends JPanel implements ActionListener {
                 break;
 
         }
-
-
-        //Set<String> keySet = salidasJuego.keySet();
-
-//        for (String key : keySet) {
-//            System.out.println(key + " " + salidasJuego.get(key).getConexion());
-//        }
-//        System.out.println();
 
     }
 
@@ -300,18 +276,8 @@ public class Juego extends JPanel implements ActionListener {
             //Canbedamaged del player esta en false todo
             salaActual.entities.remove(player);
             System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-            remove(this);
-            setFocusable(true);
-            mainTimer.stop();
-            return;
-
-            //padre.remove(this);
-//            remove(backgroundPanel);
-//            repaint();
-
-
-
-//            GameOver gameOver = new GameOver();
+//            padre.remove(this);
+            GameOver gameOver = new GameOver();
 
         }
 
@@ -569,8 +535,6 @@ public class Juego extends JPanel implements ActionListener {
 //        frame.setVisible(true);
 //        frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
 //        juego.start();
-
-
     }
 
 

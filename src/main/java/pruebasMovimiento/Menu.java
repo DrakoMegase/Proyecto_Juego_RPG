@@ -185,7 +185,8 @@ public class Menu extends JFrame {
                     DatabaseReference ref = FirebaseDatabase.getInstance()
                             .getReference("scores");
 
-//                    ref.setValue(1835,null);
+                    DatabaseReference ref2 =ref.child("2");
+                    ref2.setValue(2,null);
                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -193,7 +194,7 @@ public class Menu extends JFrame {
                             Iterator<DataSnapshot> iterator=document.iterator();
                             while (iterator.hasNext()){
                                 String object=iterator.next().getValue().toString();
-                                //System.out.println(object);
+                                System.out.println(object);
                             }
                         }
 
@@ -212,16 +213,6 @@ public class Menu extends JFrame {
 
 
     void musica(String path){
-//        InputStream music;
-//
-//
-//        try {
-//            music = new FileInputStream(new File(path));
-//            AudioStream audios = new AudioStream(music);
-//            AudioPlayer.player.start(audios);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         clip = null;
         try {

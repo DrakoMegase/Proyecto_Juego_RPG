@@ -11,6 +11,8 @@ public abstract class ItemProperties {
     private Rectangle hitbox;
     int id;
 
+    ItemProperties(){}
+
     ItemProperties(String name, int spriteSize, String img, Image icon, Rectangle hitbox) {
         this.name = name;
         this.spriteSize = spriteSize;
@@ -47,5 +49,10 @@ public abstract class ItemProperties {
 
     void drawIcon(int offSetX, int offSetY,Graphics2D graphics2D){
         drawIcon(graphics2D,hitbox.x-offSetX,hitbox.y-offSetY);
+    }
+
+    @Override
+    public String toString() {
+        return id+"";
     }
 }

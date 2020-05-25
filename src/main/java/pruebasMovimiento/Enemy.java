@@ -48,6 +48,7 @@ public class Enemy extends Entity{
             remove=true;
             player.experiencia+=exp;
             player.dinero+=exp/2;
+            player.puntuacion+=exp;
         }
 
     }
