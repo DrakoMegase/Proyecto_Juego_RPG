@@ -105,9 +105,11 @@ public class Menu extends JFrame {
                 addKeyListener(new KeyAdapt(Juego.player));
 
 
+
             }
 
         });
+
 
 
         cargar_partida.addActionListener(new ActionListener() {
@@ -206,6 +208,8 @@ public class Menu extends JFrame {
 
 
     }
+
+
 
     void musica(String path){
 //        InputStream music;

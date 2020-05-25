@@ -300,8 +300,18 @@ public class Juego extends JPanel implements ActionListener {
             //Canbedamaged del player esta en false todo
             salaActual.entities.remove(player);
             System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-            padre.remove(this);
-            GameOver gameOver = new GameOver();
+            remove(this);
+            setFocusable(true);
+            mainTimer.stop();
+            return;
+
+            //padre.remove(this);
+//            remove(backgroundPanel);
+//            repaint();
+
+
+
+//            GameOver gameOver = new GameOver();
 
         }
 
