@@ -90,7 +90,7 @@ public class Room {
 
     void inicializarSala(int nivel) {
 
-        String rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
+        String rutaJsonRoom="res/jsonsestilo2/"+salaType+".json";
         String rutaSpriteSheet="res/img/terrain_atlas.png";
 
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
