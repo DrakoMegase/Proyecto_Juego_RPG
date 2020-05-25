@@ -50,4 +50,9 @@ public abstract class ItemProperties {
     void drawIcon(int offSetX, int offSetY,Graphics2D graphics2D){
         drawIcon(graphics2D,hitbox.x-offSetX,hitbox.y-offSetY);
     }
+
+    @Override
+    public String toString() {
+        return id+"";
+    }
 }

@@ -21,6 +21,8 @@ public class Room {
     int salaClass;
     int x;
     int y;
+    int width;
+    int height;
     private static int contador = 0;
     BufferedImage backgroundSala;
     BufferedImage detailsSala;
@@ -96,6 +98,8 @@ public class Room {
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
         ROWS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "height"));
         COLUMNS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "width"));
+        width = COLUMNS * TILESIZE;
+        height = ROWS * TILESIZE;
         WIDTH = COLUMNS * TILESIZE;
         HEIGHT = ROWS * TILESIZE;
 

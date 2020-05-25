@@ -32,7 +32,7 @@ public class Juego extends JPanel implements ActionListener {
     static int ROWS;      //FILAS
     static int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
-    static private int nivel=0;
+    static private int nivel=1;
 
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
@@ -125,6 +125,8 @@ public class Juego extends JPanel implements ActionListener {
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
+        WIDTH=salaActual.width;
+        HEIGHT=salaActual.height;
 
     }
 
@@ -216,6 +218,8 @@ public class Juego extends JPanel implements ActionListener {
         salaActual=room;
         //Añadimos al jugador
         salaActual.entities.add(player);
+        WIDTH=salaActual.width;
+        HEIGHT=salaActual.height;
 
         switch (exit){
             case "2":
@@ -272,7 +276,7 @@ public class Juego extends JPanel implements ActionListener {
             //Canbedamaged del player esta en false todo
             salaActual.entities.remove(player);
             System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-            padre.remove(this);
+//            padre.remove(this);
             GameOver gameOver = new GameOver();
 
         }

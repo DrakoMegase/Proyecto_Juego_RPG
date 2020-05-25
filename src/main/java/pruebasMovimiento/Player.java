@@ -46,7 +46,7 @@ public class Player extends Entity {
         weapons[0]=Weapon.createWeapon(0);
         weapons[1]=Weapon.createWeapon(5);
         armor[0]=Armor.createArmor(3);
-        armor[1]=Armor.createArmor(7);
+//        armor[1]=Armor.createArmor(7);
         armor[2]=Armor.createArmor(2);
 
         this.energia = level*3;
@@ -506,8 +506,10 @@ public class Player extends Entity {
             } else {
                 Armor armor = (Armor) objeto;
                 salaPlayer.objetosMapa.remove(armor);
-                this.armor[armor.getSlot()].setHitbox(hitbox);
-                salaPlayer.objetosMapa.add(this.armor[armor.getSlot()]);
+                if(this.armor[armor.getSlot()]!=null) {
+                    this.armor[armor.getSlot()].setHitbox(hitbox);
+                    salaPlayer.objetosMapa.add(this.armor[armor.getSlot()]);
+                }
                 this.armor[armor.getSlot()] = armor;
             }
         }
