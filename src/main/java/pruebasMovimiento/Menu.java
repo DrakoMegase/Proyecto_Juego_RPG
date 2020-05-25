@@ -166,7 +166,9 @@ public class Menu extends JFrame {
 
     }
 
-    private void musica(String path){
+
+
+    void musica(String path){
 
         clip = null;
         try {
