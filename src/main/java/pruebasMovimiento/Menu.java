@@ -25,13 +25,13 @@ import java.util.Objects;
 
 public class Menu extends JFrame {
     static Juego juego;
-    final static String GAME = "SLOANEGATE";
+    private final static String GAME = "SLOANEGATE";
     final static int WIDTH = 512;
     final static int HEIGHT = 573;
-    static Menu game;
-    Clip clip;
-    Image a;
-    public static float sound =  6.02f;;
+    private static Menu game;
+    private Clip clip;
+    private Image a;
+    static float sound =  6.02f;
 
     public static void main(String[] args) {
         game = new Menu();
@@ -41,7 +41,7 @@ public class Menu extends JFrame {
 
     }
 
-    public Menu() throws HeadlessException {
+    private Menu() throws HeadlessException {
         musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
@@ -159,48 +159,6 @@ public class Menu extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    // Fetch the service account key JSON file contents
-                    FileInputStream serviceAccount = null;
-                    try {
-                        serviceAccount = new FileInputStream(new File(ClassLoader.getSystemClassLoader().getResource("firebase/sloanegate-firebase-adminsdk-yaki9-3e58e67761.json").toURI()));
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-
-// Initialize the app with a service account, granting admin privileges
-                    FirebaseOptions options = null;
-                    try {
-                        options = new FirebaseOptions.Builder()
-                                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                                .setDatabaseUrl("https://sloanegate.firebaseio.com")
-                                .build();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    FirebaseApp.initializeApp(options);
-
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-                    DatabaseReference ref = FirebaseDatabase.getInstance()
-                            .getReference("scores");
-
-                    DatabaseReference ref2 =ref.child("2");
-                    ref2.setValue(2,null);
-                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Iterable<DataSnapshot> document = dataSnapshot.getChildren();
-                            Iterator<DataSnapshot> iterator=document.iterator();
-                            while (iterator.hasNext()){
-                                String object=iterator.next().getValue().toString();
-                                System.out.println(object);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                        }
-                    });
-
                 }
             });
 
@@ -208,7 +166,7 @@ public class Menu extends JFrame {
 
     }
 
-    void musica(String path){
+    private void musica(String path){
 
         clip = null;
         try {
