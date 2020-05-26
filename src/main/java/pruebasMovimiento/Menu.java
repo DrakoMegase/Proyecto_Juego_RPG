@@ -32,6 +32,7 @@ public class Menu extends JFrame {
     Clip clip;
     Image a;
     public static float sound =  6.02f;;
+    static JPanel panelPadre;
 
     public static void main(String[] args) {
         game = new Menu();
@@ -42,6 +43,9 @@ public class Menu extends JFrame {
     }
 
     public Menu() throws HeadlessException {
+
+        Menu menu = this;
+
         musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
@@ -52,7 +56,7 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
 
-        final JPanel panelPadre = new JPanel();
+        panelPadre = new JPanel();
         panelPadre.setBorder(new EmptyBorder(0, 0, 0, 0));
         setContentPane(panelPadre);
         panelPadre.setLayout(null);
@@ -95,7 +99,7 @@ public class Menu extends JFrame {
                 remove(backgroundPanel);
                 repaint();
 
-                juego = new Juego("res/jsonsMapasPruebas/1.json");
+                juego = new Juego("res/jsonsMapasPruebas/1.json", menu);
                 juego.start();
 
                 setContentPane(juego);
@@ -149,11 +153,11 @@ public class Menu extends JFrame {
         JLabel backgroundLabel;
 
 
-        a = new ImageIcon(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png"))
+        a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png")))
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
 
-        backgroundLabel.setBounds(0, 0, WIDTH, HEIGHT);
+        backgroundLabel.setBounds(3, 5, WIDTH, HEIGHT);
         backgroundPanel.add(backgroundLabel);
 
 
@@ -205,7 +209,6 @@ public class Menu extends JFrame {
 
                 }
             });
-
 
 
     }
