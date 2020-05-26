@@ -33,7 +33,6 @@ public class Firebase {
         refCount.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot.getValue());
                 count[0] =Integer.parseInt(dataSnapshot.getValue().toString());
                 booleans[0] =true;
             }
@@ -100,7 +99,6 @@ public class Firebase {
                 .getReference("scores");
 
         final boolean[] booleans={false};
-
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -170,15 +168,16 @@ public class Firebase {
             String[] s2=o2.split(";");
 
 
-            return Integer.parseInt(s1[0])-Integer.parseInt(s2[0]);
+            return Integer.parseInt(s2[0])-Integer.parseInt(s1[0]);
         }
     }
 
     public static void main(String[] args) {
 
         Player player=new Player(2,2,24);
+        player.puntuacion=2500;
 
-        System.out.println(Firebase.uploadScore(player));
+        Firebase.uploadScore(player);
 
         ArrayList<String> list=new ArrayList<>();
 

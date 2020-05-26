@@ -45,7 +45,7 @@ public class Player extends Entity {
 
         weapons[0]=Weapon.createWeapon(0);
         weapons[1]=Weapon.createWeapon(5);
-        armor[0]=Armor.createArmor(3);
+//        armor[0]=Armor.createArmor(3);
 //        armor[1]=Armor.createArmor(7);
         armor[2]=Armor.createArmor(2);
 

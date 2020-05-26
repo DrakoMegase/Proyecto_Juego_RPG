@@ -42,7 +42,7 @@ public class Menu extends JFrame {
     }
 
     private Menu() throws HeadlessException {
-        musica("res/music/soundtrack1.wav");
+//        musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
         setTitle(GAME);
@@ -158,6 +158,15 @@ public class Menu extends JFrame {
             highscores.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
+                    Puntuaciones configuraciones = new Puntuaciones(game, backgroundPanel, a);
+
+                    remove(backgroundPanel);
+                    remove(panelPadre);
+                    add(configuraciones);
+                    setContentPane(configuraciones);
+                    configuraciones.invalidate();
+                    validate();
 
                 }
             });
