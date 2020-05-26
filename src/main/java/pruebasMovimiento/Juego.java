@@ -32,7 +32,7 @@ public class Juego extends JPanel implements ActionListener {
     static int ROWS;      //FILAS
     static int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
-    static private int nivel=1;
+    static private int nivel = 1;
 
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
@@ -59,9 +59,12 @@ public class Juego extends JPanel implements ActionListener {
     private Image imagenEscape;
     static Rectangle slash;
 
-    //Constructor de la clase Juego
-    Juego(String rutaJson) {
+    Menu menu;
 
+    //Constructor de la clase Juego
+    Juego(String rutaJson, Menu menu) {
+
+        this.menu = menu;
         //INICIALIZACION DE ENTITIES
 
 //        Juego.padre = padre;
@@ -118,15 +121,14 @@ public class Juego extends JPanel implements ActionListener {
 //        player.setAddEntities(entitiesJuego);
 
 
-
         addKeyListener(new KeyAdapt(player));
-
+        ;
 
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
-        WIDTH=salaActual.width;
-        HEIGHT=salaActual.height;
+        WIDTH = salaActual.width;
+        HEIGHT = salaActual.height;
 
     }
 
@@ -148,9 +150,9 @@ public class Juego extends JPanel implements ActionListener {
 
     }
 
-    private static void cargarNuevoNivel(Player player){
+    private static void cargarNuevoNivel(Player player) {
         salas = new ArrayList<>();
-        Room[][] level = MapGenerator.generateMap(5*(1+nivel));
+        Room[][] level = MapGenerator.generateMap(5 * (1 + nivel));
         Room sala;
         for (int i = 0; i < level.length; i++) {
             for (int j = 0; j < level[i].length; j++) {
@@ -160,7 +162,7 @@ public class Juego extends JPanel implements ActionListener {
                     salas.add(sala);
                     if (sala.salaClass == 0) {
                         salaActual = sala;
-                        player.salaPlayer=sala;
+                        player.salaPlayer = sala;
                         salaActual.entities.add(player);
                     }
                 }
@@ -186,9 +188,9 @@ public class Juego extends JPanel implements ActionListener {
         }
     }
 
-    static void siguienteNivel(){
+    static void siguienteNivel() {
         nivel++;
-        player.hp=player.getMaxHp();
+        player.hp = player.getMaxHp();
         cargarNuevoNivel(player);
     }
 
@@ -215,24 +217,24 @@ public class Juego extends JPanel implements ActionListener {
         salaActual.entities.remove(player);
 
 
-        salaActual=room;
+        salaActual = room;
         //Añadimos al jugador
         salaActual.entities.add(player);
-        WIDTH=salaActual.width;
-        HEIGHT=salaActual.height;
+        WIDTH = salaActual.width;
+        HEIGHT = salaActual.height;
 
-        switch (exit){
+        switch (exit) {
             case "2":
-                player.setPos(player.x,100);
+                player.setPos(player.x, 100);
                 break;
             case "1":
-                player.setPos(player.x,HEIGHT-100-player.hitbox.height);
+                player.setPos(player.x, HEIGHT - 100 - player.hitbox.height);
                 break;
             case "4":
-                player.setPos(WIDTH-100-player.hitbox.width,player.y);
+                player.setPos(WIDTH - 100 - player.hitbox.width, player.y);
                 break;
             case "3":
-                player.setPos(100,player.y);
+                player.setPos(100, player.y);
                 break;
 
         }
@@ -243,13 +245,27 @@ public class Juego extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
 
-        boolean clear=true;
+        boolean clear = true;
+
+        if (player.hp <= 0) {
+            gameover();
+        }
+
+        if (menuEsc) {
+
+            //TODO hacer un nuevo JPANEL y añadir ahi el menu de pausa.
+
+            escape(imagenEscape);
+            repaint();
+            return;
+        }
+
 
         for (int i = 0; i < salaActual.entities.size(); ) {
             Entity entity = salaActual.entities.get(i);
             entity.update();
-            if(!player.salaPlayer.clear&&clear&&entity instanceof Enemy){
-                clear=false;
+            if (!player.salaPlayer.clear && clear && entity instanceof Enemy) {
+                clear = false;
             }
 
             if (entity.remove) {
@@ -259,8 +275,8 @@ public class Juego extends JPanel implements ActionListener {
             }
         }
 
-        if(!player.salaPlayer.clear&&clear){
-            player.salaPlayer.clear=true;
+        if (!player.salaPlayer.clear && clear) {
+            player.salaPlayer.clear = true;
         }
 
 
@@ -272,16 +288,8 @@ public class Juego extends JPanel implements ActionListener {
             entity.checkCollisions(salaActual.entities, 0);
         }
 
-        if (player.hp <= 0) {
-            //Canbedamaged del player esta en false todo
-            salaActual.entities.remove(player);
-            System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-//            padre.remove(this);
-            GameOver gameOver = new GameOver();
 
-        }
-
-        if (player.salaPlayer.clear&&salaActual.salidas != null) {
+        if (player.salaPlayer.clear && salaActual.salidas != null) {
             Set<String> keys = salaActual.salidas.keySet();
             Salida salida;
             for (String key : keys) {
@@ -295,7 +303,6 @@ public class Juego extends JPanel implements ActionListener {
                     player.salaPlayer = room2;
 
 
-
                 }
             }
 
@@ -303,7 +310,7 @@ public class Juego extends JPanel implements ActionListener {
         }
         for (String s : player.salaPlayer.salidas.keySet()
         ) {
-            if(!s.equals("portal")) {
+            if (!s.equals("portal")) {
                 Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
                 r.setNear(true);
             }
@@ -312,16 +319,38 @@ public class Juego extends JPanel implements ActionListener {
         }
 
 
-
         repaint();
 
+    }
+
+    private void gameover() {
+
+        //Canbedamaged del player esta en false todo
+        mainTimer.stop();
+        salaActual.entities.remove(player);
+        System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
+
+        GameOver gameOver = new GameOver();
+        menu.remove(this);
+        menu.setContentPane(gameOver);
+
+        validate();
+        menu.setVisible(true);
+//            padre.remove(this);
+        ;
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (menuEsc){
+
+
+
+        remove(backgroundPanel);
+        camaraUpdate();
+        Graphics2D graphics2D = (Graphics2D) g;
+        if (menuEsc) {
 
             //TODO hacer un nuevo JPANEL y añadir ahi el menu de pausa.
 
@@ -329,21 +358,17 @@ public class Juego extends JPanel implements ActionListener {
             repaint();
             return;
         }
-        remove(backgroundPanel);
-        camaraUpdate();
-        Graphics2D graphics2D = (Graphics2D) g;
-
 
         //PRIMERA PINTADA: FONDO
 
         graphics2D.drawImage(salaActual.backgroundSala, -offSetX, -offSetY, null);
 
-        if(salaActual.salidas.containsKey("portal")){
-            ((Portal)salaActual.salidas.get("portal")).draw(graphics2D,offSetX,offSetY);
+        if (salaActual.salidas.containsKey("portal")) {
+            ((Portal) salaActual.salidas.get("portal")).draw(graphics2D, offSetX, offSetY);
         }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
-            salaActual.objetosMapa.get(i).drawIcon(offSetX,offSetY,graphics2D);
+            salaActual.objetosMapa.get(i).drawIcon(offSetX, offSetY, graphics2D);
         }
 
 
@@ -427,7 +452,7 @@ public class Juego extends JPanel implements ActionListener {
             }
 
             //DIBUJO DEL MAPAAAAAAA (LOS RECTANGULITOS) (ROJO DONDE ESTA EL PLAYER, NEGROS LOS QUE NO HA VISITADO Y NEGROS RELLENOS LOS QUE SI)
-            else{
+            else {
                 //CENTRO: 410,80
                 int offsetXMinimap = 240;
                 int offsetYMinimap = 230;
@@ -475,11 +500,12 @@ public class Juego extends JPanel implements ActionListener {
 //                graphics2D.draw(casillaMinimap);
 
 
-
         }
     }
 
     private void escape(Image image) {
+
+
 
         setBorder(new EmptyBorder(0, 0, 0, 0));
 
@@ -488,7 +514,6 @@ public class Juego extends JPanel implements ActionListener {
         add(backgroundPanel);
         backgroundPanel.setLayout(null);
         backgroundPanel.setBackground(Color.black);
-
 
 
         JButton guardar_y_salir = new JButton("Guardar y salir");
@@ -502,8 +527,6 @@ public class Juego extends JPanel implements ActionListener {
         volver_al_juego.setFocusable(false);
 
 
-
-
         volver_al_juego.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -512,12 +535,11 @@ public class Juego extends JPanel implements ActionListener {
         });
 
 
-
         JLabel backgroundLabel;
         Image a = new ImageIcon(image)
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
-        backgroundLabel.setBounds(-140, -110, WIDTH, HEIGHT);
+        backgroundLabel.setBounds(-225, -190, WIDTH, HEIGHT);
         backgroundPanel.add(backgroundLabel);
 
         repaint();
@@ -536,7 +558,6 @@ public class Juego extends JPanel implements ActionListener {
 //        frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
 //        juego.start();
     }
-
 
 
     void start() {

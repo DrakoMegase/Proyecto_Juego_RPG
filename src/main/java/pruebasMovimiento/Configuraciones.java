@@ -23,7 +23,7 @@ public class Configuraciones extends JPanel {
 
 
         background = new JLabel(new ImageIcon(a));
-        background.setBounds(-6, -14, WIDTH, HEIGHT);
+        background.setBounds(-6, -14, 512, 573);
         this.add(background);
         background.setLayout(null);
 

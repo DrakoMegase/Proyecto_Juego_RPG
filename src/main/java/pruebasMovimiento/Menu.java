@@ -28,10 +28,11 @@ public class Menu extends JFrame {
     private final static String GAME = "SLOANEGATE";
     final static int WIDTH = 512;
     final static int HEIGHT = 573;
-    private static Menu game;
-    private Clip clip;
-    private Image a;
-    static float sound =  6.02f;
+    static Menu game;
+    Clip clip;
+    Image a;
+    public static float sound =  6.02f;;
+    static JPanel panelPadre;
 
     public static void main(String[] args) {
         game = new Menu();
@@ -41,8 +42,11 @@ public class Menu extends JFrame {
 
     }
 
-    private Menu() throws HeadlessException {
-//        musica("res/music/soundtrack1.wav");
+    public Menu() throws HeadlessException {
+
+        Menu menu = this;
+
+        musica("res/music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
         setTitle(GAME);
@@ -52,7 +56,7 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
 
-        final JPanel panelPadre = new JPanel();
+        panelPadre = new JPanel();
         panelPadre.setBorder(new EmptyBorder(0, 0, 0, 0));
         setContentPane(panelPadre);
         panelPadre.setLayout(null);
@@ -95,7 +99,7 @@ public class Menu extends JFrame {
                 remove(backgroundPanel);
                 repaint();
 
-                juego = new Juego("res/jsonsMapasPruebas/1.json");
+                juego = new Juego("res/jsonsMapasPruebas/1.json", menu);
                 juego.start();
 
                 setContentPane(juego);
@@ -105,9 +109,11 @@ public class Menu extends JFrame {
                 addKeyListener(new KeyAdapt(Juego.player));
 
 
+
             }
 
         });
+
 
 
         cargar_partida.addActionListener(new ActionListener() {
@@ -147,11 +153,11 @@ public class Menu extends JFrame {
         JLabel backgroundLabel;
 
 
-        a = new ImageIcon(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png"))
+        a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/interfazmenu/primerapantalla.png")))
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
 
-        backgroundLabel.setBounds(0, 0, WIDTH, HEIGHT);
+        backgroundLabel.setBounds(3, 5, WIDTH, HEIGHT);
         backgroundPanel.add(backgroundLabel);
 
 
