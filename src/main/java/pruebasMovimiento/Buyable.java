@@ -14,17 +14,17 @@ public class Buyable extends ItemProperties{
 
         if(item instanceof Armor){
             Armor armor=(Armor)item;
-            price=armor.getArmor()*4;
+            price=armor.getArmor()*20;
         }else {
             Weapon weapon=(Weapon)item;
-            price=weapon.getDamage()*4;
+            price=weapon.getDamage()*20;
         }
     }
 
     @Override
     public void drawIcon(Graphics2D graphics2D, int x, int y) {
 
-        graphics2D.setFont(new Font("TimesRoman", Font.BOLD, 10));
+        graphics2D.setFont(new Font("TimesRoman", Font.BOLD, 20));
         graphics2D.drawString(price + "", x-10, y-20);
         graphics2D.setStroke(graphics2D.getStroke());
         item.drawIcon(graphics2D,x,y);
