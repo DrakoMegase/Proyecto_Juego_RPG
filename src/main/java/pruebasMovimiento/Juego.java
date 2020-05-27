@@ -330,7 +330,7 @@ public class Juego extends JPanel implements ActionListener {
         if (contador > 150 && !endgame){
             //mainTimer.stop();
             System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-            gameOver = new GameOver(contador);
+            gameOver = new GameOver();
             menu.remove(this);
             menu.setContentPane(gameOver);
 
@@ -340,6 +340,10 @@ public class Juego extends JPanel implements ActionListener {
 
         }
 
+        if (endgame)        {
+            gameOver.aparicion(contador);
+            System.out.println(endgame);
+        }
 
 
 
