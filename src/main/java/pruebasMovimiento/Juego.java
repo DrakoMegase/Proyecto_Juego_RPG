@@ -32,7 +32,7 @@ public class Juego extends JPanel implements ActionListener {
     static int ROWS;      //FILAS
     static int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
-    static private int nivel = 1;
+    static private int nivel = 0;
 
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
@@ -381,7 +381,12 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
-            salaActual.objetosMapa.get(i).drawIcon(offSetX, offSetY, graphics2D);
+            ItemProperties itemProperties=salaActual.objetosMapa.get(i);
+            Rectangle rectangle= (Rectangle) itemProperties.getHitbox().clone();
+            rectangle.x-=offSetX;
+            rectangle.y-=offSetY;
+            graphics2D.fill(rectangle);
+            itemProperties.drawIcon(offSetX, offSetY, graphics2D);
         }
 
 

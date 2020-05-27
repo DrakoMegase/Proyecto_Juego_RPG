@@ -3,7 +3,10 @@ package pruebasMovimiento;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
+import javax.sound.sampled.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -106,7 +109,7 @@ public class Entity implements Comparable<Entity> {
             damageWait=true;
 
             if(this instanceof Enemy){
-//                playSound("sounds/.wav");
+                playSound("sounds/hit.wav");
             }else if(this instanceof Player){
                 playSound("sounds/hurt.wav");
             }
@@ -356,11 +359,24 @@ public class Entity implements Comparable<Entity> {
     }
 
     static void playSound(String res){
-        try {
+        /*try {
             AudioStream audioStream=new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream(res));
             AudioPlayer.player.start(audioStream);
         } catch (Exception e) {
             e.printStackTrace();
+        }*/
+        Clip clip = null;
+        try {
+            System.out.println(res);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(ClassLoader.getSystemClassLoader().getResourceAsStream(res));
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
         }
+        FloatControl gainControl =
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-20.02f); // Reduce volume by 10 decibels.
+        clip.start();
     }
 }

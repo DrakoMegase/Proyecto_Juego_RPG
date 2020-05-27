@@ -50,49 +50,24 @@ public class Room {
 
     }
 
-    Room(String rutaJsonRoom, String rutaSpriteSheet) {
-
-
-        TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
-        ROWS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "height"));
-        COLUMNS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "width"));
-        WIDTH = COLUMNS * TILESIZE;
-        HEIGHT = ROWS * TILESIZE;
-
-
-
-        spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJsonRoom));  //Poner un iterador que separe las capas HECHO
-        try {
-            spriteSheet = ImageIO.read(new File(rutaSpriteSheet));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        backgroundSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        detailsSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        entities = new LinkedList<>();
-        salidas = new HashMap<>();
-
-
-
-        ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
-//        salidas.addAll(salidasMapa(rutaJsonRoom));
-
-
-
-        printBackground(backgroundSala, spriteInts);
-        printBackgroundDetails(detailsSala, spriteInts);
-
-        if (contador == 0) {
-            player = Juego.player;
-        }
-
-        contador++;
-        this.idSala = contador;
-    }
-
     void inicializarSala(int nivel) {
 
-        String rutaJsonRoom="res/jsonsestilo2/"+salaType+".json";
+
+
+        String rutaJsonRoom="";
+
+        switch (nivel){
+            case 0:
+                rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
+                break;
+            case 1:
+                rutaJsonRoom="res/jsonsestilo2/"+salaType+".json";
+                break;
+            case 2:
+                rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
+                break;
+        }
+
         String rutaSpriteSheet="res/img/terrain_atlas.png";
 
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
@@ -120,18 +95,8 @@ public class Room {
 
         switch (salaClass) {
             case 0:
-                Weapon weapon=Weapon.createWeapon(4);
-                weapon.getHitbox().x=WIDTH/2;
-                weapon.getHitbox().y=WIDTH/2;
-                System.out.println("inicio:"+x+"-"+y);
-                objetosMapa.add(weapon);
 
-                for (int i = 0; i < 3; i++) {
-                    Armor armor = Armor.createArmor(i);
-                    armor.getHitbox().x = WIDTH / 2 + 40 * (1 + i);
-                    armor.getHitbox().y = WIDTH / 2;
-                    objetosMapa.add(armor);
-                }
+                System.out.println("inicio:"+x+"-"+y);
 
                 break;
             case 1:
@@ -154,12 +119,16 @@ public class Room {
                 System.out.println("tienda:"+x+"-"+y);
                 entities.add(new Entity(WIDTH/2-16,HEIGHT/2-50,20,"img/enemies/BlackSmith.png",8,44,16,10,false,false));
 
-                Weapon weapon2=Weapon.createWeapon(6);
-                weapon2.getHitbox().x=WIDTH/2;
-                weapon2.getHitbox().y=WIDTH/2;
-                objetosMapa.add(new Buyable(weapon2));
+                if(nivel!=0) {
+                    int random=(int)(Math.random()*2);
+
+                    Weapon weapon2 = Weapon.createWeapon(5*random+nivel);
+                    weapon2.getHitbox().x = WIDTH / 2;
+                    weapon2.getHitbox().y = WIDTH / 2;
+                    objetosMapa.add(new Buyable(weapon2));
+                }
                 for (int i = 0; i < 3; i++) {
-                    Armor armor = Armor.createArmor(i);
+                    Armor armor = Armor.createArmor(i+(3*nivel));
                     armor.getHitbox().x = WIDTH / 2 + 40 * (1 + i);
                     armor.getHitbox().y = WIDTH / 2;
                     objetosMapa.add(new Buyable(armor));

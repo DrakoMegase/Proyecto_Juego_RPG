@@ -25,7 +25,7 @@ public class Buyable extends ItemProperties{
     public void drawIcon(Graphics2D graphics2D, int x, int y) {
 
         graphics2D.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        graphics2D.drawString(price + "", x-10, y-20);
+        graphics2D.drawString(price + "", x, y);
         graphics2D.setStroke(graphics2D.getStroke());
         item.drawIcon(graphics2D,x,y);
 

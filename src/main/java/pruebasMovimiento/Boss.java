@@ -91,6 +91,7 @@ public class Boss extends Enemy{
                     Projectile projectile=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX,movY,this,player.salaPlayer.entities,damage);
                     player.salaPlayer.entities.add(projectile);
                     shootCount++;
+                    playSound("sounds/enemyShoot.wav");
 
                     if(shootCount==48){
                         skillTime=System.currentTimeMillis();
@@ -136,6 +137,7 @@ public class Boss extends Enemy{
                         movY1=1-2*(i/4);
                         movY2=-1+2*(i/4);
                     }
+                    playSound("sounds/enemyShoot.wav");
 
                     String img="img/projectiles/bolaVerde.png:1:0:0:64:64:4";
                     Projectile projectile1=new Projectile(hitbox.x,hitbox.y-20,20, img,20,21,25,25,false,false,movX1,movY1,this,player.salaPlayer.entities,damage);
