@@ -459,6 +459,9 @@ public class Player extends Entity {
                     }
                 }
                 break;
+            case KeyEvent.VK_P:
+                hp -= 10;
+                break;
 
             default:
 

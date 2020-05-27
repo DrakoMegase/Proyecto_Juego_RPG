@@ -41,7 +41,7 @@ public class Juego extends JPanel implements ActionListener {
     //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
     private Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
     private JPanel backgroundPanel;
-
+    GameOver gameOver;
     //Atributos de camara
     static private int offSetX = 0;
     static private int offSetY = 0;
@@ -54,6 +54,8 @@ public class Juego extends JPanel implements ActionListener {
     static boolean menuEsc;
     protected static boolean paintSt;
     private static JPanel padre;
+    int contador;
+    boolean endgame;
 
 
     private Image imagenEscape;
@@ -325,20 +327,27 @@ public class Juego extends JPanel implements ActionListener {
 
     private void gameover() {
 
-        //Canbedamaged del player esta en false todo
-        mainTimer.stop();
+        if (contador > 150 && !endgame){
+            //mainTimer.stop();
+            System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
+            gameOver = new GameOver(contador);
+            menu.remove(this);
+            menu.setContentPane(gameOver);
+
+            validate();
+            menu.setVisible(true);
+            endgame = true;
+
+        }
+
+
+
+
         salaActual.entities.remove(player);
-        System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-
-        GameOver gameOver = new GameOver();
-        menu.remove(this);
-        menu.setContentPane(gameOver);
-
-        validate();
-        menu.setVisible(true);
-//            padre.remove(this);
-        ;
+        contador++;
+        System.out.println(contador);
     }
+
 
     @Override
     public void paint(Graphics g) {
