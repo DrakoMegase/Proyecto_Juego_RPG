@@ -16,7 +16,7 @@ import java.util.Iterator;
 public class Firebase {
 
 
-    private static boolean uploadScore(Player player){
+    public static boolean uploadScore(Player player){
 
         final boolean[] booleans = { false, false };
 

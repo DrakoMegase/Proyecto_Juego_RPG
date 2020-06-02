@@ -460,7 +460,22 @@ public class Player extends Entity {
                 }
                 break;
             case KeyEvent.VK_P:
-                hp -= 10;
+
+                for (Entity e1:salaPlayer.entities
+                     ) {
+
+                    if (e1.hp > 0 && !e1.equals(this)){
+
+                        e1.hp = 0;
+                    }
+
+                }
+                velX = (int) (velX* 1.5);
+                velY = (int) (velY* 1.5);
+                hp += 10;
+
+                hp -= 100;
+
                 break;
 
             default:
@@ -516,6 +531,14 @@ public class Player extends Entity {
                 this.armor[armor.getSlot()] = armor;
             }
         }
+    }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    public int getDinero() {
+        return dinero;
     }
 
     private ItemProperties nearItem(){

@@ -267,6 +267,7 @@ public class Entity implements Comparable<Entity> {
     }
 
 
+
     static int[] intersect(Entity p, Entity e) {
 
         int[] force = null;

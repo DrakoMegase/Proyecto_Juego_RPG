@@ -31,9 +31,9 @@ public class Menu extends JFrame {
     static Menu game;
     Clip clip;
     Image a;
-    public static float sound =  6.02f;;
+    public static float sound = 0; //6.02f max
     static JPanel panelPadre;
-
+    static JPanel backgroundPanel;
     public static void main(String[] args) {
         game = new Menu();
 
@@ -57,12 +57,13 @@ public class Menu extends JFrame {
         setBounds(0, 0, WIDTH, HEIGHT);
 
         panelPadre = new JPanel();
+        panelPadre.setBounds(0, 0, WIDTH, HEIGHT);
         panelPadre.setBorder(new EmptyBorder(0, 0, 0, 0));
         setContentPane(panelPadre);
         panelPadre.setLayout(null);
 
 
-        final JPanel backgroundPanel = new JPanel();
+        backgroundPanel = new JPanel();
         backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
         panelPadre.add(backgroundPanel);
         backgroundPanel.setLayout(null);
@@ -96,7 +97,6 @@ public class Menu extends JFrame {
 
                 setFocusable(true);
                 remove(panelPadre);
-                remove(backgroundPanel);
                 repaint();
 
                 juego = new Juego("res/jsonsMapasPruebas/1.json", menu);

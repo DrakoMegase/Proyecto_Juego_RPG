@@ -7,20 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class GuardarPartida extends JPanel {
 
     JLabel background;
 
-    public GuardarPartida(Juego juego, String slot) {
-
-
-        Image a = new ImageIcon(getClass().getClassLoader().getResource("img/guardarCargarBackground.png"))
-                .getImage();
-        background = new JLabel(new ImageIcon(a));
-        background.setBounds(0, 0, WIDTH, HEIGHT);
-        this.add(background);
+    public GuardarPartida(Player player, Room salaActual, ArrayList<Room> salas) {
 
 
     }

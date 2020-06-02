@@ -56,6 +56,7 @@ public class Juego extends JPanel implements ActionListener {
     private static JPanel padre;
     int contador;
     boolean endgame;
+    boolean puntuacionSubida;
 
 
     private Image imagenEscape;
@@ -327,10 +328,12 @@ public class Juego extends JPanel implements ActionListener {
 
     private void gameover() {
 
-        if (contador > 150 && !endgame){
-            //mainTimer.stop();
-            System.out.println("FIN DE LA PARTIDA vida jugador es = " + player.hp);
-            gameOver = new GameOver();
+
+        int a = 4;
+        //MOUNSTRUOS ASESINADOS todo
+
+        if (contador > 150 && !endgame) {
+            gameOver = new GameOver(a, player, menu);
             menu.remove(this);
             menu.setContentPane(gameOver);
 
@@ -340,24 +343,27 @@ public class Juego extends JPanel implements ActionListener {
 
         }
 
-        if (endgame)        {
+        if (endgame) {
             gameOver.aparicion(contador);
-            System.out.println(endgame);
+
+
+
         }
 
 
 
+
         salaActual.entities.remove(player);
+
+
         contador++;
-        System.out.println(contador);
+        //System.out.println(contador);
     }
 
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-
 
 
         remove(backgroundPanel);
@@ -519,7 +525,6 @@ public class Juego extends JPanel implements ActionListener {
     private void escape(Image image) {
 
 
-
         setBorder(new EmptyBorder(0, 0, 0, 0));
 
 
@@ -533,6 +538,22 @@ public class Juego extends JPanel implements ActionListener {
         guardar_y_salir.setBounds(181, 250, 150, 30);
         backgroundPanel.add(guardar_y_salir);
         guardar_y_salir.setFocusable(false);
+
+        guardar_y_salir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //Para guardar una partida necesitamos:
+                /*
+                Player.
+                Sala actual y sus mounstruos/obstaculos
+                Salas (mapa) Estos se generan al entrar en ellos
+                 */
+
+                GuardarPartida g1 = new GuardarPartida(player, salaActual, salas);
+
+            }
+        });
 
         JButton volver_al_juego = new JButton("Volver al juego");
         volver_al_juego.setBounds(181, 345, 150, 30);

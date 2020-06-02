@@ -181,6 +181,7 @@ public class Weapon extends ItemProperties{
         return weapon;
     }
 
+
     int getWeaponType() {
         return weaponType;
     }
