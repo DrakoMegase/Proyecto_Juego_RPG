@@ -378,5 +378,6 @@ public class Entity implements Comparable<Entity> {
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-20.02f); // Reduce volume by 10 decibels.
         clip.start();
+
     }
 }

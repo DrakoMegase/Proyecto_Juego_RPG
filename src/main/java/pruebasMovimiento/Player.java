@@ -54,6 +54,27 @@ public class Player extends Entity {
         this.dinero = 0;
     }
 
+    public Player(int x, int y, int hp, Weapon[] weapons, Armor[] armor, int experiencia, int puntuacion, int level, int dinero) {
+        super(x, y);
+        this.weapons = weapons;
+        this.armor = armor;
+        this.experiencia = experiencia;
+        this.puntuacion = puntuacion;
+        this.level = level;
+        this.energia = level*3;
+        this.dinero = dinero;
+
+        img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
+
+        this.hp=hp;
+
+        this.name="Player";
+
+        canBeMoved=true;
+        canBeDamaged=true;
+        hitbox=new Rectangle(x+22,y+46,20,16);
+    }
+
     private int getArmorInt() {
         int armorInt=0;
         for (int i = 0; i < 3; i++) {

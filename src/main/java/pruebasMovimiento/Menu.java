@@ -33,6 +33,7 @@ public class Menu extends JFrame {
     Image a;
     public static float sound =  6.02f;;
     static JPanel panelPadre;
+    final JPanel backgroundPanel = new JPanel();
 
     public static void main(String[] args) {
         game = new Menu();
@@ -62,7 +63,7 @@ public class Menu extends JFrame {
         panelPadre.setLayout(null);
 
 
-        final JPanel backgroundPanel = new JPanel();
+
         backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
         panelPadre.add(backgroundPanel);
         backgroundPanel.setLayout(null);
@@ -100,6 +101,7 @@ public class Menu extends JFrame {
                 repaint();
 
                 juego = new Juego("res/jsonsMapasPruebas/1.json", menu);
+//                juego = GuardarPartida.loadSave(1,menu);
                 juego.start();
 
                 setContentPane(juego);
