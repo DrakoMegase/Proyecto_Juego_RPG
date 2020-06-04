@@ -205,7 +205,6 @@ public class Menu extends JFrame {
 
     void loadGame(int slot){
         setFocusable(true);
-        setFoc
         remove(panelPadre);
         remove(backgroundPanel);
         repaint();
