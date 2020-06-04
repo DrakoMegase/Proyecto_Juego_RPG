@@ -130,7 +130,6 @@ public class Menu extends JFrame {
                 n1.invalidate();
                 validate();
 
-
             }
         });
 
@@ -201,6 +200,24 @@ public class Menu extends JFrame {
         gainControl.setValue(-20.02f); // Reduce volume by 10 decibels.
         clip.start();
 
+
+    }
+
+    void loadGame(int slot){
+        setFocusable(true);
+        setFoc
+        remove(panelPadre);
+        remove(backgroundPanel);
+        repaint();
+
+        juego = GuardarPartida.loadSave(slot,this);
+        juego.start();
+
+
+        setContentPane(juego);
+        validate();
+        juego.setVisible(true);
+        addKeyListener(new KeyAdapt(Juego.player));
 
     }
 

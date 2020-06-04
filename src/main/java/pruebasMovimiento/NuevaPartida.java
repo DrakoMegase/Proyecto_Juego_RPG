@@ -30,30 +30,19 @@ public class NuevaPartida extends JPanel {
         g1.setOpaque(false);
         g1.setContentAreaFilled(false);
 
+        NuevaPartida nuevaPartida=this;
+
         g1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 menu.remove(background);
+                menu.remove(nuevaPartida);
                 menu.add(jp1);
                 menu.add(jp2);
                 menu.setContentPane(jp1);
 
 
-                setFocusable(true);
-                remove(Menu.panelPadre);
-                remove(menu.backgroundPanel);
-                repaint();
-
-
-                Menu.juego = GuardarPartida.loadSave(1,menu);
-                Menu.juego.start();
-
-                menu.setContentPane(Menu.juego);
-                Menu.juego.setVisible(true);
-                validate();
-
-                addKeyListener(new KeyAdapt(Juego.player));
-                System.out.println("aaaaaaaaaaaa");
+                menu.loadGame(1);
             }
         });
 
