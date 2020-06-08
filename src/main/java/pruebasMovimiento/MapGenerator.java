@@ -13,7 +13,7 @@ class MapGenerator {
         int mapLimit=20;
         int[][][] map = new int[mapLimit][mapLimit][2];
         Room[][] roomArray = new Room[mapLimit][mapLimit];
-
+        Room.setContador(0);
 
 
         int exits = 4;
@@ -28,6 +28,8 @@ class MapGenerator {
         firstRoom.x=start;
         firstRoom.y=start;
         firstRoom.setDistancia(0);
+        firstRoom.clear=true;
+        firstRoom.setVisited(true);
         roomArray[start][start]=firstRoom;
 
 

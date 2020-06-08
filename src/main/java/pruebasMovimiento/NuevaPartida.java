@@ -30,6 +30,22 @@ public class NuevaPartida extends JPanel {
         g1.setOpaque(false);
         g1.setContentAreaFilled(false);
 
+        NuevaPartida nuevaPartida=this;
+
+        g1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menu.remove(background);
+                menu.remove(nuevaPartida);
+                menu.add(jp1);
+                menu.add(jp2);
+                menu.setContentPane(jp1);
+
+
+                menu.loadGame(1);
+            }
+        });
+
 
         JButton g2 = new JButton("GAME 2");
         g2.setForeground(Color.white);

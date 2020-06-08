@@ -49,6 +49,7 @@ public class Enemy extends Entity{
             player.experiencia+=exp;
             player.dinero+=exp/2;
             player.puntuacion+=exp;
+            playSound("sounds/coin.wav");
         }
 
     }
@@ -183,6 +184,7 @@ public class Enemy extends Entity{
 
                     Projectile projectile;
                     String img;
+                    playSound("sounds/enemyShoot.wav");
                     switch (id){
                         case 3:
                             img="img/projectiles/bolaMarron.png:1:0:0:64:64:4";

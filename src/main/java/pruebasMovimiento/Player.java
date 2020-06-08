@@ -54,6 +54,27 @@ public class Player extends Entity {
         this.dinero = 0;
     }
 
+    public Player(int x, int y, int hp, Weapon[] weapons, Armor[] armor, int experiencia, int puntuacion, int level, int dinero) {
+        super(x, y);
+        this.weapons = weapons;
+        this.armor = armor;
+        this.experiencia = experiencia;
+        this.puntuacion = puntuacion;
+        this.level = level;
+        this.energia = level*3;
+        this.dinero = dinero;
+
+        img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
+
+        this.hp=hp;
+
+        this.name="Player";
+
+        canBeMoved=true;
+        canBeDamaged=true;
+        hitbox=new Rectangle(x+22,y+46,20,16);
+    }
+
     private int getArmorInt() {
         int armorInt=0;
         for (int i = 0; i < 3; i++) {
@@ -83,6 +104,7 @@ public class Player extends Entity {
             experiencia = 0;
             level++;
             hp+=3;
+            playSound("sounds/levelUp.wav");
 
         }
 
@@ -144,6 +166,7 @@ public class Player extends Entity {
 
         if(skill==0) {
             if (actionTime >= 420) {
+                playSound("sounds/skill.wav");
                 state = 0;
 
                 int damage=3*(1+(level-3)/4);
@@ -166,6 +189,8 @@ public class Player extends Entity {
                 canShoot=true;
 
             }else if(canShoot&&actionTime>=360){
+                playSound("sounds/skill.wav");
+
                 System.out.println("lel");
                 canShoot=false;
 
@@ -204,8 +229,12 @@ public class Player extends Entity {
 
         if(actionTime>=120*weapons[0].getSpeed()){
             state=0;
+            canShoot=true;
         }else if(actionTime>=(120*weapons[0].getSpeed())-((120*weapons[0].getSpeed())/6)*2){
-            playSound("sounds/slash.wav");
+            if(canShoot) {
+                playSound("sounds/slash.wav");
+                canShoot=false;
+            }
             int modSizeX=Math.abs(lastSpdX)/2;
             int modSizeY=Math.abs(lastSpdY)/2;
 
@@ -244,7 +273,7 @@ public class Player extends Entity {
             state=0;
             canShoot=true;
         }else if(canShoot&&actionTime>=180*weapons[1].getSpeed()){
-            playSound("sounds/slash.wav");
+            playSound("sounds/shoot.wav");
             int modY=Math.abs(lastSpdY)/2;
             int modX=Math.abs(lastSpdX)/2;
             String img="img/projectiles/flecha.png:2:0:0:64:64:1";
@@ -499,6 +528,7 @@ public class Player extends Entity {
         if(objeto instanceof Buyable){
             Buyable buyable=(Buyable)objeto;
             if(buyable.price<=dinero){
+                playSound("sounds/comprar.wav");
                 salaPlayer.objetosMapa.remove(objeto);
                 dinero-=buyable.price;
                 salaPlayer.objetosMapa.add(buyable.item);
@@ -506,13 +536,8 @@ public class Player extends Entity {
             }
 
         }else {
+            playSound("sounds/inventory.wav");
             Rectangle hitbox = (Rectangle) objeto.getHitbox().clone();
-            try {
-                AudioStream audioStream = new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream("sounds/inventory.wav"));
-                AudioPlayer.player.start(audioStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             if (objeto instanceof Weapon) {
                 Weapon weapon = (Weapon) objeto;

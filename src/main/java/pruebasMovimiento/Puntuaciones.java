@@ -1,5 +1,7 @@
 package pruebasMovimiento;
 
+import javafx.scene.layout.Border;
+
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
@@ -51,7 +53,7 @@ class Puntuaciones extends JPanel {
         numPag = new JLabel("<html><font color='white'>"+(pagina+1)+"</font></html>");
         numPag.setFont(new Font("Verdana", Font.BOLD, 15));
         numPag.setLocation(100,100);
-        numPag.setBounds(250, 500,300,300);
+        numPag.setBounds(230, 400,300,300);
         numPag.setVisible(true);
 
         background.add(titulo);
@@ -128,13 +130,20 @@ class Puntuaciones extends JPanel {
         JLabel texto;
         for (int i = 5*page; i < scores.size() && i < 5*(1+page); i++) {
             box=Box.createHorizontalBox();
-            box.setBounds(50,60+50*(i-5*page),400,300);
+            box.setBounds(50,170+50*(i-5*page),400,64);
             score=scores.get(i).split(";");
+            texto = new JLabel("<html><font color='white'>"+(i+1)+". "+"</font></html>");
+            texto.setHorizontalAlignment(JLabel.LEFT);
+            texto.setFont(new Font("Verdana", Font.BOLD, 20));
+            texto.setVisible(true);
+            box.add(texto);
+
             texto = new JLabel("<html><font color='white'>"+score[1]+"</font></html>");
             texto.setHorizontalAlignment(JLabel.LEFT);
             texto.setFont(new Font("Verdana", Font.BOLD, 20));
             texto.setVisible(true);
             box.add(texto);
+
 
             texto = new JLabel();
 
@@ -153,7 +162,7 @@ class Puntuaciones extends JPanel {
                 }
             });
             texto.setIcon(new ImageIcon(scoreIcons(score[3],score[4])));
-            texto.setHorizontalAlignment(JLabel.CENTER);
+            texto.setHorizontalAlignment(JLabel.LEFT);
             texto.setVisible(true);
             box.add(texto);
 
@@ -164,6 +173,9 @@ class Puntuaciones extends JPanel {
             box.add(texto);
 
 
+//            box.setBackground(Color.black);
+//            box.setOpaque(true);
+//            box.setBorder(BorderFactory.createBevelBorder(2));
             tabla.add(box);
             background.add(box);
         }

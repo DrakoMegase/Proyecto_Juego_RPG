@@ -33,7 +33,8 @@ public class Menu extends JFrame {
     Image a;
     public static float sound = 0; //6.02f max
     static JPanel panelPadre;
-    static JPanel backgroundPanel;
+    final JPanel backgroundPanel = new JPanel();
+
     public static void main(String[] args) {
         game = new Menu();
 
@@ -63,7 +64,7 @@ public class Menu extends JFrame {
         panelPadre.setLayout(null);
 
 
-        backgroundPanel = new JPanel();
+
         backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
         panelPadre.add(backgroundPanel);
         backgroundPanel.setLayout(null);
@@ -100,6 +101,7 @@ public class Menu extends JFrame {
                 repaint();
 
                 juego = new Juego("res/jsonsMapasPruebas/1.json", menu);
+//                juego = GuardarPartida.loadSave(1,menu);
                 juego.start();
 
                 setContentPane(juego);
@@ -199,6 +201,23 @@ public class Menu extends JFrame {
         gainControl.setValue(-20.02f); // Reduce volume by 10 decibels.
         clip.start();
 
+
+    }
+
+    void loadGame(int slot){
+        setFocusable(true);
+        remove(panelPadre);
+        remove(backgroundPanel);
+        repaint();
+
+        juego = GuardarPartida.loadSave(slot,this);
+        juego.start();
+
+
+        setContentPane(juego);
+        validate();
+        juego.setVisible(true);
+        addKeyListener(new KeyAdapt(Juego.player));
 
     }
 

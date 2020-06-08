@@ -156,13 +156,13 @@ public class Weapon extends ItemProperties{
                 weapon=new Weapon("Dagita",id,"img/weapons/WEAPON_dagger.png",64,20,20,3,1,null);
                 break;
             case 1:
-                weapon=new Weapon("Estoque",id,"img/weapons/WEAPON_rapier.png",192,42,78,6,4,null);
+                weapon=new Weapon("Estoque",id,"img/weapons/WEAPON_rapier.png",192,42,78,6,3,null);
                 break;
             case 2:
-                weapon=new Weapon("Espada Larga",id,"img/weapons/WEAPON_longsword.png",192,42,78,16,6,null);
+                weapon=new Weapon("Espada Larga",id,"img/weapons/WEAPON_longsword.png",192,42,78,16,4,null);
                 break;
             case 3:
-                weapon=new Weapon("Maza",id,"img/weapons/mace_sheet.png",128,20,20,14,5,null);
+                weapon=new Weapon("Maza",id,"img/weapons/mace_sheet.png",128,20,20,14,4,null);
                 break;
             case 4:
                 weapon=new Weapon("Sable",id,"img/weapons/sabre_sheet.png",128,20,20,10,1,null);

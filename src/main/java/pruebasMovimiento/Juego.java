@@ -32,7 +32,7 @@ public class Juego extends JPanel implements ActionListener {
     static int ROWS;      //FILAS
     static int TILESIZE;    //TAMAÑO (EN PIXELES) DEL SPRITE
 
-    static private int nivel = 1;
+    static private int nivel = 0;
 
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
@@ -125,7 +125,58 @@ public class Juego extends JPanel implements ActionListener {
 
 
         addKeyListener(new KeyAdapt(player));
-        ;
+
+        mainTimer = new Timer(TIMERDELAY, this);
+        //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
+
+        WIDTH = salaActual.width;
+        HEIGHT = salaActual.height;
+
+    }
+    Juego(Player player, ArrayList<Room> salas, int nivel, Menu menu) {
+
+        this.menu = menu;
+
+        Juego.salas=salas;
+        Juego.player=player;
+        Juego.salaActual=player.salaPlayer;
+
+
+
+        //Definimos atributos para su uso en ventana.
+
+        setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
+//        setSize(WIDTH, HEIGHT);
+        setVisible(true);                                       //Hacemos la ventana visible
+        setBackground(Color.black);
+        setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
+        setLayout(null);
+
+        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
+
+
+        //TODO
+        imagenEscape = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardar1.png")))
+                .getImage();
+        backgroundPanel = new JPanel();
+
+
+        //INICIALIZACION DE LAS LISTAS QUE USAREMOS
+        //DAMOS LAS ENTITIES AL PLAYER
+
+        //INICIACION DE LA UIBuffImg (siempre despies del player)
+
+
+        //backgroundPanel = new JPanel();
+        ui = new UI(player);
+        uiRecMinimap = UI.getMinimapa();
+        map = UI.getMapa();
+
+
+//        player.setAddEntities(entitiesJuego);
+
+
+        addKeyListener(new KeyAdapt(player));
 
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
@@ -161,7 +212,7 @@ public class Juego extends JPanel implements ActionListener {
             for (int j = 0; j < level[i].length; j++) {
                 if (level[i][j] != null) {
                     sala = level[i][j];
-                    sala.inicializarSala(nivel);
+                    sala.inicializarSala(nivel,true);
                     salas.add(sala);
                     if (sala.salaClass == 0) {
                         salaActual = sala;
@@ -387,7 +438,12 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
-            salaActual.objetosMapa.get(i).drawIcon(offSetX, offSetY, graphics2D);
+            ItemProperties itemProperties=salaActual.objetosMapa.get(i);
+            Rectangle rectangle= (Rectangle) itemProperties.getHitbox().clone();
+            rectangle.x-=offSetX;
+            rectangle.y-=offSetY;
+            graphics2D.fill(rectangle);
+            itemProperties.drawIcon(offSetX, offSetY, graphics2D);
         }
 
 
@@ -536,6 +592,12 @@ public class Juego extends JPanel implements ActionListener {
 
         JButton guardar_y_salir = new JButton("Guardar y salir");
         guardar_y_salir.setBounds(181, 250, 150, 30);
+        guardar_y_salir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GuardarPartida.save(1);
+            }
+        });
         backgroundPanel.add(guardar_y_salir);
         guardar_y_salir.setFocusable(false);
 
@@ -604,5 +666,13 @@ public class Juego extends JPanel implements ActionListener {
 
     public static Player getPlayer() {
         return player;
+    }
+
+    public static ArrayList<Room> getSalas() {
+        return salas;
+    }
+
+    public static int getNivel() {
+        return nivel;
     }
 }

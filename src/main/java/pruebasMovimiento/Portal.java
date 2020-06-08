@@ -3,14 +3,17 @@ package pruebasMovimiento;
 import java.awt.*;
 
 
-public class Portal extends Salida{
-    private Image img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/portal/portal.png"));;
+class Portal extends Salida{
+    private Image img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/portal/portal.png"));
     private Portal(Rectangle area) {
         super(area);
     }
 
     static Portal newPortal(){
         return new Portal(new Rectangle(Juego.WIDTH/2-30,Juego.HEIGHT/2-17,60,39));
+    }
+    static Portal newPortal(int x,int y){
+        return new Portal(new Rectangle(x-30,y-17,60,39));
     }
 
     void draw(Graphics2D graphics2D, int offSetX, int offSetY){

@@ -8,6 +8,7 @@ public class Salida {
     private Rectangle area;
     private Salida conexion;
     private Room origen;
+    private int val;
 
 
     public Salida(Rectangle area) {
@@ -17,6 +18,7 @@ public class Salida {
     Salida(Room origen, int val) {
         this.origen = origen;
         origen.salidas.put(""+val,this);
+        this.val=val;
     }
 
     Rectangle getArea() {
@@ -37,6 +39,10 @@ public class Salida {
 
     Room getOrigen() {
         return origen;
+    }
+
+    public int getVal() {
+        return val;
     }
 
     public void setOrigen(Room origen) {
