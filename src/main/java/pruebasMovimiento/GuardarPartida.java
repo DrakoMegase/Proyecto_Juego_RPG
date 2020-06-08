@@ -21,7 +21,7 @@ public class GuardarPartida extends JPanel {
     public GuardarPartida(Juego juego, String slot) {
 
 
-        Image a = new ImageIcon(getClass().getClassLoader().getResource("img/guardarCargarBackground.png"))
+        Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardarCargarBackground.png")))
                 .getImage();
         background = new JLabel(new ImageIcon(a));
         background.setBounds(0, 0, WIDTH, HEIGHT);
@@ -187,6 +187,8 @@ public class GuardarPartida extends JPanel {
         int nivel=Integer.parseInt(gameSave.get("nivel").toString());
 
         ArrayList<Room> salas=loadMap((JSONObject) gameSave.get("mapa"),player,idSalaActual,nivel);
+
+        System.out.println("CLASE JUEGO LOADSAVE");
 
         return new Juego(player,salas,nivel,menu);
 

@@ -1,7 +1,6 @@
 package pruebasMovimiento;
 
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

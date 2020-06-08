@@ -1,13 +1,8 @@
 package pruebasMovimiento;
 
-import javafx.scene.layout.Border;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.html.ImageView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -6,6 +6,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 
 public class NuevaPartida extends JPanel {
@@ -15,7 +16,7 @@ public class NuevaPartida extends JPanel {
     public NuevaPartida(Menu menu, JPanel jp1, JPanel jp2) {
 
 
-        Image a = new ImageIcon(getClass().getClassLoader().getResource("img/guardarCargarBackground.png"))
+        Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardarCargarBackground.png")))
                 .getImage();
         background = new JLabel(new ImageIcon(a));
         background.setBounds(0, 0, WIDTH, HEIGHT);
@@ -40,9 +41,12 @@ public class NuevaPartida extends JPanel {
                 menu.add(jp1);
                 menu.add(jp2);
                 menu.setContentPane(jp1);
+                System.out.println("Clicando cargar slot 1");
+
 
 
                 menu.loadGame(1);
+
             }
         });
 

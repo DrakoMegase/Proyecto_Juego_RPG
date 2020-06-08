@@ -1,26 +1,14 @@
 package pruebasMovimiento;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.*;
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.Iterator;
 import java.util.Objects;
 
 public class Menu extends JFrame {
@@ -33,7 +21,9 @@ public class Menu extends JFrame {
     Image a;
     public static float sound = 0; //6.02f max
     static JPanel panelPadre;
-    final JPanel backgroundPanel = new JPanel();
+    static final JPanel backgroundPanel = new JPanel();
+    JLabel background;
+
 
     public static void main(String[] args) {
         game = new Menu();
@@ -62,7 +52,6 @@ public class Menu extends JFrame {
         panelPadre.setBorder(new EmptyBorder(0, 0, 0, 0));
         setContentPane(panelPadre);
         panelPadre.setLayout(null);
-
 
 
         backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
@@ -101,7 +90,7 @@ public class Menu extends JFrame {
                 repaint();
 
                 juego = new Juego("res/jsonsMapasPruebas/1.json", menu);
-//                juego = GuardarPartida.loadSave(1,menu);
+//              juego = GuardarPartida.loadSave(1,menu);
                 juego.start();
 
                 setContentPane(juego);
@@ -111,24 +100,98 @@ public class Menu extends JFrame {
                 addKeyListener(new KeyAdapt(Juego.player));
 
 
-
             }
 
         });
-
 
 
         cargar_partida.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                NuevaPartida n1 = new NuevaPartida(game, backgroundPanel, panelPadre);
-                remove(backgroundPanel);
-                remove(panelPadre);
-                add(n1);
-                setContentPane(n1);
-                n1.invalidate();
+
+                Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardarCargarBackground.png")))
+                        .getImage();
+                background = new JLabel(new ImageIcon(a));
+                background.setBounds(0, 0, WIDTH, HEIGHT);
+                add(background);
+
+                //Border emptyBorder = BorderFactory.createEmptyBorder();
+
+                JButton g1 = new JButton("GAME 1");
+                g1.setForeground(Color.white);
+                g1.setBounds(57, 220, 80, 70);
+                background.add(g1);
+                g1.setOpaque(false);
+                g1.setContentAreaFilled(false);
+
+                setContentPane(background);
+                invalidate();
                 validate();
+
+                g1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        menu.remove(panelPadre);
+                        menu.loadGame(1);
+
+
+                        setContentPane(juego);
+                        validate();
+                        juego.setVisible(true);
+
+                        addKeyListener(new KeyAdapt(Juego.player));
+
+                    }
+                });
+
+                JButton g2 = new JButton("GAME 2");
+                g2.setForeground(Color.white);
+                g2.setBounds(217, 220, 80, 70);
+                background.add(g2);
+                g2.setOpaque(false);
+                g2.setContentAreaFilled(false);
+
+                JButton g3 = new JButton("GAME 3");
+                g3.setForeground(Color.black);
+                g3.setBounds(377, 220, 80, 70);
+                background.add(g3);
+                g3.setOpaque(false);
+                g3.setContentAreaFilled(false);
+
+
+
+                JButton menuPrincipal = new JButton("Menu principal");
+                menuPrincipal.setBounds(350, 20, 150, 35);
+                background.add(menuPrincipal);
+                menuPrincipal.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        menu.remove(background);
+                        menu.remove(g1);
+                        menu.remove(g2);
+                        menu.remove(g3);
+                        menu.setContentPane(panelPadre);
+
+
+                    }
+                });
+
+
+
+//                NuevaPartida n1 = new NuevaPartida(game, backgroundPanel, panelPadre);
+//                remove(backgroundPanel);
+//                remove(panelPadre);
+//                add(n1);
+//                setContentPane(n1);
+
+//                n1.invalidate();
+//                validate();
+
+//                System.out.println("CARGAR GAME");
+//                addKeyListener(new KeyAdapt(Juego.player));
 
 
             }
@@ -163,29 +226,27 @@ public class Menu extends JFrame {
         backgroundPanel.add(backgroundLabel);
 
 
-            highscores.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+        highscores.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-                    Puntuaciones configuraciones = new Puntuaciones(game, backgroundPanel, a);
+                Puntuaciones configuraciones = new Puntuaciones(game, backgroundPanel, a);
 
-                    remove(backgroundPanel);
-                    remove(panelPadre);
-                    add(configuraciones);
-                    setContentPane(configuraciones);
-                    configuraciones.invalidate();
-                    validate();
+                remove(backgroundPanel);
+                remove(panelPadre);
+                add(configuraciones);
+                setContentPane(configuraciones);
+                configuraciones.invalidate();
+                validate();
 
-                }
-            });
-
+            }
+        });
 
 
     }
 
 
-
-    void musica(String path){
+    void musica(String path) {
 
         clip = null;
         try {
@@ -204,20 +265,20 @@ public class Menu extends JFrame {
 
     }
 
-    void loadGame(int slot){
+    void loadGame(int slot) {
         setFocusable(true);
-        remove(panelPadre);
-        remove(backgroundPanel);
+//        remove(panelPadre);
+////        remove(backgroundPanel);
         repaint();
+        System.out.println("Cargado slot 1 aaaa");
 
-        juego = GuardarPartida.loadSave(slot,this);
-        juego.start();
+        juego = GuardarPartida.loadSave(slot, this);
 
 
         setContentPane(juego);
         validate();
         juego.setVisible(true);
-        addKeyListener(new KeyAdapt(Juego.player));
+        juego.start();
 
     }
 

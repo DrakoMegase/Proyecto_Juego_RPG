@@ -48,7 +48,7 @@ public class Juego extends JPanel implements ActionListener {
 
     //Atributos del juego
     static final private int TIMERDELAY = 10;        //Delay del timer
-    static private Timer mainTimer;            //Declaracion de un timer
+    static Timer mainTimer;            //Declaracion de un timer
     private static ArrayList<Room> salas;
     private static Room salaActual;
     static boolean menuEsc;
@@ -133,14 +133,15 @@ public class Juego extends JPanel implements ActionListener {
         HEIGHT = salaActual.height;
 
     }
+
     Juego(Player player, ArrayList<Room> salas, int nivel, Menu menu) {
 
         this.menu = menu;
 
-        Juego.salas=salas;
-        Juego.player=player;
-        Juego.salaActual=player.salaPlayer;
-
+        Juego.nivel = nivel;
+        Juego.salas = salas;
+        Juego.player = player;
+        Juego.salaActual = player.salaPlayer;
 
 
         //Definimos atributos para su uso en ventana.
@@ -183,6 +184,9 @@ public class Juego extends JPanel implements ActionListener {
 
         WIDTH = salaActual.width;
         HEIGHT = salaActual.height;
+        mainTimer.start();
+
+
 
     }
 
@@ -212,7 +216,7 @@ public class Juego extends JPanel implements ActionListener {
             for (int j = 0; j < level[i].length; j++) {
                 if (level[i][j] != null) {
                     sala = level[i][j];
-                    sala.inicializarSala(nivel,true);
+                    sala.inicializarSala(nivel, true);
                     salas.add(sala);
                     if (sala.salaClass == 0) {
                         salaActual = sala;
@@ -307,7 +311,8 @@ public class Juego extends JPanel implements ActionListener {
 
         if (menuEsc) {
 
-            //TODO hacer un nuevo JPANEL y añadir ahi el menu de pausa.
+
+            //JPANEL y añadir ahi el menu de pausa.
 
             escape(imagenEscape);
             repaint();
@@ -398,10 +403,7 @@ public class Juego extends JPanel implements ActionListener {
             gameOver.aparicion(contador);
 
 
-
         }
-
-
 
 
         salaActual.entities.remove(player);
@@ -438,10 +440,10 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
-            ItemProperties itemProperties=salaActual.objetosMapa.get(i);
-            Rectangle rectangle= (Rectangle) itemProperties.getHitbox().clone();
-            rectangle.x-=offSetX;
-            rectangle.y-=offSetY;
+            ItemProperties itemProperties = salaActual.objetosMapa.get(i);
+            Rectangle rectangle = (Rectangle) itemProperties.getHitbox().clone();
+            rectangle.x -= offSetX;
+            rectangle.y -= offSetY;
             graphics2D.fill(rectangle);
             itemProperties.drawIcon(offSetX, offSetY, graphics2D);
         }
@@ -581,10 +583,10 @@ public class Juego extends JPanel implements ActionListener {
     private void escape(Image image) {
 
 
-        setBorder(new EmptyBorder(0, 0, 0, 0));
+        //setBorder(new EmptyBorder(0, 0, 0, 0));
 
 
-        backgroundPanel.setBounds(-6, -14, WIDTH, HEIGHT);
+        backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
         add(backgroundPanel);
         backgroundPanel.setLayout(null);
         backgroundPanel.setBackground(Color.black);
@@ -612,7 +614,8 @@ public class Juego extends JPanel implements ActionListener {
                 Salas (mapa) Estos se generan al entrar en ellos
                  */
 
-                GuardarPartida g1 = new GuardarPartida(player, salaActual, salas);
+                //GuardarPartida g1 = new GuardarPartida(this);
+                GuardarPartida.save(1);
 
             }
         });
@@ -635,7 +638,8 @@ public class Juego extends JPanel implements ActionListener {
         Image a = new ImageIcon(image)
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
-        backgroundLabel.setBounds(-225, -190, WIDTH, HEIGHT);
+        backgroundLabel.setBounds(-150, -110, WIDTH, HEIGHT);
+        //todo
         backgroundPanel.add(backgroundLabel);
 
         repaint();
@@ -658,7 +662,9 @@ public class Juego extends JPanel implements ActionListener {
 
     void start() {
 
+        System.out.println("STARTING GAME");
         mainTimer.start();
+
     }
 
 

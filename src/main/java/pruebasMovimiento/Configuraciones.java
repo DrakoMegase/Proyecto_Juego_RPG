@@ -83,9 +83,9 @@ public class Configuraciones extends JPanel {
 //            label.setText(str);
 //            strCommand = new String("mixerctl -q outputs.master=" + str + "," + str);
             gainControl.setValue(sound); // Reduce volume by 10 decibels.
-            System.out.println(gainControl.getMaximum());
-            System.out.println(gainControl.getMinimum());
-            System.out.println(slider.getValue());
+//            System.out.println(gainControl.getMaximum());
+//            System.out.println(gainControl.getMinimum());
+//            System.out.println(slider.getValue());
 
             // 255 -> 6.02
             // 1 -> -80

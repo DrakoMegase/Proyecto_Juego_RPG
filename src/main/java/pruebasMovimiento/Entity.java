@@ -1,7 +1,6 @@
 package pruebasMovimiento;
 
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+
 
 import javax.sound.sampled.*;
 import java.awt.*;

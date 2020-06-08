@@ -97,8 +97,9 @@ class GameOver extends JPanel {
                                 remove(continuar);
                                 System.out.println(Arrays.toString(Menu.panelPadre.getComponents()));
                                 menu.add(Menu.panelPadre);
+                                menu.setContentPane(Menu.panelPadre);
                                 menu.add(Menu.backgroundPanel);
-                                menu.setContentPane(Menu.backgroundPanel);
+                                //menu.setContentPane(Menu.backgroundPanel);
                                 repaint();
                                 //Menu.panelPadre.setBackground(Color.BLACK);
 
@@ -114,6 +115,7 @@ class GameOver extends JPanel {
                     tf4.setVisible(true);
                     introduceNombre.setVisible(true);
                     enviarPuntuaciones = true;
+                    Juego.mainTimer.stop();
                 }
 
 
