@@ -5,9 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -139,9 +137,9 @@ public class Firebase {
     private static void initializeApp(){
         if(FirebaseApp.getApps().size()==0) {
             // Fetch the service account key JSON file contents
-            FileInputStream serviceAccount = null;
+            InputStream serviceAccount = null;
             try {
-                serviceAccount = new FileInputStream(new File(ClassLoader.getSystemClassLoader().getResource("firebase/sloanegate-firebase-adminsdk-yaki9-3e58e67761.json").toURI()));
+                serviceAccount = ClassLoader.getSystemClassLoader().getResourceAsStream("firebase/sloanegate-firebase-adminsdk-yaki9-3e58e67761.json");
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

@@ -23,6 +23,7 @@ public class Menu extends JFrame {
     static JPanel panelPadre;
     static final JPanel backgroundPanel = new JPanel();
     JLabel background;
+    private final static String savesfolder="saves";
 
 
     public static void main(String[] args) {
@@ -37,12 +38,12 @@ public class Menu extends JFrame {
 
         Menu menu = this;
 
-        musica("res/music/soundtrack1.wav");
+        musica("music/soundtrack1.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
         setTitle(GAME);
         setResizable(false);
-        setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
+        setIconImage(new ImageIcon(getClass().getClassLoader().getResource("img/icon.png")).getImage());    //Define el icono
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, WIDTH, HEIGHT);
@@ -89,8 +90,8 @@ public class Menu extends JFrame {
                 remove(panelPadre);
                 repaint();
 
-                juego = new Juego("res/jsonsMapasPruebas/1.json", menu);
-//              juego = GuardarPartida.loadSave(1,menu);
+                juego = new Juego(menu);
+//                juego = GuardarPartida.loadSave(1,menu);
                 juego.start();
 
                 setContentPane(juego);
@@ -118,47 +119,44 @@ public class Menu extends JFrame {
 
                 //Border emptyBorder = BorderFactory.createEmptyBorder();
 
-                JButton g1 = new JButton("GAME 1");
-                g1.setForeground(Color.white);
-                g1.setBounds(57, 220, 80, 70);
-                background.add(g1);
-                g1.setOpaque(false);
-                g1.setContentAreaFilled(false);
-
                 setContentPane(background);
                 invalidate();
                 validate();
 
-                g1.addActionListener(new ActionListener() {
+                ActionListener actionListener=new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        JButton jButton= (JButton) e.getSource();
+                        String text=jButton.getText();
 
                         menu.remove(panelPadre);
-                        menu.loadGame(1);
-
-
+                        menu.loadGame(Integer.parseInt(text.substring(text.length()-1)));
                         setContentPane(juego);
                         validate();
                         juego.setVisible(true);
 
                         addKeyListener(new KeyAdapt(Juego.player));
-
                     }
-                });
+                };
 
-                JButton g2 = new JButton("GAME 2");
-                g2.setForeground(Color.white);
-                g2.setBounds(217, 220, 80, 70);
-                background.add(g2);
-                g2.setOpaque(false);
-                g2.setContentAreaFilled(false);
+                File file;
+                for (int i = 1; i < 4; i++) {
+                    file=new File(savesfolder+"/save"+i+".json");
+                    if(file.exists()) {
+                        JButton g1 = new JButton("GAME " + i);
+                        if (i == 3) {
+                            g1.setForeground(Color.black);
+                        } else {
+                            g1.setForeground(Color.white);
+                        }
+                        g1.setBounds(57 + 160 * (i - 1), 220, 80, 70);
+                        background.add(g1);
+                        g1.setOpaque(false);
+                        g1.setContentAreaFilled(false);
+                        g1.addActionListener(actionListener);
+                    }
+                }
 
-                JButton g3 = new JButton("GAME 3");
-                g3.setForeground(Color.black);
-                g3.setBounds(377, 220, 80, 70);
-                background.add(g3);
-                g3.setOpaque(false);
-                g3.setContentAreaFilled(false);
 
 
 
@@ -170,9 +168,6 @@ public class Menu extends JFrame {
                     public void actionPerformed(ActionEvent e) {
 
                         menu.remove(background);
-                        menu.remove(g1);
-                        menu.remove(g2);
-                        menu.remove(g3);
                         menu.setContentPane(panelPadre);
 
 
@@ -250,8 +245,7 @@ public class Menu extends JFrame {
 
         clip = null;
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
-                    new File(path));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(ClassLoader.getSystemClassLoader().getResourceAsStream(path)));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {

@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.*;
 public class GuardarPartida extends JPanel {
 
     JLabel background;
+    private final static String savesfolder="saves";
 
     public GuardarPartida(Juego juego, String slot) {
 
@@ -31,17 +33,23 @@ public class GuardarPartida extends JPanel {
     }
 
     static void save(int slot){
+
+        File file=new File(savesfolder);
+        if(!file.exists()||!file.isDirectory()){
+            file.mkdir();
+        }
+
         JSONObject save=new JSONObject();
 
         savePlayer(Juego.player,save);
 
         saveMap(Juego.getSalas(),save);
 
-        FileWriter file = null;
+        FileWriter fileWriter = null;
         try {
-            file = new FileWriter("save"+slot+".json");
-            file.write(save.toJSONString());
-            file.close();
+            fileWriter = new FileWriter(savesfolder+"/save"+slot+".json");
+            fileWriter.write(save.toJSONString());
+            fileWriter.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,7 +183,7 @@ public class GuardarPartida extends JPanel {
         JSONParser parser = new JSONParser();
         JSONObject gameSave = null;
         try {
-            gameSave = (JSONObject) parser.parse(new FileReader("save"+slot+".json"));
+            gameSave = (JSONObject) parser.parse(new FileReader(savesfolder+"/save"+slot+".json"));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }

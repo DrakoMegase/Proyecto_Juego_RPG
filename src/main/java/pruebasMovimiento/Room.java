@@ -58,17 +58,17 @@ public class Room {
 
         switch (nivel){
             case 0:
-                rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
+                rutaJsonRoom="jsonsMapasPruebas/"+salaType+".json";
                 break;
             case 1:
-                rutaJsonRoom="res/jsonsestilo2/"+salaType+".json";
+                rutaJsonRoom="jsonsestilo2/"+salaType+".json";
                 break;
             case 2:
-                rutaJsonRoom="res/jsonsMapasPruebas/"+salaType+".json";
+                rutaJsonRoom="jsonsMapasPruebas/"+salaType+".json";
                 break;
         }
 
-        String rutaSpriteSheet="res/img/terrain_atlas.png";
+        String rutaSpriteSheet="img/terrain_atlas.png";
 
         TILESIZE = Integer.parseInt(extraerValorJson(rutaJsonRoom, "tileheight"));
         ROWS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "height"));
@@ -80,7 +80,7 @@ public class Room {
 
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJsonRoom));  //Poner un iterador que separe las capas HECHO
         try {
-            spriteSheet = ImageIO.read(new File(rutaSpriteSheet));
+            spriteSheet = ImageIO.read(this.getClass().getClassLoader().getResource(rutaSpriteSheet));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -7,9 +7,8 @@ import org.json.simple.parser.ParseException;
 import pruebasMovimiento.Salida;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,22 +16,6 @@ final public class ExtraerDatosJson {
 
 
 
-
-
-    static public JSONArray extraerArrayJSON(String ruta, String clave){
-
-        JSONParser parser = new JSONParser();
-        JSONArray arrayADevolver = null;
-        try {
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));
-            arrayADevolver = (JSONArray) obj.get(clave);
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-
-        return arrayADevolver;
-
-    }
 
 
     static public String extraerValorJson(String ruta, String clave){
@@ -43,7 +26,8 @@ final public class ExtraerDatosJson {
         JSONParser parser = new JSONParser();                               //Inicializacion y creacion de un parserJson
         String valorADevolver = null;                                       //Inicializacion y creacion de un string
         try {
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));   //Metemos en un JSONObject el archivo json pasado por parametro gracias al parser
+//            JSONObject obj = (JSONObject) parser.parse(new FileReader(ruta));   //Metemos en un JSONObject el archivo json pasado por parametro gracias al parser
+            JSONObject obj = (JSONObject) parser.parse(new BufferedReader(new InputStreamReader(ExtraerDatosJson.class.getClassLoader().getResourceAsStream(ruta))));   //Metemos en un JSONObject el archivo json pasado por parametro gracias al parser
             valorADevolver = obj.get(clave).toString();                         //buscamos en el objeto la clave deseada y lo convertimos a string para evitar problemas de compatibilidad entre ints, doubles, long o strings
         } catch (ParseException | IOException e) {
             e.printStackTrace();
@@ -87,7 +71,7 @@ final public class ExtraerDatosJson {
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;
         try {
-            arrayADevolver = (JSONObject) parser.parse(new FileReader(rutaJson));
+            arrayADevolver = (JSONObject) parser.parse(new BufferedReader(new InputStreamReader(ExtraerDatosJson.class.getClassLoader().getResourceAsStream(rutaJson))));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
@@ -116,7 +100,7 @@ final public class ExtraerDatosJson {
         JSONObject arrayADevolver = null;
         JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
-            arrayADevolver = (JSONObject) parser.parse(new FileReader(rutaJson));
+            arrayADevolver = (JSONObject) parser.parse(new BufferedReader(new InputStreamReader(ExtraerDatosJson.class.getClassLoader().getResourceAsStream(rutaJson))));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
@@ -185,7 +169,7 @@ final public class ExtraerDatosJson {
         JSONObject arrayADevolver = null;
         //JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
-            arrayADevolver = (JSONObject) parser.parse(new FileReader(ruta));
+            arrayADevolver = (JSONObject) parser.parse(new BufferedReader(new InputStreamReader(ExtraerDatosJson.class.getClassLoader().getResourceAsStream(ruta))));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
@@ -243,7 +227,7 @@ final public class ExtraerDatosJson {
         JSONObject arrayADevolver = null;
         //JSONArray arrayADevolverArrayJson = new JSONArray();
         try {
-            arrayADevolver = (JSONObject) parser.parse(new FileReader(ruta));
+            arrayADevolver = (JSONObject) parser.parse(new BufferedReader(new InputStreamReader(ExtraerDatosJson.class.getClassLoader().getResourceAsStream(ruta))));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }

@@ -56,9 +56,10 @@ class GameOver extends JPanel {
                         player.name = tf4.getText();
                         player.puntuacion = puntuacionFinalInt;
 
+                        Firebase.uploadScore(player);
+                        System.out.println("aaaaaaaaaaaa");
                         tituloLabel.setText("GRACIAS POR JUGAR");
                         tituloLabel.setFont(new Font("Verdana", Font.BOLD, 20));
-                        Firebase.uploadScore(player);
                         continuar.setText("Creditos");
 
                         tf4.setVisible(false);
@@ -87,7 +88,7 @@ class GameOver extends JPanel {
                         validate();
                         add(creditos);
 
-
+                        continuar.removeActionListener(this);
                         continuar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {

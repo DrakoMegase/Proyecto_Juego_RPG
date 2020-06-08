@@ -65,7 +65,7 @@ public class Juego extends JPanel implements ActionListener {
     Menu menu;
 
     //Constructor de la clase Juego
-    Juego(String rutaJson, Menu menu) {
+    Juego(Menu menu) {
 
         this.menu = menu;
         //INICIALIZACION DE ENTITIES
@@ -87,11 +87,11 @@ public class Juego extends JPanel implements ActionListener {
 
 
         //Definimos atributos para su uso en ventana.
-        TILESIZE = Integer.parseInt(extraerValorJson(rutaJson, "tileheight"));
-        ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
-        COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
-        WIDTH = COLUMNS * TILESIZE;
-        HEIGHT = ROWS * TILESIZE;
+//        TILESIZE = Integer.parseInt(extraerValorJson(rutaJson, "tileheight"));
+//        ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
+//        COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
+//        WIDTH = COLUMNS * TILESIZE;
+//        HEIGHT = ROWS * TILESIZE;
 
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
 //        setSize(WIDTH, HEIGHT);

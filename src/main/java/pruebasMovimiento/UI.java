@@ -66,8 +66,8 @@ public class UI {
     UI(Player player) {
 
         try {
-            UIImage = ImageIO.read(new File("res/img/UI_juego.png"));
-            UIImageMap = ImageIO.read(new File("res/img/UI_juego_map.png"));
+            UIImage = ImageIO.read(this.getClass().getClassLoader().getResource("img/UI_juego.png"));
+            UIImageMap = ImageIO.read(this.getClass().getClassLoader().getResource("img/UI_juego_map.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

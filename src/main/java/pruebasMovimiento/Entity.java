@@ -4,6 +4,7 @@ package pruebasMovimiento;
 
 import javax.sound.sampled.*;
 import java.awt.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -359,16 +360,9 @@ public class Entity implements Comparable<Entity> {
     }
 
     static void playSound(String res){
-        /*try {
-            AudioStream audioStream=new AudioStream(ClassLoader.getSystemClassLoader().getResourceAsStream(res));
-            AudioPlayer.player.start(audioStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         Clip clip = null;
         try {
-            System.out.println(res);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(ClassLoader.getSystemClassLoader().getResourceAsStream(res));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(ClassLoader.getSystemClassLoader().getResourceAsStream(res)));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {

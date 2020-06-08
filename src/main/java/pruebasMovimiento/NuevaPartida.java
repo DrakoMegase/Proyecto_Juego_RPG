@@ -6,10 +6,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Objects;
 
 
 public class NuevaPartida extends JPanel {
+
+    private final static String savesfolder="saves";
 
     JLabel background;
 
@@ -23,49 +26,37 @@ public class NuevaPartida extends JPanel {
         this.add(background);
 
         Border emptyBorder = BorderFactory.createEmptyBorder();
-
-        JButton g1 = new JButton("GAME 1");
-        g1.setForeground(Color.white);
-        g1.setBounds(57, 220, 80, 70);
-        background.add(g1);
-        g1.setOpaque(false);
-        g1.setContentAreaFilled(false);
-
         NuevaPartida nuevaPartida=this;
 
-        g1.addActionListener(new ActionListener() {
+        ActionListener actionListener=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JButton jButton= (JButton) e.getSource();
+                String text=jButton.getText();
+
                 menu.remove(background);
                 menu.remove(nuevaPartida);
-                menu.add(jp1);
-                menu.add(jp2);
-                menu.setContentPane(jp1);
-                System.out.println("Clicando cargar slot 1");
-
-
-
-                menu.loadGame(1);
-
+                menu.loadGame(Integer.parseInt(text.substring(text.length()-1)));
             }
-        });
+        };
 
-
-        JButton g2 = new JButton("GAME 2");
-        g2.setForeground(Color.white);
-        g2.setBounds(217, 220, 80, 70);
-        background.add(g2);
-        g2.setOpaque(false);
-        g2.setContentAreaFilled(false);
-
-        JButton g3 = new JButton("GAME 3");
-        g3.setForeground(Color.black);
-        g3.setBounds(377, 220, 80, 70);
-        background.add(g3);
-        g3.setOpaque(false);
-        g3.setContentAreaFilled(false);
-
-
+        File file;
+        for (int i = 1; i < 4; i++) {
+            file=new File(savesfolder+"/save"+i+".json");
+            if(file.exists()) {
+                JButton g1 = new JButton("GAME " + i);
+                if (i == 3) {
+                    g1.setForeground(Color.black);
+                } else {
+                    g1.setForeground(Color.white);
+                }
+                g1.setBounds(57 + 160 * (i - 1), 220, 80, 70);
+                background.add(g1);
+                g1.setOpaque(false);
+                g1.setContentAreaFilled(false);
+                g1.addActionListener(actionListener);
+            }
+        }
 
         JButton menuPrincipal = new JButton("Menu principal");
         menuPrincipal.setBounds(350, 20, 150, 35);
