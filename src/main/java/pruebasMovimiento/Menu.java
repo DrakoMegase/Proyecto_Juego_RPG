@@ -140,7 +140,11 @@ public class Menu extends JFrame {
                         validate();
                         juego.setVisible(true);
 
-                        addKeyListener(new KeyAdapt(Juego.player));
+                        if(keyAdapt!=null){
+                            removeKeyListener(keyAdapt);
+                        }
+                        keyAdapt=new KeyAdapt(Juego.player);
+                        addKeyListener(keyAdapt);
                     }
                 };
 
