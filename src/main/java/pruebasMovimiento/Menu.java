@@ -173,22 +173,6 @@ public class Menu extends JFrame {
 
                     }
                 });
-
-
-
-//                NuevaPartida n1 = new NuevaPartida(game, backgroundPanel, panelPadre);
-//                remove(backgroundPanel);
-//                remove(panelPadre);
-//                add(n1);
-//                setContentPane(n1);
-
-//                n1.invalidate();
-//                validate();
-
-//                System.out.println("CARGAR GAME");
-//                addKeyListener(new KeyAdapt(Juego.player));
-
-
             }
         });
 

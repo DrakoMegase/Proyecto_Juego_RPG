@@ -38,13 +38,14 @@ public class Juego extends JPanel implements ActionListener {
     static private UI ui;                                       //spriteSheet UIBuffImg
     static private Rectangle uiRecMinimap;
     static private Rectangle map;
-    //static private int[][] spriteInts;                       //los numeritos de los sprites todo esto no me acaba
+    //static private int[][] spriteInts;                       //los numeritos de los sprites
     private Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
     private JPanel backgroundPanel;
     GameOver gameOver;
     //Atributos de camara
     static private int offSetX = 0;
     static private int offSetY = 0;
+    static private Juego juego;
 
     //Atributos del juego
     static final private int TIMERDELAY = 10;        //Delay del timer
@@ -66,6 +67,10 @@ public class Juego extends JPanel implements ActionListener {
 
     //Constructor de la clase Juego
     Juego(Menu menu) {
+
+        juego=this;
+
+        nivel=0;
 
         this.menu = menu;
         //INICIALIZACION DE ENTITIES
@@ -135,6 +140,8 @@ public class Juego extends JPanel implements ActionListener {
     }
 
     Juego(Player player, ArrayList<Room> salas, int nivel, Menu menu) {
+
+        juego=this;
 
         this.menu = menu;
 
@@ -249,7 +256,12 @@ public class Juego extends JPanel implements ActionListener {
     static void siguienteNivel() {
         nivel++;
         player.hp = player.getMaxHp();
-        cargarNuevoNivel(player);
+        if(nivel!=3) {
+            cargarNuevoNivel(player);
+        }else {
+            player.puntuacion+=2000;
+            juego.gameover();
+        }
     }
 
 
@@ -401,8 +413,6 @@ public class Juego extends JPanel implements ActionListener {
 
         if (endgame) {
             gameOver.aparicion(contador);
-
-
         }
 
 
@@ -444,14 +454,17 @@ public class Juego extends JPanel implements ActionListener {
             Rectangle rectangle = (Rectangle) itemProperties.getHitbox().clone();
             rectangle.x -= offSetX;
             rectangle.y -= offSetY;
+            graphics2D.setColor(Color.DARK_GRAY);
             graphics2D.fill(rectangle);
             itemProperties.drawIcon(offSetX, offSetY, graphics2D);
         }
+        graphics2D.setColor(Color.black);
 
 
         if (defStroke == null) {
             defStroke = graphics2D.getStroke();
         }
+
 
         //SEGUNDA PINTADA: ENTITIES
         salaActual.entities.sort(Entity::compareTo);
@@ -462,6 +475,13 @@ public class Juego extends JPanel implements ActionListener {
             rectangle.y -= offSetY;
             graphics2D.draw(rectangle);
             //graphics2D.draw(entity.hitbox);
+        }
+
+        for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
+            if(player.hitbox.intersects(salaActual.objetosMapa.get(i).getHitbox())){
+                graphics2D.setColor(Color.white);
+                graphics2D.drawString("Espacio",player.x-offSetX,player.y-offSetY);
+            }
         }
 
         Set<String> keys = salaActual.salidas.keySet();
@@ -488,7 +508,10 @@ public class Juego extends JPanel implements ActionListener {
 
         ui.drawIcons(graphics2D);
 
+        drawMinimap(graphics2D);
+    }
 
+    private void drawMinimap(Graphics2D graphics2D){
         for (Room r : salas
         ) {
 
@@ -515,10 +538,25 @@ public class Juego extends JPanel implements ActionListener {
                         }
                     }
 
-                    graphics2D.setPaint(Color.BLACK);
                     if (r.isVisited()) {
                         if (r.isClear()) {
-                            graphics2D.setPaint(Color.BLACK);
+                            Color color;
+                            switch (r.salaClass) {
+                                case 0:
+                                    color = Color.gray;
+                                    break;
+                                case 2:
+                                    color = Color.YELLOW.darker();
+                                    break;
+                                case 3:
+                                    color = Color.MAGENTA.darker();
+                                    break;
+
+                                default:
+                                    color = Color.black;
+                            }
+
+                            graphics2D.setPaint(color);
                             graphics2D.fill(casillaMinimap);
                         }
                     } else if (r.isNear()) {
@@ -560,7 +598,23 @@ public class Juego extends JPanel implements ActionListener {
                     graphics2D.setPaint(Color.BLACK);
                     if (r.isVisited()) {
                         if (r.isClear()) {
-                            graphics2D.setPaint(Color.BLACK);
+                            Color color;
+                            switch (r.salaClass) {
+                                case 0:
+                                    color = Color.gray;
+                                    break;
+                                case 2:
+                                    color = Color.YELLOW.darker();
+                                    break;
+                                case 3:
+                                    color = Color.MAGENTA.darker();
+                                    break;
+
+                                default:
+                                    color = Color.black;
+                            }
+
+                            graphics2D.setPaint(color);
                             graphics2D.fill(mapa);
                         }
                     } else if (r.isNear()) {
@@ -571,12 +625,6 @@ public class Juego extends JPanel implements ActionListener {
                 }
 
             }
-
-
-//                graphics2D.setPaint(Color.BLACK);
-//                graphics2D.draw(casillaMinimap);
-
-
         }
     }
 
@@ -594,12 +642,6 @@ public class Juego extends JPanel implements ActionListener {
 
         JButton guardar_y_salir = new JButton("Guardar y salir");
         guardar_y_salir.setBounds(181, 250, 150, 30);
-        guardar_y_salir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GuardarPartida.save(1);
-            }
-        });
         backgroundPanel.add(guardar_y_salir);
         guardar_y_salir.setFocusable(false);
 
@@ -607,16 +649,12 @@ public class Juego extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //Para guardar una partida necesitamos:
-                /*
-                Player.
-                Sala actual y sus mounstruos/obstaculos
-                Salas (mapa) Estos se generan al entrar en ellos
-                 */
+                GuardarPartida guardarPartida=new GuardarPartida(juego);
+                menu.remove(juego);
+                menu.setContentPane(guardarPartida);
 
-                //GuardarPartida g1 = new GuardarPartida(this);
-                GuardarPartida.save(1);
-
+                validate();
+                menu.setVisible(true);
             }
         });
 
@@ -646,19 +684,6 @@ public class Juego extends JPanel implements ActionListener {
 
 
     }
-
-    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Sloanegate");                           //Frame = Marco         Creacion de ventana
-//        Juego juego = new Juego("res/jsonsMapasPruebas/1.json", "resources/terrain_atlas.png", frame);
-//        frame.setSize(500, 529);                                                   //Tamaño de la ventana
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                             //Accion cuando cerramos la ventana
-//        frame.setResizable(false);                                                        //Negamos que la ventana pueda ser modificada en tamaño
-//        frame.add(juego);
-//        frame.setVisible(true);
-//        frame.setIconImage(new ImageIcon("res/img/icon.png").getImage());    //Define el icono
-//        juego.start();
-    }
-
 
     void start() {
 

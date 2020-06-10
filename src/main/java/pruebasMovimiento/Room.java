@@ -30,7 +30,7 @@ public class Room {
     private int distancia;
     HashMap<String,Salida> salidas;
     boolean clear;
-    static private int[][] spriteInts;                   //los numeritos de los sprites todo esto no me acaba
+    static private int[][] spriteInts;                   //los numeritos de los sprites
     private static BufferedImage spriteSheet;
     Player player;
     LinkedList<ItemProperties> objetosMapa;

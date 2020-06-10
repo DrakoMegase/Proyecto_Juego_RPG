@@ -127,39 +127,23 @@ class Puntuaciones extends JPanel {
             box=Box.createHorizontalBox();
             box.setBounds(50,170+50*(i-5*page),400,64);
             score=scores.get(i).split(";");
-            texto = new JLabel("<html><font color='white'>"+(i+1)+". "+"</font></html>");
+//            texto = new JLabel("<html><font color='white'>"+(i+1)+"."+"</font></html>");
+//            texto.setHorizontalAlignment(JLabel.LEFT);
+//            texto.setFont(new Font("Verdana", Font.BOLD, 20));
+//            texto.setVisible(true);
+//            box.add(texto);
+            if(score[1].length()>10) {
+                texto = new JLabel("<html><font color='white'>"  +(i+1)+". "+ score[1].substring(0,10) + "</font></html>");
+            }else {
+                texto = new JLabel("<html><font color='white'>" +(i+1)+". "+ score[1] + "</font></html>");
+            }
             texto.setHorizontalAlignment(JLabel.LEFT);
             texto.setFont(new Font("Verdana", Font.BOLD, 20));
             texto.setVisible(true);
             box.add(texto);
 
-            texto = new JLabel("<html><font color='white'>"+score[1]+"</font></html>");
-            texto.setHorizontalAlignment(JLabel.LEFT);
-            texto.setFont(new Font("Verdana", Font.BOLD, 20));
-            texto.setVisible(true);
-            box.add(texto);
 
 
-            texto = new JLabel();
-
-            JLabel finalTexto = texto;
-            String[] finalScore = score;
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    finalTexto.setIcon(new ImageIcon(scoreIcons(finalScore[3], finalScore[4])));
-                    repaint();
-                }
-            });
-            texto.setIcon(new ImageIcon(scoreIcons(score[3],score[4])));
-            texto.setHorizontalAlignment(JLabel.LEFT);
-            texto.setVisible(true);
-            box.add(texto);
 
             texto = new JLabel("<html><font color='white'>"+score[0]+"</font></html>");
             texto.setHorizontalAlignment(JLabel.RIGHT);
@@ -167,6 +151,25 @@ class Puntuaciones extends JPanel {
             texto.setVisible(true);
             box.add(texto);
 
+            texto = new JLabel();
+            JLabel finalTexto = texto;
+            String[] finalScore = score;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    finalTexto.setIcon(new ImageIcon(scoreIcons(finalScore[3], finalScore[4])));
+                    repaint();
+                }
+            });
+            texto.setIcon(new ImageIcon(scoreIcons(score[3],score[4])));
+            texto.setHorizontalAlignment(JLabel.RIGHT);
+            texto.setVisible(true);
+            box.add(texto);
 
 //            box.setBackground(Color.black);
 //            box.setOpaque(true);

@@ -57,7 +57,6 @@ class GameOver extends JPanel {
                         player.puntuacion = puntuacionFinalInt;
 
                         Firebase.uploadScore(player);
-                        System.out.println("aaaaaaaaaaaa");
                         tituloLabel.setText("GRACIAS POR JUGAR");
                         tituloLabel.setFont(new Font("Verdana", Font.BOLD, 20));
                         continuar.setText("Creditos");
@@ -89,20 +88,17 @@ class GameOver extends JPanel {
                         add(creditos);
 
                         continuar.removeActionListener(this);
+                        continuar.setText("Menu principal");
                         continuar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
 
 
-                                continuar.setText("Menu principal");
                                 remove(continuar);
-                                System.out.println(Arrays.toString(Menu.panelPadre.getComponents()));
                                 menu.add(Menu.panelPadre);
                                 menu.setContentPane(Menu.panelPadre);
                                 menu.add(Menu.backgroundPanel);
-                                //menu.setContentPane(Menu.backgroundPanel);
                                 repaint();
-                                //Menu.panelPadre.setBackground(Color.BLACK);
 
 
                             }

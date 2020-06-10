@@ -6,22 +6,23 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.Key;
 import java.util.*;
 
 
 public class GuardarPartida extends JPanel {
 
     JLabel background;
-    private final static String savesfolder="saves";
+    private final static String SAVESFOLDER ="saves";
 
-    public GuardarPartida(Juego juego, String slot) {
-
+    public GuardarPartida(Juego juego) {
 
         Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardarCargarBackground.png")))
                 .getImage();
@@ -29,12 +30,80 @@ public class GuardarPartida extends JPanel {
         background.setBounds(0, 0, WIDTH, HEIGHT);
         this.add(background);
 
+        Border emptyBorder = BorderFactory.createEmptyBorder();
+        GuardarPartida guardarPartida=this;
+
+        ActionListener actionListener=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton jButton= (JButton) e.getSource();
+                String text=jButton.getText();
+
+                if(!text.startsWith("NEW")){
+                    int response=JOptionPane.showConfirmDialog(null,"Este hueco ya tiene una partida guardada.\nQuieres sobreescribirla?");
+                    if(response!=JOptionPane.OK_OPTION){
+                        return;
+                    }
+                }
+                juego.menu.remove(background);
+                juego.menu.remove(guardarPartida);
+                Juego.menuEsc=false;
+                GuardarPartida.save(Integer.parseInt(text.substring(text.length()-1)));
+                Juego.mainTimer.stop();
+                juego.menu.add(Menu.panelPadre);
+                juego.menu.setContentPane(Menu.panelPadre);
+                juego.menu.add(Menu.backgroundPanel);
+                repaint();
+            }
+        };
+
+        File file;
+        for (int i = 1; i < 4; i++) {
+            file=new File(SAVESFOLDER +"/save"+i+".json");
+            JButton g1;
+            if(file.exists()) {
+                g1 = new JButton("SAVE " + i);
+            }else {
+                g1 = new JButton("NEW SAVE " + i);
+            }
+            if (i == 3) {
+                g1.setForeground(Color.black);
+            } else {
+                g1.setForeground(Color.white);
+            }
+            g1.setBounds(57 + 160 * (i - 1), 220, 80, 70);
+            background.add(g1);
+            g1.setOpaque(false);
+            g1.setContentAreaFilled(false);
+            g1.addActionListener(actionListener);
+        }
+
+        JButton menuPrincipal = new JButton("Atras");
+        menuPrincipal.setBounds(350, 20, 150, 35);
+        background.add(menuPrincipal);
+        menuPrincipal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                juego.menu.remove(background);
+                juego.menu.remove(guardarPartida);
+                juego.menu.setContentPane(juego);
+                validate();
+                juego.setVisible(true);
+                repaint();
+
+            }
+        });
+
+        repaint();
+
+
 
     }
 
     static void save(int slot){
 
-        File file=new File(savesfolder);
+        File file=new File(SAVESFOLDER);
         if(!file.exists()||!file.isDirectory()){
             file.mkdir();
         }
@@ -47,7 +116,7 @@ public class GuardarPartida extends JPanel {
 
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(savesfolder+"/save"+slot+".json");
+            fileWriter = new FileWriter(SAVESFOLDER +"/save"+slot+".json");
             fileWriter.write(save.toJSONString());
             fileWriter.close();
 
@@ -183,7 +252,7 @@ public class GuardarPartida extends JPanel {
         JSONParser parser = new JSONParser();
         JSONObject gameSave = null;
         try {
-            gameSave = (JSONObject) parser.parse(new FileReader(savesfolder+"/save"+slot+".json"));
+            gameSave = (JSONObject) parser.parse(new FileReader(SAVESFOLDER +"/save"+slot+".json"));
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
