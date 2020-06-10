@@ -456,6 +456,7 @@ public class Player extends Entity {
                     if(velX!=0){
                         lastSpdY=0;
                         lastSpdX=velX;
+
                     }
                 }
 

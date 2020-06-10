@@ -23,7 +23,6 @@ public class GuardarPartida extends JPanel {
     private final static String SAVESFOLDER ="saves";
 
     public GuardarPartida(Juego juego) {
-
         Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardarCargarBackground.png")))
                 .getImage();
         background = new JLabel(new ImageIcon(a));

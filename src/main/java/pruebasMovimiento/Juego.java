@@ -58,16 +58,17 @@ public class Juego extends JPanel implements ActionListener {
     int contador;
     boolean endgame;
     boolean puntuacionSubida;
-
-
+    static KeyAdapt keyAdapt = new KeyAdapt(player);
     private Image imagenEscape;
     static Rectangle slash;
+    static int keyAdapts;
 
     Menu menu;
 
     //Constructor de la clase Juego
     Juego(Menu menu) {
 
+        keyAdapt = new KeyAdapt(player);
         juego=this;
 
         nivel=0;
@@ -128,8 +129,11 @@ public class Juego extends JPanel implements ActionListener {
 
 //        player.setAddEntities(entitiesJuego);
 
-
-        addKeyListener(new KeyAdapt(player));
+        if (getKeyListeners().length <= 0){
+            System.out.println("AÑADIENDO nuevo KEY ADAPT");
+            keyAdapts++;
+            addKeyListener(keyAdapt);
+        }
 
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
@@ -184,7 +188,11 @@ public class Juego extends JPanel implements ActionListener {
 //        player.setAddEntities(entitiesJuego);
 
 
-        addKeyListener(new KeyAdapt(player));
+        if (keyAdapts <= 0){
+            System.out.println("AÑADIENDO nuevo KEY ADAPT");
+            keyAdapts++;
+            addKeyListener(keyAdapt);
+        }
 
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
@@ -389,6 +397,9 @@ public class Juego extends JPanel implements ActionListener {
     private void gameover() {
 
 
+
+
+
         int a = 4;
         //MOUNSTRUOS ASESINADOS todo
 
@@ -406,8 +417,6 @@ public class Juego extends JPanel implements ActionListener {
         if (endgame) {
             gameOver.aparicion(contador);
         }
-
-
         salaActual.entities.remove(player);
 
 
@@ -656,6 +665,7 @@ public class Juego extends JPanel implements ActionListener {
 
                 validate();
                 menu.setVisible(true);
+
             }
         });
 

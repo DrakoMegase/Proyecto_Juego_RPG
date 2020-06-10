@@ -20,7 +20,7 @@ public class Menu extends JFrame {
     static Menu game;
     Clip clip;
     Image a;
-    public static float sound = 0; //6.02f max
+    public static float sound = -80f; //6.02f max
     static JPanel panelPadre;
     static final JPanel backgroundPanel = new JPanel();
     JLabel background;
@@ -128,14 +128,16 @@ public class Menu extends JFrame {
                 invalidate();
                 validate();
 
+                remove(panelPadre);
+
                 ActionListener actionListener=new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         JButton jButton= (JButton) e.getSource();
                         String text=jButton.getText();
 
-                        menu.remove(panelPadre);
-                        menu.loadGame(Integer.parseInt(text.substring(text.length()-1)));
+                        remove(panelPadre);
+                        loadGame(Integer.parseInt(text.substring(text.length()-1)));
                         setContentPane(juego);
                         validate();
                         juego.setVisible(true);
@@ -172,9 +174,12 @@ public class Menu extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        menu.remove(background);
-                        menu.setContentPane(panelPadre);
+                        remove(background);
 
+                        add(panelPadre);
+                        //panelPadre.setVisible(true);
+                        setContentPane(panelPadre);
+                        System.out.println("aaa");
 
                     }
                 });
@@ -242,7 +247,8 @@ public class Menu extends JFrame {
         }
         FloatControl gainControl =
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-20.02f); // Reduce volume by 10 decibels.
+        gainControl.setValue(sound); // Reduce volume by 10 decibels.
+
         clip.start();
 
 
