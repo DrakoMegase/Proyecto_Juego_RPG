@@ -14,7 +14,7 @@ public class Buyable extends ItemProperties{
 
         if(item instanceof Armor){
             Armor armor=(Armor)item;
-            price=armor.getArmor()*20;
+            price=armor.getArmor()*8;
         }else {
             Weapon weapon=(Weapon)item;
             price=weapon.getDamage()*20;

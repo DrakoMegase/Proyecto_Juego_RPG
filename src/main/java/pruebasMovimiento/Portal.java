@@ -9,13 +9,9 @@ class Portal extends Salida{
         super(area);
     }
 
-    static Portal newPortal(){
-        return new Portal(new Rectangle(Juego.WIDTH/2-30,Juego.HEIGHT/2-17,60,39));
+    static Portal newPortal(int roomWidth,int roomHeight){
+        return new Portal(new Rectangle(roomWidth/2-30,roomHeight/2-17,60,39));
     }
-    static Portal newPortal(int x,int y){
-        return new Portal(new Rectangle(x-30,y-17,60,39));
-    }
-
     void draw(Graphics2D graphics2D, int offSetX, int offSetY){
 
         int multySpriteX=(int)((System.currentTimeMillis()/100)%4);

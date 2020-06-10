@@ -232,16 +232,16 @@ public class Entity implements Comparable<Entity> {
         int[] force;
 
 
-            for (Entity entity2 : entities) {
-                if (!this.equals(entity2) && entity2.canBeMoved && !(entity2 instanceof Projectile)) {
-                    force = intersect(this, entity2);
+            for (Entity entity : entities) {
+                if (!this.equals(entity) && entity.canBeMoved && !(entity instanceof Projectile)) {
+                    force = intersect(this.hitbox, entity.hitbox);
                     if (force != null) {
-                        if(entity2 instanceof Enemy){
-                            Enemy enemy=(Enemy)entity2;
+                        if(entity instanceof Enemy){
+                            Enemy enemy=(Enemy)entity;
                             damage(enemy.damage);
                         }
 
-                        if (!entity2.push(force[0], force[1])) {
+                        if (!entity.push(force[0], force[1])) {
                             this.push(-force[0], -force[1]);
                             if (force[0] == 0) {
                                 this.velX = 0;
@@ -257,10 +257,7 @@ public class Entity implements Comparable<Entity> {
 
                             }else{
                                 damage(5);
-                                //entity2.canBeDamaged = true;
-                                entity2.damage(1);
-                                //System.out.println(entity2);
-                                //System.out.println("Doing dmg");
+                                entity.damage(1);
                             }
                         }
                     }
@@ -271,22 +268,22 @@ public class Entity implements Comparable<Entity> {
 
 
 
-    static int[] intersect(Entity p, Entity e) {
+    static int[] intersect(Rectangle hitbox1, Rectangle hitbox2) {
 
         int[] force = null;
 
-        if (p.hitbox.intersects(e.hitbox)) {
-            Rectangle intersect = p.hitbox.intersection(e.hitbox);
+        if (hitbox1.intersects(hitbox2)) {
+            Rectangle intersect = hitbox1.intersection(hitbox2);
 
             force = new int[2];
 
-            if (intersect.x == e.hitbox.x) {
+            if (intersect.x == hitbox2.x) {
                 force[0] = intersect.width;
             } else {
                 force[0] = -intersect.width;
             }
 
-            if (intersect.y == e.hitbox.y) {
+            if (intersect.y == hitbox2.y) {
                 force[1] = intersect.height;
             } else {
                 force[1] = -intersect.height;

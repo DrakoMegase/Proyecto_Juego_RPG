@@ -170,7 +170,7 @@ public class Room {
         }
 
         if(salaClass==3&&clear&&!salidas.containsKey("portal")){
-            salidas.put("portal",Portal.newPortal(WIDTH/2,HEIGHT/2));
+            spawnNextLevelPortal();
         }
 
         printBackground(backgroundSala, spriteInts);
@@ -251,6 +251,23 @@ public class Room {
         }
 
         return imageBuffer;
+
+    }
+
+    void spawnNextLevelPortal(){
+        Portal portal=Portal.newPortal(width,height);
+        salidas.put("portal",portal);
+        Entity entity;
+        boolean moved=false;
+        for (int i = 0; i < entities.size()&&!moved; i++) {
+            entity=entities.get(i);
+            if(!(entity instanceof Player)&&!(entity instanceof Enemy)&&portal.getArea().intersects(entity.hitbox)){
+                int [] force=Entity.intersect(portal.getArea(),entity.hitbox);
+                portal.getArea().x-=force[0];
+                portal.getArea().y-=force[1];
+                moved=true;
+            }
+        }
 
     }
 

@@ -44,7 +44,7 @@ public class Boss extends Enemy{
         if(hp<=0){
             remove=true;
             player.experiencia+=exp;
-            player.salaPlayer.salidas.put("portal",Portal.newPortal());
+            player.salaPlayer.spawnNextLevelPortal();
         }
 
     }

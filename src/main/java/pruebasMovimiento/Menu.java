@@ -16,6 +16,7 @@ public class Menu extends JFrame {
     private final static String GAME = "SLOANEGATE";
     final static int WIDTH = 512;
     final static int HEIGHT = 573;
+    private static KeyAdapt keyAdapt;
     static Menu game;
     Clip clip;
     Image a;
@@ -98,7 +99,11 @@ public class Menu extends JFrame {
                 validate();
                 juego.setVisible(true);
 
-                addKeyListener(new KeyAdapt(Juego.player));
+                if(keyAdapt!=null){
+                    removeKeyListener(keyAdapt);
+                }
+                keyAdapt=new KeyAdapt(Juego.player);
+                addKeyListener(keyAdapt);
 
 
             }

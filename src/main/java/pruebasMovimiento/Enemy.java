@@ -67,7 +67,7 @@ public class Enemy extends Entity{
     protected void checkCollisions(LinkedList<Entity> entities, int count){
         int[] force;
         for (Entity entity2:entities) {
-            force=intersect(this,entity2);
+            force=intersect(this.hitbox,entity2.hitbox);
             if (!this.equals(entity2)&&!(entity2 instanceof Projectile)&&force!=null) {
 
                 spinMult*=-1;

@@ -107,31 +107,31 @@ public class Armor extends ItemProperties {
         Armor armor=null;
         switch (id){
             case 0:
-                armor=new Armor("Capucha Cuero",id, "img/armor/HEAD_robe_hood.png",3,0,64);
+                armor=new Armor("Capucha Cuero",id, "img/armor/HEAD_robe_hood.png",10,0,64);
                 break;
             case 1:
-                armor=new Armor("Pechera Cuero",id, "img/armor/TORSO_leather_armor_torso.png",4,1,64);
+                armor=new Armor("Pechera Cuero",id, "img/armor/TORSO_leather_armor_torso.png",20,1,64);
                 break;
             case 2:
-                armor=new Armor("Falda Cuero",id, "img/armor/LEGS_robe_skirt.png",4,2,64);
+                armor=new Armor("Falda Cuero",id, "img/armor/LEGS_robe_skirt.png",20,2,64);
                 break;
             case 3:
-                armor=new Armor("Casco Cota de Malla",id, "img/armor/HEAD_chain_armor_helmet.png",6,0,64);
+                armor=new Armor("Casco Cota de Malla",id, "img/armor/HEAD_chain_armor_helmet.png",15,0,64);
                 break;
             case 4:
-                armor=new Armor("Pechera Cota de Malla",id, "img/armor/TORSO_chain_armor_torso.png",8,1,64);
+                armor=new Armor("Pechera Cota de Malla",id, "img/armor/TORSO_chain_armor_torso.png",30,1,64);
                 break;
             case 5:
-                armor=new Armor("Pantalones Cota de Malla",id, "img/armor/LEGS_pants_greenish.png",8,2,64);
+                armor=new Armor("Pantalones Cota de Malla",id, "img/armor/LEGS_pants_greenish.png",30,2,64);
                 break;
             case 6:
-                armor=new Armor("Casco Acero",id, "img/armor/HEAD_plate_armor_helmet.png",12,0,64);
+                armor=new Armor("Casco Acero",id, "img/armor/HEAD_plate_armor_helmet.png",20,0,64);
                 break;
             case 7:
-                armor=new Armor("Pechera Acero",id, "img/armor/TORSO_plate_armor_torso.png",16,1,64);
+                armor=new Armor("Pechera Acero",id, "img/armor/TORSO_plate_armor_torso.png",40,1,64);
                 break;
             case 8:
-                armor=new Armor("Pantalones Acero",id, "img/armor/LEGS_plate_armor_pants.png",16,2,64);
+                armor=new Armor("Pantalones Acero",id, "img/armor/LEGS_plate_armor_pants.png",40,2,64);
                 break;
 
         }

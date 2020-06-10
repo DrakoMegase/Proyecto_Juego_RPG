@@ -205,13 +205,8 @@ public class Juego extends JPanel implements ActionListener {
 
     private void camaraUpdate() {
 
-        int plx = player.getX();
-        int ply = player.getY();
-
         offSetX = player.getX() - this.getWidth() / 2 + player.hitbox.width;
         offSetY = player.getY() - this.getHeight() / 2 + player.hitbox.height;
-
-        //System.out.println(plx + "     " + ply + "   " + offSetX + "    " + offSetY);
 
     }
 
@@ -231,7 +226,6 @@ public class Juego extends JPanel implements ActionListener {
                         salaActual.entities.add(player);
                     }
                 }
-
             }
         }
 
@@ -241,15 +235,12 @@ public class Juego extends JPanel implements ActionListener {
                 player.salaPlayer = r;
                 r.setVisited(true);
             }
-
         }
 
         for (String s : player.salaPlayer.salidas.keySet()
         ) {
-
             Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
             r.setNear(true);
-
         }
     }
 
@@ -257,10 +248,10 @@ public class Juego extends JPanel implements ActionListener {
         nivel++;
         player.hp = player.getMaxHp();
         if(nivel!=3) {
+            player.puntuacion+=1000;
             cargarNuevoNivel(player);
         }else {
             player.puntuacion+=2000;
-            juego.gameover();
         }
     }
 
@@ -317,7 +308,7 @@ public class Juego extends JPanel implements ActionListener {
 
         boolean clear = true;
 
-        if (player.hp <= 0) {
+        if (player.hp <= 0 || nivel==3) {
             gameover();
         }
 
@@ -348,6 +339,7 @@ public class Juego extends JPanel implements ActionListener {
 
         if (!player.salaPlayer.clear && clear) {
             player.salaPlayer.clear = true;
+            Entity.playSound("sounds/clearRoom.wav");
         }
 
 
@@ -480,7 +472,16 @@ public class Juego extends JPanel implements ActionListener {
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
             if(player.hitbox.intersects(salaActual.objetosMapa.get(i).getHitbox())){
                 graphics2D.setColor(Color.white);
-                graphics2D.drawString("Espacio",player.x-offSetX,player.y-offSetY);
+                g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+                graphics2D.drawString("Espacio",player.x-offSetX+5,player.y-offSetY+10);
+            }
+        }
+
+        if(salaActual.salidas.containsKey("portal")){
+            if(player.hitbox.intersects(salaActual.salidas.get("portal").getArea())){
+                graphics2D.setColor(Color.white);
+                g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+                graphics2D.drawString("Espacio",player.x-offSetX+5,player.y-offSetY+10);
             }
         }
 
