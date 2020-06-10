@@ -129,11 +129,6 @@ public class Juego extends JPanel implements ActionListener {
 
 //        player.setAddEntities(entitiesJuego);
 
-        if (getKeyListeners().length <= 0){
-            System.out.println("AÑADIENDO nuevo KEY ADAPT");
-            keyAdapts++;
-            addKeyListener(keyAdapt);
-        }
 
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
@@ -188,11 +183,6 @@ public class Juego extends JPanel implements ActionListener {
 //        player.setAddEntities(entitiesJuego);
 
 
-        if (keyAdapts <= 0){
-            System.out.println("AÑADIENDO nuevo KEY ADAPT");
-            keyAdapts++;
-            addKeyListener(keyAdapt);
-        }
 
         mainTimer = new Timer(TIMERDELAY, this);
         //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.

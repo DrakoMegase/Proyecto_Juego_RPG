@@ -24,7 +24,7 @@ public class Menu extends JFrame {
     static JPanel panelPadre;
     static final JPanel backgroundPanel = new JPanel();
     JLabel background;
-    private final static String savesfolder="saves";
+    private final static String savesfolder = "saves";
 
 
     public static void main(String[] args) {
@@ -99,10 +99,10 @@ public class Menu extends JFrame {
                 validate();
                 juego.setVisible(true);
 
-                if(keyAdapt!=null){
+                if (keyAdapt != null) {
                     removeKeyListener(keyAdapt);
                 }
-                keyAdapt=new KeyAdapt(Juego.player);
+                keyAdapt = new KeyAdapt(Juego.player);
                 addKeyListener(keyAdapt);
 
 
@@ -120,7 +120,7 @@ public class Menu extends JFrame {
                         .getImage();
                 background = new JLabel(new ImageIcon(a));
                 background.setBounds(0, 0, WIDTH, HEIGHT);
-                add(background);
+                panelPadre.add(background);
 
                 //Border emptyBorder = BorderFactory.createEmptyBorder();
 
@@ -128,32 +128,30 @@ public class Menu extends JFrame {
                 invalidate();
                 validate();
 
-                remove(panelPadre);
-
-                ActionListener actionListener=new ActionListener() {
+                panelPadre.setVisible(false);
+                ActionListener actionListener = new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JButton jButton= (JButton) e.getSource();
-                        String text=jButton.getText();
+                        JButton jButton = (JButton) e.getSource();
+                        String text = jButton.getText();
 
-                        remove(panelPadre);
-                        loadGame(Integer.parseInt(text.substring(text.length()-1)));
+                        loadGame(Integer.parseInt(text.substring(text.length() - 1)));
                         setContentPane(juego);
                         validate();
                         juego.setVisible(true);
 
-                        if(keyAdapt!=null){
+                        if (keyAdapt != null) {
                             removeKeyListener(keyAdapt);
                         }
-                        keyAdapt=new KeyAdapt(Juego.player);
+                        keyAdapt = new KeyAdapt(Juego.player);
                         addKeyListener(keyAdapt);
                     }
                 };
 
                 File file;
                 for (int i = 1; i < 4; i++) {
-                    file=new File(savesfolder+"/save"+i+".json");
-                    if(file.exists()) {
+                    file = new File(savesfolder + "/save" + i + ".json");
+                    if (file.exists()) {
                         JButton g1 = new JButton("GAME " + i);
                         if (i == 3) {
                             g1.setForeground(Color.black);
@@ -169,8 +167,6 @@ public class Menu extends JFrame {
                 }
 
 
-
-
                 JButton menuPrincipal = new JButton("Menu principal");
                 menuPrincipal.setBounds(350, 20, 150, 35);
                 background.add(menuPrincipal);
@@ -178,13 +174,11 @@ public class Menu extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        remove(background);
+                        menu.remove(background);
 
-                        add(panelPadre);
-                        //panelPadre.setVisible(true);
-                        setContentPane(panelPadre);
-                        System.out.println("aaa");
-
+                        backgroundPanel.setVisible(true);
+                        panelPadre.setVisible(true);
+                        menu.setContentPane(backgroundPanel);
                     }
                 });
             }
@@ -198,8 +192,10 @@ public class Menu extends JFrame {
 
                 Configuraciones configuraciones = new Configuraciones(game, clip, backgroundPanel, a);
 
-                remove(backgroundPanel);
-                remove(panelPadre);
+//                remove(backgroundPanel);
+//                remove(panelPadre);
+                backgroundPanel.setVisible(false);
+                panelPadre.setVisible(false);
                 add(configuraciones);
                 setContentPane(configuraciones);
                 configuraciones.invalidate();
