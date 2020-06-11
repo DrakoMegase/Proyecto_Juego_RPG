@@ -34,6 +34,7 @@ public class Juego extends JPanel implements ActionListener {
 
     static private int nivel = 0;
 
+
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
     static private Rectangle uiRecMinimap;

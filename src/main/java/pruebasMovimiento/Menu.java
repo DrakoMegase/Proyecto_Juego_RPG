@@ -20,7 +20,8 @@ public class Menu extends JFrame {
     static Menu game;
     Clip clip;
     Image a;
-    public static float sound = -80f; //6.02f max
+    public static float sound = 0f; //6.02f max
+    public static float music = -80f; //6.02f max
     static JPanel panelPadre;
     static final JPanel backgroundPanel = new JPanel();
     JLabel background;
@@ -247,7 +248,7 @@ public class Menu extends JFrame {
         }
         FloatControl gainControl =
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(sound); // Reduce volume by 10 decibels.
+        gainControl.setValue(music); // Reduce volume by 10 decibels.
 
         clip.start();
 
