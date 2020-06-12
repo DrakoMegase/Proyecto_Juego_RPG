@@ -56,7 +56,7 @@ public class Juego extends JPanel implements ActionListener {
     static boolean menuEsc;
     int contador;
     boolean endgame;
-    int mounstruosKilled;
+    static int mounstruosKilled;
     static KeyAdapt keyAdapt = new KeyAdapt(player);
     private Image imagenEscape;
     static Rectangle slash;
@@ -140,7 +140,7 @@ public class Juego extends JPanel implements ActionListener {
 
     }
 
-    Juego(Player player, ArrayList<Room> salas, int nivel, Menu menu) {
+    Juego(Player player, ArrayList<Room> salas, int nivel, Menu menu, long mounstruosKilled) {
 
         menu.musica("music/nivel"+(nivel+1)+".wav");
 
@@ -148,6 +148,7 @@ public class Juego extends JPanel implements ActionListener {
 
         Juego.menu = menu;
 
+        Juego.mounstruosKilled = (int) mounstruosKilled;
         Juego.nivel = nivel;
         Juego.salas = salas;
         Juego.player = player;

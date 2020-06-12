@@ -49,8 +49,8 @@ class GameOver extends JPanel {
 
                 if (enviarPuntuaciones) {
 
-                    if (tf4.getText().equals("Introduce tu nombre") || (tf4.getText().equals("") || (tf4.getText().equals("Nombre no valido.")))) {
-                        tf4.setText("Nombre no valido.");
+                    if (tf4.getText().equals("Introduce tu nombre") || (tf4.getText().equals("") || (tf4.getText().equals("Nombre no valido.")) || tf4.getText().length() > 9)) {
+                        tf4.setText("Nombre no valido. Max long 8 chars");
                     } else {
 
                         player.name = tf4.getText();

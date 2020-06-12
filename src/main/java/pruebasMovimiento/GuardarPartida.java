@@ -140,6 +140,8 @@ public class GuardarPartida extends JPanel {
         playerJsonObject.put("weapons", Arrays.deepToString(player.getWeapons()));
         playerJsonObject.put("idSala",player.salaPlayer.getIdSala());
 
+        playerJsonObject.put("mounstruosKill", Juego.mounstruosKilled);
+
         save.put("player",playerJsonObject);
 
     }
@@ -266,7 +268,9 @@ public class GuardarPartida extends JPanel {
 
         System.out.println("CLASE JUEGO LOADSAVE");
 
-        return new Juego(player,salas,nivel,menu);
+        long mKilled = (long) jsonPlayer.get("mounstruosKill");
+
+        return new Juego(player,salas,nivel,menu,mKilled);
 
 
     }
