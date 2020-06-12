@@ -503,7 +503,7 @@ public class Player extends Entity {
                 velY = (int) (velY* 1.5);
                 hp += 10;
 
-                hp -= 100;
+//                hp -= 100;
 
                 break;
 

@@ -57,7 +57,7 @@
          "name":"Detalles",
          "opacity":0.9,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":30,
          "x":0,
          "y":0

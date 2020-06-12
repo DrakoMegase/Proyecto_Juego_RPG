@@ -53,11 +53,9 @@ public class Juego extends JPanel implements ActionListener {
     private static ArrayList<Room> salas;
     private static Room salaActual;
     static boolean menuEsc;
-    protected static boolean paintSt;
-    private static JPanel padre;
     int contador;
     boolean endgame;
-    boolean puntuacionSubida;
+    int mounstruosKilled;
     static KeyAdapt keyAdapt = new KeyAdapt(player);
     private Image imagenEscape;
     static Rectangle slash;
@@ -68,6 +66,7 @@ public class Juego extends JPanel implements ActionListener {
     //Constructor de la clase Juego
     Juego(Menu menu) {
 
+        mounstruosKilled = 0;
         keyAdapt = new KeyAdapt(player);
         juego=this;
 
@@ -330,6 +329,7 @@ public class Juego extends JPanel implements ActionListener {
 
             if (entity.remove) {
                 salaActual.entities.remove(entity);
+                mounstruosKilled++;
             } else {
                 i++;
             }
@@ -390,11 +390,11 @@ public class Juego extends JPanel implements ActionListener {
 
 
 
-        int a = 4;
+
         //MOUNSTRUOS ASESINADOS todo
 
         if (contador > 150 && !endgame) {
-            gameOver = new GameOver(a, player, menu);
+            gameOver = new GameOver(mounstruosKilled, player, menu);
             menu.remove(this);
             menu.setContentPane(gameOver);
 
