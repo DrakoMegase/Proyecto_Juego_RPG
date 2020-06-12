@@ -14,6 +14,7 @@ public class Configuraciones extends JPanel {
 
     JLabel background;
     static FloatControl gainControl;
+    static Clip music;
 
 
     public Configuraciones(Menu menu, Clip clip, JPanel backgroundpanel, Image a) {
@@ -36,9 +37,9 @@ public class Configuraciones extends JPanel {
         slider.setOpaque(false);
         slider.setMinimum(0);//-74f
         slider.setMaximum(10); //6f
-        slider.setValue(((int) Menu.sound+74)/8);
         slider.setMajorTickSpacing( 1 );
         slider.setPaintLabels( false );
+        slider.setValue(((int) Menu.sound+74)/8);
         slider.addChangeListener(new MyChangeAction(0));
         slider.setVisible(true);
         background.add(sonido);
@@ -56,9 +57,9 @@ public class Configuraciones extends JPanel {
         slider.setOpaque(false);
         slider.setMinimum(0);//-74f
         slider.setMaximum(10); //6f
-        slider.setValue(((int) Menu.sound+74)/8);
         slider.setMajorTickSpacing( 1 );
         slider.setPaintLabels(false);
+        slider.setValue(((int) Menu.music+74)/8);
         slider.addChangeListener(new MyChangeAction(1));
         slider.setVisible(true);
         background.add(musica);

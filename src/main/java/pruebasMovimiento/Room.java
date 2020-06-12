@@ -58,7 +58,7 @@ public class Room {
 
         switch (nivel){
             case 0:
-                rutaJsonRoom="jsonsMapasPruebas/"+salaType+".json";
+                rutaJsonRoom="jsonsestilo3/"+salaType+".json";
                 break;
             case 1:
                 rutaJsonRoom="jsonsestilo2/"+salaType+".json";
@@ -89,6 +89,7 @@ public class Room {
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
+        System.out.println(entities.size());
 
         if(salaClass==2){
             entities.add(new Entity(WIDTH / 2 - 16, HEIGHT / 2 - 50, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
@@ -103,8 +104,8 @@ public class Room {
 
                     break;
                 case 1:
-                    int max = HEIGHT - 100;
-                    int min = 100;
+                    int min = 200;
+                    int max = HEIGHT - min;
                     int extra = (int) (Math.random() * 5);
                     for (int i = 0; i < 4 + extra; i++) {
                         int posx = max, posy = max;
@@ -121,6 +122,7 @@ public class Room {
                 case 2:
                     System.out.println("tienda:" + x + "-" + y);
 
+                    int j=0;
                     if (nivel != 0) {
                         int random = (int) (Math.random() * 2);
 
@@ -128,8 +130,10 @@ public class Room {
                         weapon2.getHitbox().x = WIDTH / 2;
                         weapon2.getHitbox().y = WIDTH / 2;
                         objetosMapa.add(new Buyable(weapon2));
+                    }else{
+                        j=1;
                     }
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 3-j; i++) {
                         Armor armor = Armor.createArmor(i + (3 * nivel));
                         armor.getHitbox().x = WIDTH / 2 + 40 * (1 + i);
                         armor.getHitbox().y = WIDTH / 2;
