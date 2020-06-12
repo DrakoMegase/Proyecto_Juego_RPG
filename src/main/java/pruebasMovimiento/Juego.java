@@ -34,6 +34,7 @@ public class Juego extends JPanel implements ActionListener {
 
     static private int nivel = 0;
 
+
     //Atributos graficos
     static private UI ui;                                       //spriteSheet UIBuffImg
     static private Rectangle uiRecMinimap;
@@ -61,7 +62,7 @@ public class Juego extends JPanel implements ActionListener {
     static Rectangle slash;
     static int keyAdapts;
 
-    Menu menu;
+    static Menu menu;
 
     //Constructor de la clase Juego
     Juego(Menu menu) {
@@ -70,9 +71,11 @@ public class Juego extends JPanel implements ActionListener {
         keyAdapt = new KeyAdapt(player);
         juego=this;
 
-        nivel=0;
 
-        this.menu = menu;
+        nivel=0;
+        menu.musica("music/nivel"+(nivel+1)+".wav");
+
+        Juego.menu = menu;
         //INICIALIZACION DE ENTITIES
 
 //        Juego.padre = padre;
@@ -139,9 +142,11 @@ public class Juego extends JPanel implements ActionListener {
 
     Juego(Player player, ArrayList<Room> salas, int nivel, Menu menu) {
 
+        menu.musica("music/nivel"+(nivel+1)+".wav");
+
         juego=this;
 
-        this.menu = menu;
+        Juego.menu = menu;
 
         Juego.nivel = nivel;
         Juego.salas = salas;
@@ -203,7 +208,17 @@ public class Juego extends JPanel implements ActionListener {
     private void camaraUpdate() {
 
         offSetX = player.getX() - this.getWidth() / 2 + player.hitbox.width;
+        if(offSetX<0){
+            offSetX=0;
+        }else if(offSetX+this.getWidth()>salaActual.width){
+            offSetX=salaActual.width-this.getWidth();
+        }
         offSetY = player.getY() - this.getHeight() / 2 + player.hitbox.height;
+        if(offSetY<0){
+            offSetY=0;
+        }else if(offSetY+this.getHeight()>salaActual.height){
+            offSetY=salaActual.height-this.getHeight();
+        }
 
     }
 
@@ -247,6 +262,7 @@ public class Juego extends JPanel implements ActionListener {
         if(nivel!=3) {
             player.puntuacion+=1000;
             cargarNuevoNivel(player);
+            menu.musica("music/nivel"+(nivel+1)+".wav");
         }else {
             player.puntuacion+=2000;
         }
@@ -634,14 +650,14 @@ public class Juego extends JPanel implements ActionListener {
         //setBorder(new EmptyBorder(0, 0, 0, 0));
 
 
-        backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
+        backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
         add(backgroundPanel);
         backgroundPanel.setLayout(null);
         backgroundPanel.setBackground(Color.black);
 
 
         JButton guardar_y_salir = new JButton("Guardar y salir");
-        guardar_y_salir.setBounds(181, 250, 150, 30);
+        guardar_y_salir.setBounds(181, 215, 150, 30);
         backgroundPanel.add(guardar_y_salir);
         guardar_y_salir.setFocusable(false);
 
@@ -660,7 +676,7 @@ public class Juego extends JPanel implements ActionListener {
         });
 
         JButton volver_al_juego = new JButton("Volver al juego");
-        volver_al_juego.setBounds(181, 345, 150, 30);
+        volver_al_juego.setBounds(181, 310, 150, 30);
         backgroundPanel.add(volver_al_juego);
         volver_al_juego.setFocusable(false);
 
@@ -677,7 +693,7 @@ public class Juego extends JPanel implements ActionListener {
         Image a = new ImageIcon(image)
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
-        backgroundLabel.setBounds(-150, -110, WIDTH, HEIGHT);
+        backgroundLabel.setBounds(0, -30, this.getWidth(), this.getHeight()+30);
         //todo
         backgroundPanel.add(backgroundLabel);
 

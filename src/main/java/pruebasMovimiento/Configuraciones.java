@@ -10,14 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static pruebasMovimiento.Menu.panelPadre;
-import static pruebasMovimiento.Menu.sound;
-
 public class Configuraciones extends JPanel {
 
     JLabel background;
-    JSlider slider;
     static FloatControl gainControl;
+    static Clip music;
 
 
     public Configuraciones(Menu menu, Clip clip, JPanel backgroundpanel, Image a) {
@@ -29,22 +26,43 @@ public class Configuraciones extends JPanel {
         background.setLayout(null);
 
 
-        slider = new JSlider();
+        JSlider slider = new JSlider();
         JLabel sonido = new JLabel("<html><font color='white'>Sonido</font></html>");
         sonido.setFont(new Font("Verdana", Font.BOLD, 30));
         sonido.setLocation(100, 100);
-        sonido.setBounds(200, 25, 300, 300);
+        sonido.setBounds(200, 125, 300, 300);
         sonido.setVisible(true);
+
+        slider.setBounds(100, 300, 300, 30);
+        slider.setOpaque(false);
+        slider.setMinimum(0);//-74f
+        slider.setMaximum(10); //6f
+        slider.setMajorTickSpacing( 1 );
+        slider.setPaintLabels( false );
+        slider.setValue(((int) Menu.sound+74)/8);
+        slider.addChangeListener(new MyChangeAction(0));
+        slider.setVisible(true);
+        background.add(sonido);
+        background.add(slider);
+
+        slider = new JSlider();
+        JLabel musica = new JLabel("<html><font color='white'>Musica</font></html>");
+        musica.setFont(new Font("Verdana", Font.BOLD, 30));
+        musica.setLocation(100, 100);
+        musica.setVisible(true);
+        musica.setBounds(200, 25, 300, 300);
 
 
         slider.setBounds(100, 200, 300, 30);
         slider.setOpaque(false);
-        slider.setMinimum((int) -80f);
-        slider.setMaximum((int) 6.02f);
-        slider.setValue((int) sound);
-        slider.addChangeListener(new MyChangeAction());
+        slider.setMinimum(0);//-74f
+        slider.setMaximum(10); //6f
+        slider.setMajorTickSpacing( 1 );
+        slider.setPaintLabels(false);
+        slider.setValue(((int) Menu.music+74)/8);
+        slider.addChangeListener(new MyChangeAction(1));
         slider.setVisible(true);
-        background.add(sonido);
+        background.add(musica);
         background.add(slider);
 
 
@@ -59,7 +77,7 @@ public class Configuraciones extends JPanel {
                 menu.remove(background);
 
                 backgroundpanel.setVisible(true);
-                panelPadre.setVisible(true);
+                Menu.panelPadre.setVisible(true);
                 menu.setContentPane(backgroundpanel);
 
             }
@@ -75,19 +93,30 @@ public class Configuraciones extends JPanel {
 
 
     public class MyChangeAction implements ChangeListener {
-        public void stateChanged(ChangeEvent ce) {
-            String str;
-            sound = slider.getValue();
+        private int id;
 
-//            label.setText(str);
-//            strCommand = new String("mixerctl -q outputs.master=" + str + "," + str);
-            gainControl.setValue(sound); // Reduce volume by 10 decibels.
+        public MyChangeAction(int id) {
+            this.id = id;
+        }
+
+        public void stateChanged(ChangeEvent ce) {
+            JSlider slider=(JSlider) ce.getSource();
+            if(id==0) {
+                Menu.sound = slider.getValue() * 8 - 74;
+                Entity.playSound("sounds/coin.wav");
+            }else {
+                Menu.music = slider.getValue() * 8 - 74;
+                gainControl.setValue(Menu.music);
+            }
+
+            System.out.println("Sound: "+Menu.sound+" Music: "+Menu.music);
+
 //            System.out.println(gainControl.getMaximum());
 //            System.out.println(gainControl.getMinimum());
 //            System.out.println(slider.getValue());
 
-            // 255 -> 6.02
-            // 1 -> -80
+            // 10 -> 6
+            // 0 -> -74
         }
     }
 
