@@ -1,4 +1,11 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
  "height":30,
  "infinite":false,
  "layers":[
@@ -578,7 +585,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/..\/Downloads\/Atlas\/terrain_atlas.tsx"
+         "source":"..\/..\/..\/Atlas\/terrain_atlas.tsx"
         }],
  "tilewidth":32,
  "type":"map",

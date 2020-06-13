@@ -96,8 +96,9 @@ class GameOver extends JPanel {
 
                                 remove(continuar);
                                 menu.add(Menu.panelPadre);
-                                menu.setContentPane(Menu.panelPadre);
                                 menu.add(Menu.backgroundPanel);
+                                menu.setContentPane(Menu.backgroundPanel);
+
                                 repaint();
 
 

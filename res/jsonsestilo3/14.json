@@ -1,4 +1,11 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
  "height":30,
  "infinite":false,
  "layers":[
@@ -460,6 +467,39 @@
                  "width":256,
                  "x":-256,
                  "y":0
+                }, 
+                {
+                 "height":32,
+                 "id":85,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":448,
+                 "y":416
+                }, 
+                {
+                 "height":32,
+                 "id":86,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":448,
+                 "y":544
+                }, 
+                {
+                 "height":32,
+                 "id":87,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":192,
+                 "y":768
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -558,7 +598,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":85,
+ "nextobjectid":89,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tiledversion":"1.3.3",
@@ -566,7 +606,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/..\/Downloads\/Atlas\/terrain_atlas.tsx"
+         "source":"..\/..\/..\/Atlas\/terrain_atlas.tsx"
         }],
  "tilewidth":32,
  "type":"map",

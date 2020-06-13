@@ -514,7 +514,8 @@ public class Player extends Entity {
                 velX = (int) (velX* 1.5);
                 velY = (int) (velY* 1.5);
                 hp += 10;
-
+                dinero += 1000;
+                //Juego.siguienteNivel();
 //                hp -= 100;
 
                 break;

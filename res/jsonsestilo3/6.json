@@ -1,4 +1,11 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
  "height":30,
  "infinite":false,
  "layers":[
@@ -347,51 +354,6 @@
          "y":0
         }, 
         {
-         "color":"#ff0000",
-         "draworder":"topdown",
-         "id":8,
-         "name":"spawn",
-         "objects":[
-                {
-                 "height":0,
-                 "id":68,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":768,
-                 "y":224
-                }, 
-                {
-                 "height":0,
-                 "id":69,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":256,
-                 "y":192
-                }, 
-                {
-                 "height":0,
-                 "id":70,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":640,
-                 "y":608
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "color":"#00ff00",
          "draworder":"topdown",
          "id":6,
@@ -434,7 +396,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/..\/Downloads\/Atlas\/terrain_atlas.tsx"
+         "source":"..\/..\/..\/Atlas\/terrain_atlas.tsx"
         }],
  "tilewidth":32,
  "type":"map",

@@ -1,4 +1,11 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
  "height":30,
  "infinite":false,
  "layers":[
@@ -380,62 +387,6 @@
          "y":0
         }, 
         {
-         "color":"#ff0000",
-         "draworder":"topdown",
-         "id":8,
-         "name":"spawn",
-         "objects":[
-                {
-                 "height":0,
-                 "id":95,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":128,
-                 "y":128
-                }, 
-                {
-                 "height":0,
-                 "id":96,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":800,
-                 "y":160
-                }, 
-                {
-                 "height":0,
-                 "id":97,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":128,
-                 "y":768
-                }, 
-                {
-                 "height":0,
-                 "id":98,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":704,
-                 "y":832
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "color":"#00ff00",
          "draworder":"topdown",
          "id":7,
@@ -467,7 +418,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/..\/Downloads\/Atlas\/terrain_atlas.tsx"
+         "source":"..\/..\/..\/Atlas\/terrain_atlas.tsx"
         }],
  "tilewidth":32,
  "type":"map",
