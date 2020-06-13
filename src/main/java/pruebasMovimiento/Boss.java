@@ -45,6 +45,7 @@ public class Boss extends Enemy{
             remove=true;
             player.experiencia+=exp;
             player.salaPlayer.spawnNextLevelPortal();
+            Juego.menu.musica("music/nivel"+(Juego.getNivel()+1)+".wav");
         }
 
     }

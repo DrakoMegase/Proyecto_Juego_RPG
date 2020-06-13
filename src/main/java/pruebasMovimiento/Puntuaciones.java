@@ -58,6 +58,10 @@ class Puntuaciones extends JPanel {
         JButton menuPrincipal = new JButton("Menu principal");
         menuPrincipal.setBounds(350, 20, 150, 35);
         background.add(menuPrincipal);
+        menuPrincipal.setContentAreaFilled(true);
+        menuPrincipal.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        menuPrincipal.setBackground(Color.darkGray);
+        menuPrincipal.setForeground(Color.white);
 
         menuPrincipal.addActionListener(new ActionListener() {
             @Override
@@ -74,6 +78,10 @@ class Puntuaciones extends JPanel {
         anterior = new JButton("Anterior");
         anterior.setBounds(12, 450, 150, 35);
         background.add(anterior);
+        anterior.setContentAreaFilled(true);
+        anterior.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        anterior.setBackground(Color.darkGray);
+        anterior.setForeground(Color.white);
 
         anterior.addActionListener(new ActionListener() {
             @Override
@@ -86,6 +94,10 @@ class Puntuaciones extends JPanel {
         siguiente = new JButton("Siguiente");
         siguiente.setBounds(350, 450, 150, 35);
         background.add(siguiente);
+        siguiente.setContentAreaFilled(true);
+        siguiente.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        siguiente.setBackground(Color.darkGray);
+        siguiente.setForeground(Color.white);
 
         siguiente.addActionListener(new ActionListener() {
             @Override

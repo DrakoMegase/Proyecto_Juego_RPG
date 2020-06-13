@@ -14,17 +14,17 @@ import java.util.Objects;
 public class Menu extends JFrame {
     static Juego juego;
     private final static String GAME = "SLOANEGATE";
-    final static int WIDTH = 512;
-    final static int HEIGHT = 573;
+    private final static int WIDTH = 512;
+    private final static int HEIGHT = 573;
     private static KeyAdapt keyAdapt;
-    static Menu game;
-    Clip clip;
-    Image a;
-    public static float sound = -10f; //6.02f max
-    public static float music = -10f; //6.02f max
+    private static Menu game;
+    private Clip clip;
+    private Image a;
+    static float sound = -10f; //6.02f max
+    static float music = -10f; //6.02f max
     static JPanel panelPadre;
     static final JPanel backgroundPanel = new JPanel();
-    JLabel background;
+    private JLabel background;
     private final static String savesfolder = "saves";
 
 
@@ -36,7 +36,7 @@ public class Menu extends JFrame {
 
     }
 
-    public Menu() throws HeadlessException {
+    private Menu() throws HeadlessException {
 
         Menu menu = this;
 
@@ -64,20 +64,36 @@ public class Menu extends JFrame {
 
         JButton nuevo_juego = new JButton("Nuevo juego");
         nuevo_juego.setBounds(181, 200, 150, 30);
+        nuevo_juego.setContentAreaFilled(true);
+        nuevo_juego.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        nuevo_juego.setBackground(Color.darkGray);
+        nuevo_juego.setForeground(Color.white);
         backgroundPanel.add(nuevo_juego);
 
 
         JButton cargar_partida = new JButton("Cargar partida");
         cargar_partida.setBounds(181, 245, 150, 30);
+        cargar_partida.setContentAreaFilled(true);
+        cargar_partida.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        cargar_partida.setBackground(Color.darkGray);
+        cargar_partida.setForeground(Color.white);
         backgroundPanel.add(cargar_partida);
 
 
         JButton highscores = new JButton("Mejores puntuaciones");
         highscores.setBounds(171, 290, 170, 30);
+        highscores.setContentAreaFilled(true);
+        highscores.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        highscores.setBackground(Color.darkGray);
+        highscores.setForeground(Color.white);
         backgroundPanel.add(highscores);
 
         JButton sonido = new JButton("Sonido");
         sonido.setBounds(181, 335, 150, 30);
+        sonido.setContentAreaFilled(true);
+        sonido.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+        sonido.setBackground(Color.darkGray);
+        sonido.setForeground(Color.white);
         backgroundPanel.add(sonido);
 
         backgroundPanel.setLayout(null);
@@ -172,6 +188,10 @@ public class Menu extends JFrame {
 
                 JButton menuPrincipal = new JButton("Menu principal");
                 menuPrincipal.setBounds(350, 20, 150, 35);
+                menuPrincipal.setContentAreaFilled(true);
+                menuPrincipal.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
+                menuPrincipal.setBackground(Color.darkGray);
+                menuPrincipal.setForeground(Color.white);
                 background.add(menuPrincipal);
                 menuPrincipal.addActionListener(new ActionListener() {
                     @Override

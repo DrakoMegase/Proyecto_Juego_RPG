@@ -11,24 +11,24 @@ import java.util.Random;
 class GameOver extends JPanel {
 
     private JLabel background;
-    int WIDTH = 512;
-    int HEIGHT = 573;
-    JButton continuar;
-    JLabel monsInt;
-    JLabel playerLvInt;
-    JLabel dineroInt;
-    JLabel puntInt;
-    JLabel puntFinalInt;
-    JTextField tf4;
-    JLabel tituloLabel;
-    int puntuacionFinalInt;
-    JLabel introduceNombre;
-    JLabel backgroundLabel;
+    private int WIDTH = 512;
+    private int HEIGHT = 573;
+    private JButton continuar;
+    private JLabel monsInt;
+    private JLabel playerLvInt;
+    private JLabel dineroInt;
+    private JLabel puntInt;
+    private JLabel puntFinalInt;
+    private JTextField tf4;
+    private JLabel tituloLabel;
+    private int puntuacionFinalInt;
+    private JLabel introduceNombre;
+    private JLabel backgroundLabel;
 
-    boolean enviarPuntuaciones;
+    private boolean enviarPuntuaciones;
 
 
-    public GameOver(int mounstruos, Player player, Menu menu) {
+    GameOver(int mounstruos, Player player, Menu menu) {
 
         setLayout(null);
         JPanel titulo = new JPanel();
@@ -100,6 +100,7 @@ class GameOver extends JPanel {
                                 menu.setContentPane(Menu.backgroundPanel);
 
                                 repaint();
+                                menu.musica("music/menu.wav");
 
 
                             }
@@ -254,7 +255,7 @@ class GameOver extends JPanel {
 
     }
 
-    public void aparicion(int contador) {
+    void aparicion(int contador) {
 
         if (contador > 300) monsInt.setVisible(true);
         if (contador > 375) playerLvInt.setVisible(true);
