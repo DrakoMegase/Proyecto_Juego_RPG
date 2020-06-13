@@ -240,10 +240,11 @@ class GameOver extends JPanel {
 
         double v = d + (a * b + Math.log(c));
 
+        Random random=new Random();
 
         if (v <= 0) {
 
-            return (int) (Math.random() * 10);
+            return random.nextInt(10);
         }
 
 

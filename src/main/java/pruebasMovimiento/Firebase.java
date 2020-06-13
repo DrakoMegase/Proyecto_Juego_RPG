@@ -158,7 +158,7 @@ public class Firebase {
         }
     }
 
-    static class Comparador implements java.util.Comparator<String>{
+    static class Comparador implements java.util.Comparator<String>, Serializable{
 
         @Override
         public int compare(String o1, String o2) {

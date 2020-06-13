@@ -118,6 +118,7 @@ public class UI {
                 g.setStroke(defStroke);
                 g.setPaint(Color.RED);
                 g.fill(vidaActual);
+                g.setPaint(Color.black);
                 g.draw(vidaActual);
                 break;
 
@@ -137,6 +138,7 @@ public class UI {
                 g.setStroke(defStroke);
                 g.setPaint(Color.BLUE);
                 g.fill(armorActual);
+                g.setPaint(Color.black);
                 g.draw(armorActual);
 
                 break;
@@ -150,7 +152,7 @@ public class UI {
                     break;
                 }
 
-                Rectangle energAct = new Rectangle(40, 62, (int) ((double) p.getEnergia() / p.getMaxEnergy() * 100) + 2, 22);
+                Rectangle energAct = new Rectangle(40, 62, (int) (( p.getEnergia() /(double) p.getMaxEnergy()) * 100 + 2), 22);
 
 
                 //DIBUJAMOS PRIMERO RECTANGULO DISCONTINUO
@@ -160,6 +162,7 @@ public class UI {
                 g.setStroke(defStroke);
                 g.setPaint(Color.YELLOW);
                 g.fill(energAct);
+                g.setPaint(Color.black);
                 g.draw(energAct);
 
                 break;
@@ -175,8 +178,8 @@ public class UI {
                 g.setStroke(defStroke);
                 g.setPaint(Color.GREEN);
                 g.fill(expActual);
-                g.draw(expActual);
                 g.setPaint(Color.BLACK);
+                g.draw(expActual);
 
                 g.setFont(new Font("TimesRoman", Font.BOLD, 20));
                 g.drawString(p.getLevel() + "", 55, 146);

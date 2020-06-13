@@ -283,19 +283,4 @@ final public class ExtraerDatosJson {
     }
 
 
-    public static void main(String[] args) {
-
-
-        ArrayList<Rectangle> rectangleArrayList = new ArrayList<>();
-
-
-
-        //System.out.println(salidasMapa("res/jsonsMapasPruebas/14.json"));
-        System.out.println(objetosMapa("res/jsonsMapasPruebas/1.json"));
-        //System.out.println(ManipulacionDatos.rectanglesToEntityObjects(rectangleArrayList, "res/json/mapa6.json"));
-
-
-    }
-
-
 }

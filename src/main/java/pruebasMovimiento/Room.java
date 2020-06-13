@@ -75,8 +75,6 @@ public class Room {
         COLUMNS = Integer.parseInt(extraerValorJson(rutaJsonRoom, "width"));
         width = COLUMNS * TILESIZE;
         height = ROWS * TILESIZE;
-        WIDTH = COLUMNS * TILESIZE;
-        HEIGHT = ROWS * TILESIZE;
 
         spriteInts = devolverNumSpritesTotal(arraysSprites(rutaJsonRoom));  //Poner un iterador que separe las capas HECHO
         try {
@@ -84,17 +82,18 @@ public class Room {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        backgroundSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        detailsSala = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        backgroundSala = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        detailsSala = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
-        System.out.println(entities.size());
+//        System.out.println(x+"-"+y+" "+ entities.size());
 
         if(salaClass==2){
-            entities.add(new Entity(WIDTH / 2 - 16, HEIGHT / 2 - 50, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
+            entities.add(new Entity(width / 2 - 16, height / 2 + 50, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
         }
 
+        Random random=new Random();
 
         if(addEntities) {
             switch (salaClass) {
@@ -104,9 +103,9 @@ public class Room {
 
                     break;
                 case 1:
-                    int min = 200;
-                    int max = HEIGHT - min;
-                    int extra = (int) (Math.random() * 5);
+                    int min = 300;
+                    int max = height - min;
+                    int extra = random.nextInt(1) * 5;
                     for (int i = 0; i < 4 + extra; i++) {
                         int posx = max, posy = max;
                         if (i % 2 == 0) {
@@ -116,7 +115,7 @@ public class Room {
                             posy = min;
                         }
 
-                        entities.add(Enemy.createEnemy(nivel * 2 + (int) (Math.random() * 2), posx, posy, Juego.player));
+                        entities.add(Enemy.createEnemy(nivel * 2 + random.nextInt(2), posx, posy, Juego.player));
                     }
                     break;
                 case 2:
@@ -124,19 +123,19 @@ public class Room {
 
                     int j=0;
                     if (nivel != 0) {
-                        int random = (int) (Math.random() * 2);
+                        int randomNum = (int) (random.nextInt(1) * 2);
 
-                        Weapon weapon2 = Weapon.createWeapon(5 * random + nivel);
-                        weapon2.getHitbox().x = WIDTH / 2;
-                        weapon2.getHitbox().y = WIDTH / 2;
+                        Weapon weapon2 = Weapon.createWeapon(5 * randomNum + nivel);
+                        weapon2.getHitbox().x = width / 2;
+                        weapon2.getHitbox().y = height / 2 + 100;
                         objetosMapa.add(new Buyable(weapon2));
                     }else{
                         j=1;
                     }
                     for (int i = 0; i < 3-j; i++) {
                         Armor armor = Armor.createArmor(i + (3 * nivel));
-                        armor.getHitbox().x = WIDTH / 2 + 40 * (1 + i);
-                        armor.getHitbox().y = WIDTH / 2;
+                        armor.getHitbox().x = width / 2 + 40 * (1 + i);
+                        armor.getHitbox().y = height / 2 + 100;
                         objetosMapa.add(new Buyable(armor));
                     }
 
@@ -146,18 +145,18 @@ public class Room {
                     System.out.println("boss:" + x + "-" + y);
                     switch (nivel) {
                         case 2:
-                            entities.add(Enemy.createEnemy(6, WIDTH / 2, HEIGHT / 2, Juego.player));
-                            entities.add(Enemy.createEnemy(4, WIDTH / 2, HEIGHT / 2 + 100, Juego.player));
-                            entities.add(Enemy.createEnemy(4, WIDTH / 2 - 50, HEIGHT / 2 - 50, Juego.player));
-                            entities.add(Enemy.createEnemy(4, WIDTH / 2 + 50, HEIGHT / 2 - 50, Juego.player));
+                            entities.add(Enemy.createEnemy(6, width / 2, height / 2, Juego.player));
+                            entities.add(Enemy.createEnemy(4, width / 2, height / 2 + 100, Juego.player));
+                            entities.add(Enemy.createEnemy(4, width / 2 - 50, height / 2 - 50, Juego.player));
+                            entities.add(Enemy.createEnemy(4, width / 2 + 50, height / 2 - 50, Juego.player));
                             break;
 
                         case 1:
-                            entities.add(Enemy.createEnemy(8, WIDTH / 2, HEIGHT / 2, Juego.player));
+                            entities.add(Enemy.createEnemy(8, width / 2, height / 2, Juego.player));
                             break;
 
                         case 0:
-                            entities.add(Enemy.createEnemy(7, WIDTH / 2, HEIGHT / 2, Juego.player));
+                            entities.add(Enemy.createEnemy(7, width / 2, height / 2, Juego.player));
                     }
 
                     break;
@@ -166,11 +165,17 @@ public class Room {
         }
 
 
-        HashMap<String, Salida> salidas1 = salidasMapa(rutaJsonRoom);
-        Set<String> keySet = salidas1.keySet();
-        for (String key :
-                keySet) {
-            salidas.get(key).setArea(salidas1.get(key).getArea());
+        HashMap<String, Salida> salidasJSON = salidasMapa(rutaJsonRoom);
+        Set<Map.Entry<String,Salida>> set= salidas.entrySet();
+        Salida salida;
+        System.out.println(salaType+"-"+set.size());
+        for (Map.Entry<String,Salida> key : set) {
+            if(key!=null&&key.getValue()!=null&&key.getKey()!=null) {
+                salida=salidasJSON.get(key.getKey());
+                if(salida!=null) {
+                    key.getValue().setArea(salida.getArea());
+                }
+            }
         }
 
         if(salaClass==3&&clear&&!salidas.containsKey("portal")){

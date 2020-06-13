@@ -92,7 +92,7 @@ public class Configuraciones extends JPanel {
     }
 
 
-    public class MyChangeAction implements ChangeListener {
+    public static class MyChangeAction implements ChangeListener {
         private int id;
 
         public MyChangeAction(int id) {

@@ -259,6 +259,7 @@ public class Juego extends JPanel implements ActionListener {
 
     static void siguienteNivel() {
         nivel++;
+        System.out.println("siguiente nivel");
         player.hp = player.getMaxHp();
         if(nivel!=3) {
             player.puntuacion+=1000;
@@ -372,7 +373,7 @@ public class Juego extends JPanel implements ActionListener {
             Salida salida;
             for (String key : keys) {
                 salida = salaActual.salidas.get(key);
-                if (salida != null && !(salida instanceof Portal) && player.hitbox.intersects(salida.getArea())) {
+                if (salida != null && !(salida instanceof Portal) && salida.getArea()!=null && player.hitbox.intersects(salida.getArea())) {
                     Room room2 = salida.getConexion().getOrigen();
                     cargarSala(room2, key);
                     player.salaPlayer.player = null;
@@ -478,11 +479,10 @@ public class Juego extends JPanel implements ActionListener {
         salaActual.entities.sort(Entity::compareTo);
         for (Entity entity : salaActual.entities) {
             entity.draw(graphics2D, offSetX, offSetY);
-            Rectangle rectangle = (Rectangle) entity.hitbox.clone();
-            rectangle.x -= offSetX;
-            rectangle.y -= offSetY;
-            graphics2D.draw(rectangle);
-            //graphics2D.draw(entity.hitbox);
+//            Rectangle rectangle = (Rectangle) entity.hitbox.clone();
+//            rectangle.x -= offSetX;
+//            rectangle.y -= offSetY;
+//            graphics2D.draw(rectangle);
         }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
@@ -505,19 +505,19 @@ public class Juego extends JPanel implements ActionListener {
         Salida salida;
         for (String key : keys) {
             salida = salaActual.salidas.get(key);
-            Rectangle rectSalida = (Rectangle) salida.getArea().clone();
-            rectSalida.x -= offSetX;
-            rectSalida.y -= offSetY;
-            graphics2D.draw(rectSalida);
+//            Rectangle rectSalida = (Rectangle) salida.getArea().clone();
+//            rectSalida.x -= offSetX;
+//            rectSalida.y -= offSetY;
+//            graphics2D.draw(rectSalida);
         }
 
 
-        if (slash != null) {
-            Rectangle rectangle = (Rectangle) slash.clone();
-            rectangle.x -= offSetX;
-            rectangle.y -= offSetY;
-            graphics2D.draw(rectangle);
-        }
+//        if (slash != null) {
+//            Rectangle rectangle = (Rectangle) slash.clone();
+//            rectangle.x -= offSetX;
+//            rectangle.y -= offSetY;
+//            graphics2D.draw(rectangle);
+//        }
 
         //TERCER PINTADA: DETALLES
         graphics2D.drawImage(salaActual.detailsSala, -offSetX, -offSetY, null);

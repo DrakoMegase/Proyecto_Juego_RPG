@@ -1,9 +1,10 @@
 package pruebasMovimiento;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-class CompareNearEntities implements Comparator<Entity> {
+class CompareNearEntities implements Comparator<Entity>, Serializable {
 
     private LinkedList<Entity> entities;
 

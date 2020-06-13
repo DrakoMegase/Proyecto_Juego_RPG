@@ -29,7 +29,6 @@ public class GuardarPartida extends JPanel {
         background.setBounds(0, 0, WIDTH, HEIGHT);
         this.add(background);
 
-        Border emptyBorder = BorderFactory.createEmptyBorder();
         GuardarPartida guardarPartida=this;
 
         ActionListener actionListener=new ActionListener() {
@@ -44,14 +43,15 @@ public class GuardarPartida extends JPanel {
                         return;
                     }
                 }
-                juego.menu.remove(background);
-                juego.menu.remove(guardarPartida);
+                Juego.menu.remove(background);
+                Juego.menu.remove(guardarPartida);
                 Juego.menuEsc=false;
                 GuardarPartida.save(Integer.parseInt(text.substring(text.length()-1)));
                 Juego.mainTimer.stop();
-                juego.menu.add(Menu.panelPadre);
-                juego.menu.setContentPane(Menu.panelPadre);
-                juego.menu.add(Menu.backgroundPanel);
+                Juego.menu.add(Menu.panelPadre);
+                Juego.menu.add(Menu.backgroundPanel);
+                Juego.menu.setContentPane(Menu.panelPadre);
+                Juego.menu.musica("music/menu.wav");
                 repaint();
             }
         };
@@ -103,24 +103,30 @@ public class GuardarPartida extends JPanel {
     static void save(int slot){
 
         File file=new File(SAVESFOLDER);
+        boolean canSave=true;
         if(!file.exists()||!file.isDirectory()){
-            file.mkdir();
+            canSave=file.mkdir();
         }
 
-        JSONObject save=new JSONObject();
+        if(canSave) {
+            JSONObject save = new JSONObject();
 
-        savePlayer(Juego.player,save);
+            savePlayer(Juego.player, save);
 
-        saveMap(Juego.getSalas(),save);
+            saveMap(Juego.getSalas(), save);
 
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(SAVESFOLDER +"/save"+slot+".json");
-            fileWriter.write(save.toJSONString());
-            fileWriter.close();
+            FileWriter fileWriter = null;
+            try {
+                fileWriter = new FileWriter(SAVESFOLDER + "/save" + slot + ".json");
+                fileWriter.write(save.toJSONString());
+                fileWriter.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,"Error: no se ha podido Guardar");
+            }
+        }else {
+            JOptionPane.showMessageDialog(null,"Error: no se ha podido Guardar");
         }
 
     }

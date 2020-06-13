@@ -18,6 +18,7 @@ public class Player extends Entity {
     private int state=0;
     private int skill=0;
     private long startTime=0;
+    private long energyTime=0;
     private int energia;
     int experiencia;
     int puntuacion;
@@ -48,7 +49,7 @@ public class Player extends Entity {
 //        armor[1]=Armor.createArmor(7);
         armor[2]=Armor.createArmor(2);
 
-        this.energia = level*3;
+        this.energia = level*2;
         this.experiencia = 0;
         this.dinero = 0;
     }
@@ -60,7 +61,7 @@ public class Player extends Entity {
         this.experiencia = experiencia;
         this.puntuacion = puntuacion;
         this.level = level;
-        this.energia = level*3;
+        this.energia = getMaxEnergy();
         this.dinero = dinero;
 
         img=Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("img/BODY_male.png"));
@@ -107,12 +108,13 @@ public class Player extends Entity {
 
         }
 
-        if(damageWait&&System.currentTimeMillis()-damageTime>500){
+        if(damageWait&&System.currentTimeMillis()-damageTime>1000){
             damageWait=false;
             damageTime=0;
         }
 
-        if(state!=2&&energia<level*3&&System.currentTimeMillis()%20==0){
+        if(energia<getMaxEnergy()&&System.currentTimeMillis()-energyTime>=500){
+            energyTime=System.currentTimeMillis();
             energia++;
         }
 
@@ -144,7 +146,7 @@ public class Player extends Entity {
     }
 
     int getMaxEnergy(){
-        return level*4;
+        return level*2;
     }
 
     int getMaxHp(){
@@ -168,7 +170,7 @@ public class Player extends Entity {
                 playSound("sounds/skill.wav");
                 state = 0;
 
-                int damage=3*(1+(level-3)/4);
+                int damage=4*(1+(level-3)/4);
 
                 int modX = Math.abs(lastSpdX) / 2;
                 int modY = Math.abs(lastSpdY) / 2;
@@ -179,8 +181,10 @@ public class Player extends Entity {
                 int distance=20;
 
                 salaPlayer.entities.add(new Projectile(x+distance*modY, y+distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
+                salaPlayer.entities.add(new Projectile(x+distance*2*modY, y+distance*2*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
                 salaPlayer.entities.add(new Projectile(x, y, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
                 salaPlayer.entities.add(new Projectile(x-distance*modY, y-distance*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
+                salaPlayer.entities.add(new Projectile(x-distance*2*modY, y-distance*2*modX, 20, img, 30, 30 * modY + (hitbox.y - y) * modX, 4, 4, false, false, lastSpdX * 4, lastSpdY * 4, this, salaPlayer.entities, damage));
             }
         }else {
             if (actionTime >= 420) {
@@ -190,29 +194,37 @@ public class Player extends Entity {
             }else if(canShoot&&actionTime>=360){
                 playSound("sounds/skill.wav");
 
-                System.out.println("lel");
                 canShoot=false;
 
-                int damage=3*(1+(level-3)/4);
+                int damage=5*(1+(level-3)/4);
                 int vel=3;
                 String img="img/projectiles/bola.png:1:0:0:29:29:4";
-                for (int i = 0; i < 8; i++) {
-                    int movX=-vel;
-                    int movY=-vel;
-                    if(i%4==0){
-                        movX=0;
-                    }else if(i-4<0){
-                        movX*=-1;
-                    }
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,0,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,0,-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,0,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,0,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,-vel,this,salaPlayer.entities,damage));
 
-                    if(i==2||i==6){
-                        movY=0;
-                    }else if(i>2&&i<6){
-                        movY*=-1;
-                    }
-                    salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,movX,movY,this,salaPlayer.entities,damage));
-                }
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel-1,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,vel-1,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel-1,-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,1-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,vel-1,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,1-vel,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,1-vel,-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,1-vel,this,salaPlayer.entities,damage));
 
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,1,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-1,vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,1,-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-1,-vel,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,1,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,vel,-1,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,1,this,salaPlayer.entities,damage));
+                salaPlayer.entities.add(new Projectile(hitbox.x,hitbox.y-20,20, img,9,9,12,12,false,false,-vel,-1,this,salaPlayer.entities,damage));
             }
         }
 
@@ -376,9 +388,9 @@ public class Player extends Entity {
                 break;
 
             case KeyEvent.VK_U:
-                if(state==0&&level>=2&&energia>=3){
+                if(state==0&&level>=2&&energia>=4){
                     state=2;
-                    energia-=3;
+                    energia-=4;
                     skill=0;
                     startTime=System.currentTimeMillis();
                 }

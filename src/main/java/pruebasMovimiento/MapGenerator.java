@@ -1,9 +1,6 @@
 package pruebasMovimiento;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 class MapGenerator {
 
@@ -34,7 +31,6 @@ class MapGenerator {
 
 
 
-        int[] skip = {1, 2, 3, 4}; // U,D,R,L
         for (int i = 0; i < rooms.size(); i++) {
             int roomX = rooms.get(i)[0];
             int roomY = rooms.get(i)[1];
@@ -179,7 +175,7 @@ class MapGenerator {
         boolean[] booleans = new boolean[4];
 
         for (int i = 3; i > -1; i--) {
-            booleans[i] = res % 2 == 1;
+            booleans[i] = res % 2 != 0;
             res /= 2;
         }
 
@@ -197,24 +193,15 @@ class MapGenerator {
         return cont;
     }
 
-    private static int boolToNum(boolean[] booleans) {
-        int cont = 0;
-        for (int i = 0; i > -booleans.length; i--) {
-            if (booleans[0]) {
-                cont += Math.pow(2, i * -1);
-            }
-        }
-        return cont;
-    }
-
     private static int generateNum(int val, boolean oneDoor) {
         int[] nums = new int[4];
+        Random random=new Random();
         for (int i = 0; i < nums.length; i++) {
             if (val - 1 == i) {
                 nums[i] = 1;
             } else {
                 if (!oneDoor) {
-                    nums[i] = (int) (Math.random() * 2);
+                    nums[i] = random.nextInt(2);
                 } else {
                     nums[i] = 0;
                 }

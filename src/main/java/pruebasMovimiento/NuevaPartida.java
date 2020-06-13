@@ -25,7 +25,6 @@ public class NuevaPartida extends JPanel {
         background.setBounds(0, 0, WIDTH, HEIGHT);
         this.add(background);
 
-        Border emptyBorder = BorderFactory.createEmptyBorder();
         NuevaPartida nuevaPartida=this;
 
         ActionListener actionListener=new ActionListener() {

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Entity implements Comparable<Entity> {
 
@@ -227,6 +228,21 @@ public class Entity implements Comparable<Entity> {
         return this.hitbox.y - o.hitbox.y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entity entity = (Entity) o;
+        return x == entity.x &&
+                y == entity.y &&
+                Objects.equals(hitbox, entity.hitbox) &&
+                Objects.equals(name, entity.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, hitbox, name);
+    }
 
     protected void checkCollisions(LinkedList<Entity> entities, int count) {
         int[] force;

@@ -19,6 +19,7 @@ public class Projectile extends Entity{
         this.velY=velY;
         this.creator=creator;
         this.entities = entities;
+        this.damage=damage;
     }
 
     public void update() {
@@ -28,7 +29,7 @@ public class Projectile extends Entity{
         boolean hit=false;
         for (Entity entity:entities) {
             if (!entity.equals(this)&&!entity.equals(creator)&&!(entity instanceof Projectile)&&!((creator instanceof Enemy)&&(entity instanceof Enemy))&&hitbox.intersects(entity.hitbox)){
-                entity.damage(5);
+                entity.damage(damage);
                 hit=true;
                 int knockback=5;
                 entity.push(velX*knockback,velY*knockback);
