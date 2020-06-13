@@ -48,10 +48,16 @@ public class GuardarPartida extends JPanel {
                 Juego.menuEsc=false;
                 GuardarPartida.save(Integer.parseInt(text.substring(text.length()-1)));
                 Juego.mainTimer.stop();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
                 Juego.menu.add(Menu.panelPadre);
                 Juego.menu.add(Menu.backgroundPanel);
-                Juego.menu.setContentPane(Menu.panelPadre);
+                Juego.menu.setContentPane(Menu.backgroundPanel);
                 Juego.menu.musica("music/menu.wav");
+                //System.out.println("MENU PRINCIPAL");
                 repaint();
             }
         };
