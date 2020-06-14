@@ -544,11 +544,11 @@ public class Player extends Entity {
         }
     }
 
-    public int getPuntuacion() {
+    int getPuntuacion() {
         return puntuacion;
     }
 
-    public int getDinero() {
+    int getDinero() {
         return dinero;
     }
 

@@ -12,8 +12,6 @@ final public class ManipulacionDatos {
     static public void rectanglesToEntityObjects(String ruta, LinkedList<Entity> entities){
         ArrayList<Rectangle> rectangleArrayList = ExtraerDatosJson.objetosMapa(ruta);
 
-
-
         for (Rectangle r:rectangleArrayList
             ) {
 
