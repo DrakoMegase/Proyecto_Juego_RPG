@@ -167,23 +167,4 @@ public class Firebase {
             return Integer.parseInt(s2[0])-Integer.parseInt(s1[0]);
         }
     }
-
-    public static void main(String[] args) {
-
-        Player player=new Player(2,2,24);
-        player.puntuacion=2500;
-
-        Firebase.uploadScore(player);
-
-        ArrayList<String> list=new ArrayList<>();
-
-        if(Firebase.readScores(list)){
-            for (String score:list){
-                System.out.println(score);
-            }
-        }else {
-            System.out.println("Big F");
-        }
-
-    }
 }

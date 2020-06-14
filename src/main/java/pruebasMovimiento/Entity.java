@@ -171,10 +171,6 @@ public class Entity implements Comparable<Entity> {
         this.y = y;
     }
 
-    public void setHitbox(Rectangle hitbox) {
-        this.hitbox = hitbox;
-    }
-
     void setPos(int x, int y) {
 
         int antiguaX = this.getX();
@@ -193,18 +189,6 @@ public class Entity implements Comparable<Entity> {
         this.y += y;
         hitbox.translate(x, y);
 
-    }
-
-    public void setVelX(int velX) {
-        this.velX = velX;
-    }
-
-    public void setVelY(int velY) {
-        this.velY = velY;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
     }
 
     @Override
@@ -337,7 +321,6 @@ public class Entity implements Comparable<Entity> {
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
-//        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(Menu.sound); // Reduce volume by 10 decibels.
         clip.start();

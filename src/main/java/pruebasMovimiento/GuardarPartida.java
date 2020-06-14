@@ -394,7 +394,4 @@ public class GuardarPartida extends JPanel {
         return new ArrayList<>(listaSalas);
     }
 
-    public static void main(String[] args) {
-    }
-
 }
