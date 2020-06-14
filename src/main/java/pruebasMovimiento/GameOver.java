@@ -54,6 +54,9 @@ class GameOver extends JPanel {
                     } else {
 
                         player.name = tf4.getText();
+
+                        player.name = player.name.replace(";","");
+
                         player.puntuacion = puntuacionFinalInt;
 
                         Firebase.uploadScore(player);
@@ -243,7 +246,7 @@ class GameOver extends JPanel {
 
         Random random=new Random();
 
-        if (v <= 0) {
+        if (v < 0) {
 
             return random.nextInt(10);
         }
