@@ -6,18 +6,14 @@ public abstract class ItemProperties {
 
     private String name;
     private Image img;
-    private int spriteSize;
-    private Image icon;
     private Rectangle hitbox;
     int id;
 
     ItemProperties(){}
 
-    ItemProperties(String name, int spriteSize, String img, Image icon, Rectangle hitbox) {
+    ItemProperties(String name, String img,Rectangle hitbox) {
         this.name = name;
-        this.spriteSize = spriteSize;
         this.img = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource(img));
-        this.icon = icon;
         this.hitbox = hitbox;
     }
 
@@ -25,16 +21,8 @@ public abstract class ItemProperties {
         return name;
     }
 
-    public int getSpriteSize() {
-        return spriteSize;
-    }
-
     public Image getImg() {
         return img;
-    }
-
-    public Image getIcon() {
-        return icon;
     }
 
     Rectangle getHitbox() {

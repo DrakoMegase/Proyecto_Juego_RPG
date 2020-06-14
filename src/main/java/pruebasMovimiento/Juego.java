@@ -1,21 +1,13 @@
 package pruebasMovimiento;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-
-import static herramientas.ExtraerDatosJson.extraerValorJson;
 
 public class Juego extends JPanel implements ActionListener {
 
@@ -100,18 +92,12 @@ public class Juego extends JPanel implements ActionListener {
         //INICIACION DE LA UIBuffImg (siempre despies del player)
 
 
-        //backgroundPanel = new JPanel();
         ui = new UI(player);
         uiRecMinimap = UI.getMinimapa();
         map = UI.getMapa();
 
 
-//        player.setAddEntities(entitiesJuego);
-
-
         mainTimer = new Timer(TIMERDELAY, this);
-        //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
-
         WIDTH = salaActual.width;
         HEIGHT = salaActual.height;
 
@@ -132,17 +118,11 @@ public class Juego extends JPanel implements ActionListener {
         Juego.salaActual = player.salaPlayer;
 
 
-        //Definimos atributos para su uso en ventana.
-
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
-//        setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
         setBackground(Color.black);
         setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         setLayout(null);
-
-        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
-
 
         //TODO
         imagenEscape = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardar1.png")))
@@ -156,18 +136,11 @@ public class Juego extends JPanel implements ActionListener {
         //INICIACION DE LA UIBuffImg (siempre despies del player)
 
 
-        //backgroundPanel = new JPanel();
         ui = new UI(player);
         uiRecMinimap = UI.getMinimapa();
         map = UI.getMapa();
 
-
-//        player.setAddEntities(entitiesJuego);
-
-
-
         mainTimer = new Timer(TIMERDELAY, this);
-        //mainTimer.start();  //Con esto ponemos a ejectuarse en bucle el actionPerfomed() de abajo.
 
         WIDTH = salaActual.width;
         HEIGHT = salaActual.height;
@@ -257,16 +230,8 @@ public class Juego extends JPanel implements ActionListener {
         3.Todos los entities, aqui tenemos tanto los obstaculos como los enemies y el jugador.
         */
 
-
-        //LIMPIAMOS
-        //BFF BACKGROUND + ENTITES + BFF DETAILS
-
-        //room.cargarNuevaSala(imageBufferJuego,entitiesJuego,imageBufferDetailsJuego);
-
-
         //Limpiamos nuestras listas
         salaActual.entities.remove(player);
-
 
         salaActual = room;
         //Añadimos al jugador
@@ -299,7 +264,6 @@ public class Juego extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
         boolean clear = true;
 
         if (player.hp <= 0 || nivel==3) {
@@ -307,15 +271,12 @@ public class Juego extends JPanel implements ActionListener {
         }
 
         if (menuEsc) {
-
-
             //JPANEL y añadir ahi el menu de pausa.
 
             escape(imagenEscape);
             repaint();
             return;
         }
-
 
         for (int i = 0; i < salaActual.entities.size(); ) {
             Entity entity = salaActual.entities.get(i);
@@ -337,7 +298,6 @@ public class Juego extends JPanel implements ActionListener {
             Entity.playSound("sounds/clearRoom.wav");
         }
 
-
         Iterator<Entity> iterator = salaActual.entities.iterator();
 
         salaActual.entities.sort(new CompareNearEntities(salaActual.entities));
@@ -345,7 +305,6 @@ public class Juego extends JPanel implements ActionListener {
             Entity entity = iterator.next();
             entity.checkCollisions(salaActual.entities, 0);
         }
-
 
         if (player.salaPlayer.clear && salaActual.salidas != null) {
             Set<String> keys = salaActual.salidas.keySet();
@@ -359,21 +318,16 @@ public class Juego extends JPanel implements ActionListener {
                     room2.setVisited(true);
                     room2.player = player;
                     player.salaPlayer = room2;
-
-
                 }
             }
-
-
         }
+
         for (String s : player.salaPlayer.salidas.keySet()
         ) {
             if (!s.equals("portal")) {
                 Room r = player.salaPlayer.salidas.get(s).getConexion().getOrigen();
                 r.setNear(true);
             }
-
-            //System.out.println(r);
         }
 
 
@@ -382,8 +336,6 @@ public class Juego extends JPanel implements ActionListener {
     }
 
     private void gameover() {
-
-        //MOUNSTRUOS ASESINADOS todo
 
         if (contador > 150 && !endgame) {
             gameOver = new GameOver(mounstruosKilled, player, menu);
@@ -405,22 +357,16 @@ public class Juego extends JPanel implements ActionListener {
 
 
         contador++;
-        //System.out.println(contador);
     }
 
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-
         remove(backgroundPanel);
         camaraUpdate();
         Graphics2D graphics2D = (Graphics2D) g;
         if (menuEsc) {
-
-            //TODO hacer un nuevo JPANEL y añadir ahi el menu de pausa.
-
             escape(imagenEscape);
             repaint();
             return;
@@ -455,10 +401,6 @@ public class Juego extends JPanel implements ActionListener {
         salaActual.entities.sort(Entity::compareTo);
         for (Entity entity : salaActual.entities) {
             entity.draw(graphics2D, offSetX, offSetY);
-//            Rectangle rectangle = (Rectangle) entity.hitbox.clone();
-//            rectangle.x -= offSetX;
-//            rectangle.y -= offSetY;
-//            graphics2D.draw(rectangle);
         }
 
         for (int i = 0; i < salaActual.objetosMapa.size(); i++) {
@@ -476,24 +418,6 @@ public class Juego extends JPanel implements ActionListener {
                 graphics2D.drawString("Espacio",player.x-offSetX+5,player.y-offSetY+10);
             }
         }
-
-//        Set<String> keys = salaActual.salidas.keySet();
-//        Salida salida;
-//        for (String key : keys) {
-//            salida = salaActual.salidas.get(key);
-//            Rectangle rectSalida = (Rectangle) salida.getArea().clone();
-//            rectSalida.x -= offSetX;
-//            rectSalida.y -= offSetY;
-//            graphics2D.draw(rectSalida);
-//        }
-
-
-//        if (slash != null) {
-//            Rectangle rectangle = (Rectangle) slash.clone();
-//            rectangle.x -= offSetX;
-//            rectangle.y -= offSetY;
-//            graphics2D.draw(rectangle);
-//        }
 
         //TERCER PINTADA: DETALLES
         graphics2D.drawImage(salaActual.detailsSala, -offSetX, -offSetY, null);
@@ -520,7 +444,6 @@ public class Juego extends JPanel implements ActionListener {
 
 
                 Rectangle casillaMinimap = new Rectangle(offsetXMinimap + ((r.x - casillacentroX) * 14), offsetYMinimap + ((r.y - casillacentroY) * 14), 10, 10);
-                //System.out.println(casillaMinimap);
                 if (uiRecMinimap.contains(casillaMinimap)) {
                     if (player.salaPlayer == r) {
                         graphics2D.setPaint(Color.RED);
@@ -561,7 +484,6 @@ public class Juego extends JPanel implements ActionListener {
 
             //DIBUJO DEL MAPAAAAAAA (LOS RECTANGULITOS) (ROJO DONDE ESTA EL PLAYER, NEGROS LOS QUE NO HA VISITADO Y NEGROS RELLENOS LOS QUE SI)
             else {
-                //CENTRO: 410,80
                 int offsetXMinimap = 240;
                 int offsetYMinimap = 230;
 
@@ -570,7 +492,6 @@ public class Juego extends JPanel implements ActionListener {
 
 
                 Rectangle mapa = new Rectangle(offsetXMinimap + ((r.x - casillacentroX) * 20), offsetYMinimap + ((r.y - casillacentroY) * 20), 17, 17);
-                //System.out.println(casillaMinimap);
                 if (map.contains(mapa)) {
                     if (player.salaPlayer == r) {
                         if (r.isNear()) {
@@ -587,7 +508,6 @@ public class Juego extends JPanel implements ActionListener {
                             }
                         }
                     }
-                    //TODO
                     graphics2D.setPaint(Color.BLACK);
                     if (r.isVisited()) {
                         if (r.isClear()) {
@@ -623,15 +543,10 @@ public class Juego extends JPanel implements ActionListener {
 
     private void escape(Image image) {
 
-
-        //setBorder(new EmptyBorder(0, 0, 0, 0));
-
-
         backgroundPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
         add(backgroundPanel);
         backgroundPanel.setLayout(null);
         backgroundPanel.setBackground(Color.black);
-
 
         JButton guardar_y_salir = new JButton("Guardar y salir");
         guardar_y_salir.setBounds(181, 215, 150, 30);
@@ -644,13 +559,11 @@ public class Juego extends JPanel implements ActionListener {
         guardar_y_salir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 GuardarPartida guardarPartida=new GuardarPartida(juego);
                 menu.remove(juego);
                 menu.setContentPane(guardarPartida);
                 validate();
                 menu.setVisible(true);
-
             }
         });
 
@@ -661,7 +574,6 @@ public class Juego extends JPanel implements ActionListener {
         volver_al_juego.setForeground(Color.WHITE);
         backgroundPanel.add(volver_al_juego);
         volver_al_juego.setFocusable(false);
-
 
         volver_al_juego.addActionListener(new ActionListener() {
             @Override
@@ -676,7 +588,6 @@ public class Juego extends JPanel implements ActionListener {
                 .getImage();
         backgroundLabel = new JLabel(new ImageIcon(a));
         backgroundLabel.setBounds(0, -30, this.getWidth(), this.getHeight()+30);
-        //todo
         backgroundPanel.add(backgroundLabel);
 
         repaint();

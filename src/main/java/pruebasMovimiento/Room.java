@@ -3,10 +3,8 @@ package pruebasMovimiento;
 import herramientas.ManipulacionDatos;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -37,7 +35,7 @@ public class Room {
     private boolean visited;
     private boolean near;
 
-    public int getIdSala() {
+    int getIdSala() {
         return idSala;
     }
 
@@ -51,8 +49,6 @@ public class Room {
     }
 
     void inicializarSala(int nivel, boolean addEntities) {
-
-
 
         String rutaJsonRoom="";
 
@@ -87,10 +83,9 @@ public class Room {
 
 
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
-//        System.out.println(x+"-"+y+" "+ entities.size());
 
         if(salaClass==2){
-            entities.add(new Entity(width / 2 - 16, height / 2 + 50, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
+            entities.add(new Entity(width / 2 - 16, height / 2 + 30, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
         }
 
         Random random=new Random();
@@ -123,7 +118,7 @@ public class Room {
 
                     int j=0;
                     if (nivel != 0) {
-                        int randomNum = (int) (random.nextInt(1) * 2);
+                        int randomNum = random.nextInt(1) * 2;
 
                         Weapon weapon2 = Weapon.createWeapon(5 * randomNum + nivel);
                         weapon2.getHitbox().x = width / 2;
@@ -150,7 +145,6 @@ public class Room {
                             entities.add(Enemy.createEnemy(4, width / 2 - 50, height / 2 - 50, Juego.player));
                             entities.add(Enemy.createEnemy(4, width / 2 + 50, height / 2 - 50, Juego.player));
                             break;
-
                         case 1:
                             entities.add(Enemy.createEnemy(8, width / 2, height / 2, Juego.player));
                             break;
@@ -158,9 +152,7 @@ public class Room {
                         case 0:
                             entities.add(Enemy.createEnemy(7, width / 2, height / 2, Juego.player));
                     }
-
                     break;
-
             }
         }
 
@@ -210,8 +202,6 @@ public class Room {
 
                 graphics.drawImage(new Sprite(spriteInts[j][i], spriteSheet, TILESIZE).getSpriteImg(), x * TILESIZE, y * TILESIZE, null);
                 x++;
-                //System.out.println(y + "   x  " +  x);
-
             }
 
 
@@ -280,10 +270,6 @@ public class Room {
 
     }
 
-    void setSalaType(int salaType) {
-        this.salaType = salaType;
-    }
-
     int getDistancia() {
         return distancia;
     }
@@ -318,7 +304,7 @@ public class Room {
                 "} \n";
     }
 
-    public static void setContador(int contador) {
+    static void setContador(int contador) {
         Room.contador = contador;
     }
 }

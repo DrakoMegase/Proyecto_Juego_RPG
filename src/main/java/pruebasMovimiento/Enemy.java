@@ -1,7 +1,5 @@
 package pruebasMovimiento;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.LinkedList;
 
 public class Enemy extends Entity{
@@ -27,7 +25,6 @@ public class Enemy extends Entity{
 
     public void update() {
         move(velX,velY);
-        //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
 
         if(damageWait&&System.currentTimeMillis()-damageTime>300){
             damageWait=false;

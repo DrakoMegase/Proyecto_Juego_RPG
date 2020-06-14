@@ -5,7 +5,6 @@ package pruebasMovimiento;
 import javax.sound.sampled.*;
 import java.awt.*;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -28,13 +27,6 @@ public class Entity implements Comparable<Entity> {
     String name;
     private static int count = 0;
 
-
-    public Dimension medidasCuerpo() {
-
-        return new Dimension(this.getImg().getWidth(null), this.getImg().getHeight(null));
-
-    }
-
     public Image getImg() {
         return img;
     }
@@ -45,14 +37,6 @@ public class Entity implements Comparable<Entity> {
 
     public int getY() {
         return y;
-    }
-
-    public int getVelX() {
-        return velX;
-    }
-
-    public int getVelY() {
-        return velY;
     }
 
     Entity(int x, int y) {
@@ -318,40 +302,12 @@ public class Entity implements Comparable<Entity> {
         return hp;
     }
 
-    public int[] getSpritesPos() {
-        return spritesPos;
-    }
-
-    public Rectangle getHitbox() {
-        return hitbox;
-    }
-
-    public boolean isCanBeMoved() {
-        return canBeMoved;
-    }
-
     public boolean isRemove() {
         return remove;
     }
 
-    public boolean isCanBeDamaged() {
-        return canBeDamaged;
-    }
-
-    public boolean isDamageWait() {
-        return damageWait;
-    }
-
-    public long getDamageTime() {
-        return damageTime;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public static int getCount() {
-        return count;
     }
 
     @Override

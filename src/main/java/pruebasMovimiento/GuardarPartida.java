@@ -6,7 +6,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,10 +18,10 @@ import java.util.*;
 
 public class GuardarPartida extends JPanel {
 
-    JLabel background;
+    private JLabel background;
     private final static String SAVESFOLDER ="saves";
 
-    public GuardarPartida(Juego juego) {
+    GuardarPartida(Juego juego) {
         Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/guardarCargarBackground.png")))
                 .getImage();
         background = new JLabel(new ImageIcon(a));
@@ -106,7 +105,7 @@ public class GuardarPartida extends JPanel {
 
     }
 
-    static void save(int slot){
+    static private void save(int slot){
 
         File file=new File(SAVESFOLDER);
         boolean canSave=true;
@@ -259,7 +258,7 @@ public class GuardarPartida extends JPanel {
 
     }
 
-    static public Juego loadSave(int slot, Menu menu){
+    static Juego loadSave(int slot, Menu menu){
 
 
         JSONParser parser = new JSONParser();

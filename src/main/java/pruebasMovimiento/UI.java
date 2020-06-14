@@ -1,16 +1,11 @@
 package pruebasMovimiento;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-public class UI {
+class UI {
 
     /*
     UI = User Interface
@@ -49,7 +44,7 @@ public class UI {
 
      */
 
-    public static boolean map;
+    static boolean map;
     private BufferedImage UIImage;
     private BufferedImage UIImageMap;
     private Player player;
@@ -201,11 +196,6 @@ public class UI {
 
         }
     }
-
-    public BufferedImage getUIImage() {
-        return UIImage;
-    }
-
 
     private BufferedImage minimap(Graphics2D g){
 

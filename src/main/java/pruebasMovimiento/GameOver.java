@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
 class GameOver extends JPanel {
 
-    private JLabel background;
     private int WIDTH = 512;
     private int HEIGHT = 573;
     private JButton continuar;

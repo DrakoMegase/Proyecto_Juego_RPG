@@ -1,7 +1,5 @@
 package pruebasMovimiento;
 
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,8 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import static pruebasMovimiento.Menu.sound;
 
 class Puntuaciones extends JPanel {
 
@@ -25,9 +21,6 @@ class Puntuaciones extends JPanel {
     private LinkedList<Box> tabla=new LinkedList<>();
     private JLabel numPag;
     private boolean ready=false;
-
-
-
 
     Puntuaciones(Menu menu, JPanel backgroundpanel, Image a) {
 
@@ -107,17 +100,7 @@ class Puntuaciones extends JPanel {
             }
         });
 
-        /*Timer timer = new Timer(500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                repaint();
-            }
-        });
-
-        timer.start();*/
-
         setPage(pagina);
-
 
     }
 
@@ -139,11 +122,6 @@ class Puntuaciones extends JPanel {
             box=Box.createHorizontalBox();
             box.setBounds(50,170+50*(i-5*page),400,64);
             score=scores.get(i).split(";");
-//            texto = new JLabel("<html><font color='white'>"+(i+1)+"."+"</font></html>");
-//            texto.setHorizontalAlignment(JLabel.LEFT);
-//            texto.setFont(new Font("Verdana", Font.BOLD, 20));
-//            texto.setVisible(true);
-//            box.add(texto);
             if(score[1].length()>10) {
                 texto = new JLabel("<html><font color='white'>"  +(i+1)+". "+ score[1].substring(0,10) + "</font></html>");
             }else {
@@ -182,10 +160,6 @@ class Puntuaciones extends JPanel {
             texto.setHorizontalAlignment(JLabel.RIGHT);
             texto.setVisible(true);
             box.add(texto);
-
-//            box.setBackground(Color.black);
-//            box.setOpaque(true);
-//            box.setBorder(BorderFactory.createBevelBorder(2));
             tabla.add(box);
             background.add(box);
         }
