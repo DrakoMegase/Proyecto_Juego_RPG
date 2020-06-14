@@ -36,32 +36,6 @@ final public class ExtraerDatosJson {
 
     }
 
-
-    static public JSONArray extraerArrayJsonDesdeObjectJson(JSONArray jsonArray, String clave, String atributoClave){
-
-        int objetSize = jsonArray.size();
-
-        for (int i = 0; i < objetSize ; i++) {
-
-            JSONObject objetoAMirar = (JSONObject) jsonArray.get(i);
-
-            if (objetoAMirar.get(clave).equals(atributoClave)){
-
-                return (JSONArray) objetoAMirar.get(0);
-
-            }else {
-                System.out.println("NO ENCONTRADO");
-            }
-
-
-        }
-
-
-        return null;
-    }
-
-
-
     static public ArrayList<JSONObject> arraysSprites(String rutaJson){
 
 
@@ -89,37 +63,6 @@ final public class ExtraerDatosJson {
         }
         return sprites;
     }
-
-
-    static public JSONArray arraysObjects(String rutaJson){
-
-
-
-        JSONParser parser = new JSONParser();
-        JSONObject arrayADevolver = null;
-        JSONArray arrayADevolverArrayJson = new JSONArray();
-        try {
-            arrayADevolver = (JSONObject) parser.parse(new BufferedReader(new InputStreamReader(ExtraerDatosJson.class.getClassLoader().getResourceAsStream(rutaJson))));
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
-
-
-        JSONArray jsonArray = (JSONArray) arrayADevolver.get("layers");
-        for (Object o:jsonArray
-        ) {
-
-            JSONObject jsonObject = (JSONObject) o;
-            if (jsonObject.get("type").equals("objectgroup")){
-
-                arrayADevolverArrayJson.add(jsonObject);
-//                System.out.println(jsonObject);
-            }
-        }
-        return arrayADevolverArrayJson;
-    }
-
-
 
     static public int[][] devolverNumSpritesTotal(ArrayList capaSprites){
 
