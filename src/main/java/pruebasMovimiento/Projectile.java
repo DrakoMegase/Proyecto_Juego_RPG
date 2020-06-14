@@ -6,14 +6,14 @@ import java.util.LinkedList;
 public class Projectile extends Entity{
 
     private Entity creator;
-    LinkedList<Entity> entities;
-    final int WIDTH = Juego.WIDTH;
-    final int HEIGHT = Juego.HEIGHT;
-    int damage;
+    private LinkedList<Entity> entities;
+    private final int WIDTH = Juego.WIDTH;
+    private final int HEIGHT = Juego.HEIGHT;
+    private int damage;
 
 
 
-    public Projectile(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, int velX, int velY, Entity creator, LinkedList<Entity> entities, int damage) {
+    Projectile(int x, int y, int hp, String img, int hitX, int hitY, int hitWidth, int hitHeight, boolean canBeMoved, boolean canBeDamaged, int velX, int velY, Entity creator, LinkedList<Entity> entities, int damage) {
         super(x, y, hp, img, hitX, hitY, hitWidth, hitHeight, canBeMoved, canBeDamaged);
         this.velX=velX;
         this.velY=velY;

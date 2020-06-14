@@ -1,11 +1,7 @@
 package pruebasMovimiento;
 
-
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.LinkedList;
 
 public class Player extends Entity {
 
@@ -45,8 +41,6 @@ public class Player extends Entity {
 
         weapons[0]=Weapon.createWeapon(0);
         weapons[1]=Weapon.createWeapon(5);
-//        armor[0]=Armor.createArmor(3);
-//        armor[1]=Armor.createArmor(7);
         armor[2]=Armor.createArmor(2);
 
         this.energia = level*2;
@@ -121,7 +115,6 @@ public class Player extends Entity {
         switch (state) {
             case 0:
                 move(velX, velY);
-            //System.out.printf("\nvelX = " + velX + "\tvelY = " + velY +"\tposX = " + this.x +"\tposY = " + this.y);
                 break;
             case 1:
                 slash();
@@ -142,7 +135,6 @@ public class Player extends Entity {
     @Override
     void damage(int dmg) {
         super.damage((int)Math.round(dmg*getDmgRecived()));
-//        System.out.println(dmg+"-"+(int)Math.round(dmg*getDmgRecived()));
     }
 
     int getMaxEnergy(){
@@ -499,25 +491,6 @@ public class Player extends Entity {
                         lastSpdX=0;
                     }
                 }
-                break;
-            case KeyEvent.VK_P:
-
-                for (Entity e1:salaPlayer.entities
-                     ) {
-
-                    if (e1.hp > 0 && !e1.equals(this)){
-
-                        e1.hp = 0;
-                    }
-
-                }
-                velX = (int) (velX* 1.5);
-                velY = (int) (velY* 1.5);
-                hp += 10;
-                dinero += 1000;
-                //Juego.siguienteNivel();
-//                hp -= 100;
-
                 break;
 
             default:

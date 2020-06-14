@@ -2,13 +2,12 @@ package pruebasMovimiento;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
 
 public class KeyAdapt extends KeyAdapter {
 
     Player player;
 
-    public KeyAdapt(Player player) {
+    KeyAdapt(Player player) {
         this.player = player;
     }
 

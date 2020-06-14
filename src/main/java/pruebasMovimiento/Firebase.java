@@ -8,19 +8,17 @@ import com.google.firebase.database.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class Firebase {
 
 
-    public static boolean uploadScore(Player player){
+    static boolean uploadScore(Player player){
 
         final boolean[] booleans = { false, false };
 
        initializeApp();
 
-// As an admin, the app has access to read and write all data, regardless of Security Rules
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("scores");
 

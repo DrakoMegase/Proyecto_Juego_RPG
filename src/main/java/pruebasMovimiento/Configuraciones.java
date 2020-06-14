@@ -3,21 +3,20 @@ package pruebasMovimiento;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Configuraciones extends JPanel {
+class Configuraciones extends JPanel {
 
-    JLabel background;
-    static FloatControl gainControl;
+    private JLabel background;
+    private static FloatControl gainControl;
     static Clip music;
 
 
-    public Configuraciones(Menu menu, Clip clip, JPanel backgroundpanel, Image a) {
+    Configuraciones(Menu menu, Clip clip, JPanel backgroundpanel, Image a) {
 
 
         background = new JLabel(new ImageIcon(a));
@@ -95,7 +94,7 @@ public class Configuraciones extends JPanel {
     public static class MyChangeAction implements ChangeListener {
         private int id;
 
-        public MyChangeAction(int id) {
+        MyChangeAction(int id) {
             this.id = id;
         }
 

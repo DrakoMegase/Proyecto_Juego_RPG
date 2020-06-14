@@ -8,7 +8,6 @@ import pruebasMovimiento.Salida;
 
 import java.awt.*;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,7 +65,7 @@ final public class ExtraerDatosJson {
     static public ArrayList<JSONObject> arraysSprites(String rutaJson){
 
 
-        ArrayList<JSONObject> sprites = new ArrayList<JSONObject>();
+        ArrayList<JSONObject> sprites = new ArrayList<>();
 
         JSONParser parser = new JSONParser();
         JSONObject arrayADevolver = null;

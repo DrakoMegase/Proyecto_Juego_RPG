@@ -8,7 +8,7 @@ class CompareNearEntities implements Comparator<Entity>, Serializable {
 
     private LinkedList<Entity> entities;
 
-    public CompareNearEntities(LinkedList<Entity> entities) {
+    CompareNearEntities(LinkedList<Entity> entities) {
 
         LinkedList<Entity> subentities=new LinkedList<>();
         for (Entity entity:entities){

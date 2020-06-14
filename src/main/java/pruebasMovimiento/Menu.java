@@ -3,7 +3,6 @@ package pruebasMovimiento;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -111,7 +110,6 @@ public class Menu extends JFrame {
                 musica("music/nivel1.wav");
 
                 juego = new Juego(menu);
-//                juego = GuardarPartida.loadSave(1,menu);
                 juego.start();
 
                 setContentPane(juego);
@@ -140,8 +138,6 @@ public class Menu extends JFrame {
                 background = new JLabel(new ImageIcon(a));
                 background.setBounds(0, 0, WIDTH, HEIGHT);
                 panelPadre.add(background);
-
-                //Border emptyBorder = BorderFactory.createEmptyBorder();
 
                 setContentPane(background);
                 invalidate();
@@ -215,8 +211,6 @@ public class Menu extends JFrame {
 
                 Configuraciones configuraciones = new Configuraciones(game, clip, backgroundPanel, a);
 
-//                remove(backgroundPanel);
-//                remove(panelPadre);
                 backgroundPanel.setVisible(false);
                 panelPadre.setVisible(false);
                 add(configuraciones);
@@ -284,10 +278,8 @@ public class Menu extends JFrame {
 
     }
 
-    void loadGame(int slot) {
+    private void loadGame(int slot) {
         setFocusable(true);
-//        remove(panelPadre);
-////        remove(backgroundPanel);
         repaint();
         System.out.println("Cargado slot 1 aaaa");
 

@@ -41,11 +41,8 @@ public class Salida {
         return origen;
     }
 
-    public int getVal() {
+    int getVal() {
         return val;
     }
 
-    public void setOrigen(Room origen) {
-        this.origen = origen;
-    }
 }

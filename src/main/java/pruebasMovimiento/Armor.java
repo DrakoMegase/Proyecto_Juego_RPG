@@ -1,7 +1,6 @@
 package pruebasMovimiento;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Armor extends ItemProperties {
     private String name;
@@ -12,7 +11,7 @@ public class Armor extends ItemProperties {
 
 
     private Armor(String name, int id, String img, int armor, int slot, int spriteSize) {
-        super(name, spriteSize, img, null, new Rectangle(30,30));
+        super(name, img, new Rectangle(30,30));
         this.name = name;
         this.armor = armor;
         this.slot = slot;
@@ -66,20 +65,12 @@ public class Armor extends ItemProperties {
         this.armor = armor;
     }
 
-    public int getSlot() {
+    int getSlot() {
         return slot;
-    }
-
-    public void setSlot(int slot) {
-        this.slot = slot;
     }
 
     public int getSpriteSize() {
         return spriteSize;
-    }
-
-    public void setSpriteSize(int spriteSize) {
-        this.spriteSize = spriteSize;
     }
 
     public Image getImg() {
