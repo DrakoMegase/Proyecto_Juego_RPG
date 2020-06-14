@@ -42,7 +42,7 @@ public class Juego extends JPanel implements ActionListener {
     //static private int[][] spriteInts;                       //los numeritos de los sprites
     private Stroke defStroke;     //Esto sirve para hacer los rectangulos (las lineas y eso)
     private JPanel backgroundPanel;
-    GameOver gameOver;
+    private GameOver gameOver;
     //Atributos de camara
     static private int offSetX = 0;
     static private int offSetY = 0;
@@ -54,13 +54,11 @@ public class Juego extends JPanel implements ActionListener {
     private static ArrayList<Room> salas;
     private static Room salaActual;
     static boolean menuEsc;
-    int contador;
-    boolean endgame;
+    private int contador;
+    private boolean endgame;
     static int mounstruosKilled;
-    static KeyAdapt keyAdapt = new KeyAdapt(player);
     private Image imagenEscape;
     static Rectangle slash;
-    static int keyAdapts;
 
     static Menu menu;
 
@@ -68,7 +66,6 @@ public class Juego extends JPanel implements ActionListener {
     Juego(Menu menu) {
 
         mounstruosKilled = 0;
-        keyAdapt = new KeyAdapt(player);
         juego=this;
 
 
@@ -76,39 +73,19 @@ public class Juego extends JPanel implements ActionListener {
         menu.musica("music/nivel"+(nivel+1)+".wav");
 
         Juego.menu = menu;
-        //INICIALIZACION DE ENTITIES
 
-//        Juego.padre = padre;
 
         player = new Player(400, 400, 24);
 
         cargarNuevoNivel(player);
 
-        /*for (int i = 0; i < salasint.length; i++) {
-            for (int j = 0; j < salasint.length; j++) {
-
-                System.out.print(salasint[j][i] + "\t");
-
-            }
-            System.out.println();
-        }*/
-
-
-        //Definimos atributos para su uso en ventana.
-//        TILESIZE = Integer.parseInt(extraerValorJson(rutaJson, "tileheight"));
-//        ROWS = Integer.parseInt(extraerValorJson(rutaJson, "height"));
-//        COLUMNS = Integer.parseInt(extraerValorJson(rutaJson, "width"));
-//        WIDTH = COLUMNS * TILESIZE;
-//        HEIGHT = ROWS * TILESIZE;
 
         setLayout(new BorderLayout());                          //Añadimos un diseño de ventana añadiendole eun gestor
-//        setSize(WIDTH, HEIGHT);
         setVisible(true);                                       //Hacemos la ventana visible
         setBackground(Color.black);
         setFocusable(true);                                     //Sets the focusable state of this Component to the specified value. This value overrides the Component's default focusability.
         setLayout(null);
 
-        //setLocationRelativeTo(null);                          //Colocara la ventana en el centro al lanzarla
 
 
         //TODO
@@ -226,11 +203,9 @@ public class Juego extends JPanel implements ActionListener {
     private static void cargarNuevoNivel(Player player) {
         salas = new ArrayList<>();
         Room[][] level = MapGenerator.generateMap(5 * (1 + nivel));
-        Room sala;
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level[i].length; j++) {
-                if (level[i][j] != null) {
-                    sala = level[i][j];
+        for(Room[] array:level) {
+            for (Room sala : array) {
+                if(sala!=null) {
                     sala.inicializarSala(nivel, true);
                     salas.add(sala);
                     if (sala.salaClass == 0) {
@@ -313,6 +288,10 @@ public class Juego extends JPanel implements ActionListener {
                 player.setPos(100, player.y);
                 break;
 
+        }
+
+        if(salaActual.salaClass==3&&!salaActual.clear){
+            menu.musica("music/boss.wav");
         }
 
     }
@@ -404,18 +383,15 @@ public class Juego extends JPanel implements ActionListener {
 
     private void gameover() {
 
-
-
-
-
-
         //MOUNSTRUOS ASESINADOS todo
 
         if (contador > 150 && !endgame) {
             gameOver = new GameOver(mounstruosKilled, player, menu);
             menu.remove(this);
             menu.setContentPane(gameOver);
-
+            if(nivel==3){
+                menu.musica("music/victory.wav");
+            }
             validate();
             menu.setVisible(true);
             endgame = true;
@@ -501,15 +477,15 @@ public class Juego extends JPanel implements ActionListener {
             }
         }
 
-        Set<String> keys = salaActual.salidas.keySet();
-        Salida salida;
-        for (String key : keys) {
-            salida = salaActual.salidas.get(key);
+//        Set<String> keys = salaActual.salidas.keySet();
+//        Salida salida;
+//        for (String key : keys) {
+//            salida = salaActual.salidas.get(key);
 //            Rectangle rectSalida = (Rectangle) salida.getArea().clone();
 //            rectSalida.x -= offSetX;
 //            rectSalida.y -= offSetY;
 //            graphics2D.draw(rectSalida);
-        }
+//        }
 
 
 //        if (slash != null) {
@@ -661,6 +637,9 @@ public class Juego extends JPanel implements ActionListener {
         guardar_y_salir.setBounds(181, 215, 150, 30);
         backgroundPanel.add(guardar_y_salir);
         guardar_y_salir.setFocusable(false);
+        guardar_y_salir.setOpaque(false);
+        guardar_y_salir.setContentAreaFilled(false);
+        guardar_y_salir.setForeground(Color.WHITE);
 
         guardar_y_salir.addActionListener(new ActionListener() {
             @Override
@@ -669,7 +648,6 @@ public class Juego extends JPanel implements ActionListener {
                 GuardarPartida guardarPartida=new GuardarPartida(juego);
                 menu.remove(juego);
                 menu.setContentPane(guardarPartida);
-
                 validate();
                 menu.setVisible(true);
 
@@ -678,6 +656,9 @@ public class Juego extends JPanel implements ActionListener {
 
         JButton volver_al_juego = new JButton("Volver al juego");
         volver_al_juego.setBounds(181, 310, 150, 30);
+        volver_al_juego.setOpaque(false);
+        volver_al_juego.setContentAreaFilled(false);
+        volver_al_juego.setForeground(Color.WHITE);
         backgroundPanel.add(volver_al_juego);
         volver_al_juego.setFocusable(false);
 
@@ -717,11 +698,11 @@ public class Juego extends JPanel implements ActionListener {
         return player;
     }
 
-    public static ArrayList<Room> getSalas() {
+    static ArrayList<Room> getSalas() {
         return salas;
     }
 
-    public static int getNivel() {
+    static int getNivel() {
         return nivel;
     }
 }
