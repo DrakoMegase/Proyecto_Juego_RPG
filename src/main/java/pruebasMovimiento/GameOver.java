@@ -77,10 +77,9 @@ class GameOver extends JPanel {
                         creditos.setBounds(0, 0, WIDTH, HEIGHT);
                         creditos.setVisible(true);
 
-                        Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/background.png")))
+                        Image a = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("img/creditos.png")))
                                 .getImage();
 
-                        //todo foto creditos
 
                         JLabel backgroundLabel1 = new JLabel(new ImageIcon(a));
                         creditos.add(backgroundLabel1);
@@ -92,6 +91,8 @@ class GameOver extends JPanel {
 
                         continuar.removeActionListener(this);
                         continuar.setText("Menu principal");
+                        continuar.setForeground(Color.white);
+                        continuar.setBounds(WIDTH - 172, HEIGHT - 80, 150, 30);
                         continuar.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
@@ -270,9 +271,7 @@ class GameOver extends JPanel {
 
     }
 
-    public static void main(String[] args) {
 
-    }
 
 
 }
