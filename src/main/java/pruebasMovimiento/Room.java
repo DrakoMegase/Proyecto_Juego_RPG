@@ -85,7 +85,7 @@ public class Room {
         ManipulacionDatos.rectanglesToEntityObjects(rutaJsonRoom, entities);
 
         if(salaClass==2){
-            entities.add(new Entity(width / 2 - 16, height / 2 + 50, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
+            entities.add(new Entity(width / 2 - 16, height / 2 + 30, 20, "img/enemies/BlackSmith.png", 8, 44, 16, 10, false, false));
         }
 
         Random random=new Random();
